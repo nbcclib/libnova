@@ -3,17 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Ask LibBee — KU Library AI</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><ellipse cx='25' cy='44' rx='24' ry='13' fill='%23a8d4f0' opacity='.85'/><ellipse cx='75' cy='44' rx='24' ry='13' fill='%23a8d4f0' opacity='.85'/><ellipse cx='50' cy='70' rx='26' ry='30' fill='%231a3a6b'/><ellipse cx='50' cy='78' rx='15' ry='8' fill='%23243f7a'/><circle cx='50' cy='40' r='26' fill='%231a3a6b'/><rect x='28' y='32' width='44' height='18' rx='7' fill='%23001a40'/><ellipse cx='40' cy='41' rx='8' ry='6' fill='%2300ccee'/><ellipse cx='60' cy='41' rx='8' ry='6' fill='%2300ccee'/><ellipse cx='40' cy='41' rx='4' ry='3' fill='%23004466'/><ellipse cx='60' cy='41' rx='4' ry='3' fill='%23004466'/><path d='M40 49 Q50 56 60 49' fill='none' stroke='%2300ccee' stroke-width='2.5' stroke-linecap='round'/><line x1='40' y1='16' x2='28' y2='5' stroke='%231a3a6b' stroke-width='5' stroke-linecap='round'/><circle cx='28' cy='5' r='5' fill='%2300ccee'/><line x1='60' y1='16' x2='72' y2='5' stroke='%231a3a6b' stroke-width='5' stroke-linecap='round'/><ellipse cx='72' cy='4' rx='6' ry='7' fill='%23e8e8e8' stroke='%23aaa' stroke-width='1.5'/><ellipse cx='72' cy='5' rx='3' ry='3' fill='%23ffe066' opacity='.8'/><text x='50' y='86' font-family='Arial,sans-serif' font-size='16' font-weight='bold' fill='%23C8A951' text-anchor='middle'>LB</text></svg>">
+<title>Ask LibNova — NBCC Library AI</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Cpolygon%20points='50,5%2056,38%2088,20%2062,44%2095,50%2062,56%2088,80%2056,62%2050,95%2044,62%2012,80%2038,56%205,50%2038,44%2012,20%2044,38'%20fill='%2523003366'/%3E%3Ccircle%20cx='50'%20cy='50'%20r='28'%20fill='%2523003366'/%3E%3Ccircle%20cx='50'%20cy='50'%20r='28'%20fill='none'%20stroke='%2523B5121B'%20stroke-width='3'%20opacity='.7'/%3E%3Ccircle%20cx='50'%20cy='50'%20r='22'%20fill='%2523001a40'/%3E%3Cellipse%20cx='40'%20cy='46'%20rx='6'%20ry='5'%20fill='%252300ccee'/%3E%3Cellipse%20cx='60'%20cy='46'%20rx='6'%20ry='5'%20fill='%252300ccee'/%3E%3Cellipse%20cx='40'%20cy='46'%20rx='3'%20ry='2.5'%20fill='%2523003366'/%3E%3Cellipse%20cx='60'%20cy='46'%20rx='3'%20ry='2.5'%20fill='%2523003366'/%3E%3Cpath%20d='M40%2057%20Q50%2065%2060%2057'%20fill='none'%20stroke='%252300ccee'%20stroke-width='3'%20stroke-linecap='round'/%3E%3Ccircle%20cx='50'%20cy='18'%20r='4'%20fill='%2523FFB800'/%3E%3Ctext%20x='50'%20y='87'%20font-family='Arial,sans-serif'%20font-size='12'%20font-weight='bold'%20fill='%2523B5121B'%20text-anchor='middle'%3ELN%3C/text%3E%3C/svg%3E">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--ku-gold:#C8A951;--ku-blue:#003366;--bg:#F0F4F8;--text:#1a1a2e;--mu:#6b7280;--border:#d1d5db;--shadow:0 2px 8px rgba(0,51,102,.08);--radius:14px}
+:root{--nbcc-red:#B5121B;--nbcc-navy:#003366;--bg:#F0F4F8;--text:#1a1a2e;--mu:#6b7280;--border:#d1d5db;--shadow:0 2px 8px rgba(0,51,102,.08);--radius:14px}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);height:100dvh;display:flex;flex-direction:column;overflow:hidden}
 
 /* ── Header ── */
-header{background:var(--ku-blue);color:#fff;padding:10px 16px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 12px rgba(0,51,102,.4);flex-shrink:0}
+header{background:var(--nbcc-navy);color:#fff;padding:10px 16px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 12px rgba(0,51,102,.4);flex-shrink:0}
 .hdr-text{flex:1}.hdr-text h1{font-size:1rem;font-weight:700}.hdr-text p{font-size:.7rem;opacity:.8;margin-top:1px}
-.hdr-acct{padding:5px 12px;background:var(--ku-gold);border:none;border-radius:20px;color:#1a1a2e;font-size:.72rem;font-weight:700;text-decoration:none;white-space:nowrap;flex-shrink:0}
+.hdr-acct{padding:5px 12px;background:var(--nbcc-red);border:none;border-radius:20px;color:#1a1a2e;font-size:.72rem;font-weight:700;text-decoration:none;white-space:nowrap;flex-shrink:0}
 .model-toggle{display:flex;gap:4px;background:rgba(255,255,255,.12);padding:3px 4px;border-radius:20px;flex-shrink:0}
 .model-toggle button{padding:4px 10px;border-radius:16px;font-size:.68rem;font-weight:700;cursor:pointer;border:none;transition:all .25s;white-space:nowrap}
 .model-toggle button.active-gpt{background:#10A37F;color:#fff;box-shadow:0 1px 6px rgba(16,163,127,.4)}
@@ -23,7 +23,7 @@ header{background:var(--ku-blue);color:#fff;padding:10px 16px;display:flex;align
 /* ── Tabs ── */
 .tabs{display:flex;background:#fff;border-bottom:2px solid var(--border);flex-shrink:0;overflow-x:auto}.tabs::-webkit-scrollbar{display:none}
 .tab{padding:9px 14px;font-size:.76rem;font-weight:600;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;color:var(--mu);transition:all .2s;flex-shrink:0}
-.tab.active{color:var(--ku-blue);border-bottom-color:var(--ku-gold)}
+.tab.active{color:var(--nbcc-navy);border-bottom-color:var(--nbcc-red)}
 
 /* ── Panels ── */
 .panel{display:none;flex:1;flex-direction:column;overflow:hidden}.panel.active{display:flex}
@@ -32,11 +32,11 @@ header{background:var(--ku-blue);color:#fff;padding:10px 16px;display:flex;align
 .msgs{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px}
 .msg{display:flex;gap:8px;align-items:flex-start;max-width:100%}.msg.bot{align-self:stretch;max-width:100%}.msg.user{align-self:flex-end;flex-direction:row-reverse;max-width:72%}
 .av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
-.msg.bot .av{background:var(--ku-blue);color:#fff}.msg.user .av{background:var(--ku-gold);color:#1a1a2e}
+.msg.bot .av{background:var(--nbcc-navy);color:#fff}.msg.user .av{background:var(--nbcc-red);color:#1a1a2e}
 .bub{padding:9px 13px;border-radius:16px;font-size:.86rem;line-height:1.6;word-wrap:break-word;max-width:none}.msg.bot .bub{width:min(1100px,calc(100vw - 110px));max-width:min(1100px,calc(100vw - 110px))}.msg.user .bub{max-width:min(760px,calc(100vw - 110px))}
 .msg.bot .bub{background:#fff;border:1px solid var(--border);border-top-left-radius:4px;box-shadow:var(--shadow)}
-.msg.user .bub{background:var(--ku-blue);color:#fff;border-top-right-radius:4px}
-.typing{display:flex;gap:4px;padding:4px 0;align-items:center}.typing span{width:7px;height:7px;background:var(--ku-gold);border-radius:50%;animation:bounce 1.2s infinite;flex-shrink:0}
+.msg.user .bub{background:var(--nbcc-navy);color:#fff;border-top-right-radius:4px}
+.typing{display:flex;gap:4px;padding:4px 0;align-items:center}.typing span{width:7px;height:7px;background:var(--nbcc-red);border-radius:50%;animation:bounce 1.2s infinite;flex-shrink:0}
 .typing span:nth-child(2){animation-delay:.2s}.typing span:nth-child(3){animation-delay:.4s}
 @keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-7px)}}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
@@ -44,48 +44,48 @@ header{background:var(--ku-blue);color:#fff;padding:10px 16px;display:flex;align
 
 /* ── Follow-up chips ── */
 .followups{display:flex;flex-wrap:wrap;gap:5px;padding:2px 12px 8px 50px}
-.fq{padding:4px 10px;border-radius:20px;font-size:.72rem;border:1.5px solid var(--ku-blue);color:var(--ku-blue);cursor:pointer;background:#fff;transition:all .2s}
-.fq:hover{background:var(--ku-blue);color:#fff}
+.fq{padding:4px 10px;border-radius:20px;font-size:.72rem;border:1.5px solid var(--nbcc-navy);color:var(--nbcc-navy);cursor:pointer;background:#fff;transition:all .2s}
+.fq:hover{background:var(--nbcc-navy);color:#fff}
 
 /* ── Search recovery banner ── */
 .search-recovery{margin:4px 12px 8px 50px;padding:10px 14px;background:linear-gradient(135deg,#eff6ff,#f5f3ff);border-radius:12px;border:1.5px solid #c4b5fd;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .search-recovery-text{font-size:.78rem;color:#4c1d95;font-weight:600}
-.search-recovery-btn{padding:6px 14px;background:var(--ku-blue);color:#fff;border:none;border-radius:9px;font-size:.76rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0}
+.search-recovery-btn{padding:6px 14px;background:var(--nbcc-navy);color:#fff;border:none;border-radius:9px;font-size:.76rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0}
 .search-recovery-btn:hover{background:#004488}
 
 /* ── Chat bottom / input ── */
 .chat-bottom{position:sticky;bottom:0;background:#fff;border-top:1px solid var(--border);z-index:8;box-shadow:0 -2px 10px rgba(0,0,0,.04)}
 .chips{display:flex;gap:6px;flex-wrap:wrap;padding:8px 12px 6px;overflow-x:auto;background:#fff}.chips::-webkit-scrollbar{display:none}
-.chip{padding:5px 11px;border-radius:20px;font-size:.74rem;border:1.5px solid var(--ku-blue);color:var(--ku-blue);cursor:pointer;background:#fff;transition:all .2s;white-space:nowrap;text-decoration:none;display:inline-block}
-.chip:hover{background:var(--ku-blue);color:#fff}
+.chip{padding:5px 11px;border-radius:20px;font-size:.74rem;border:1.5px solid var(--nbcc-navy);color:var(--nbcc-navy);cursor:pointer;background:#fff;transition:all .2s;white-space:nowrap;text-decoration:none;display:inline-block}
+.chip:hover{background:var(--nbcc-navy);color:#fff}
 .cin{padding:10px 12px;display:flex;gap:7px;align-items:center}
 .cin input{flex:1;padding:9px 13px;border:2px solid var(--border);border-radius:24px;font-size:.86rem;outline:none;min-width:0}
-.cin input:focus{border-color:var(--ku-blue)}
+.cin input:focus{border-color:var(--nbcc-navy)}
 .cin input:disabled{background:#f3f4f6}
-.send{width:38px;height:38px;border-radius:50%;background:var(--ku-blue);color:#fff;border:none;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s}
+.send{width:38px;height:38px;border-radius:50%;background:var(--nbcc-navy);color:#fff;border:none;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s}
 .send:hover{background:#004488}.send:disabled{background:#9ca3af;cursor:not-allowed}
 .clr{padding:8px 12px;background:var(--bg);border:1.5px solid var(--border);border-radius:16px;font-size:.74rem;color:var(--mu);cursor:pointer;white-space:nowrap;flex-shrink:0;font-weight:600}
 
 /* ── Welcome screen ── */
 #welcome-screen{flex:1;display:flex;align-items:center;justify-content:center;overflow-y:auto;padding:24px 16px}
 .wlc-inner{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%;max-width:580px}
-.wlc-avatar-wrap{width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,#e8f0fe,#dbeafe);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,51,102,.15);border:3px solid rgba(0,51,102,.12)}
-.wlc-name{font-size:1.9rem;font-weight:800;color:var(--ku-blue);letter-spacing:-.5px}
+.wlc-avatar-wrap{width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,#fff0f0,#ffe4e4);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,51,102,.15);border:3px solid rgba(181,18,27,.15)}
+.wlc-name{font-size:1.9rem;font-weight:800;color:var(--nbcc-navy);letter-spacing:-.5px}
 .wlc-tagline{font-size:.88rem;color:var(--mu);text-align:center;line-height:1.5;max-width:420px}
-.wlc-tagline strong{color:var(--ku-blue)}
+.wlc-tagline strong{color:var(--nbcc-navy)}
 .wlc-menu{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;margin-top:4px}
 .wlc-btn{padding:13px 16px;background:#fff;border:1.5px solid var(--border);border-radius:14px;font-size:.84rem;font-weight:600;color:var(--text);cursor:pointer;text-align:left;transition:all .2s;box-shadow:0 1px 4px rgba(0,0,0,.05);line-height:1.3}
-.wlc-btn:hover{border-color:var(--ku-blue);background:#f0f4ff;color:var(--ku-blue);box-shadow:0 3px 12px rgba(0,51,102,.12);transform:translateY(-1px)}
+.wlc-btn:hover{border-color:var(--nbcc-navy);background:#f0f4ff;color:var(--nbcc-navy);box-shadow:0 3px 12px rgba(0,51,102,.12);transform:translateY(-1px)}
 .wlc-search-wrap{width:100%;margin-top:6px}
-.wlc-search-row{display:flex;gap:0;background:#fff;border:2.5px solid var(--ku-blue);border-radius:28px;overflow:hidden;box-shadow:0 4px 16px rgba(0,51,102,.14);transition:box-shadow .2s}
+.wlc-search-row{display:flex;gap:0;background:#fff;border:2.5px solid var(--nbcc-red);border-radius:28px;overflow:hidden;box-shadow:0 4px 16px rgba(0,51,102,.14);transition:box-shadow .2s}
 .wlc-search-row:focus-within{box-shadow:0 4px 20px rgba(0,51,102,.25)}
 .wlc-input{flex:1;padding:13px 20px;border:none;outline:none;font-size:.92rem;color:var(--text);background:transparent;min-width:0}
 .wlc-input::placeholder{color:#9ca3af}
-.wlc-send-btn{width:50px;height:50px;background:var(--ku-blue);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;transition:background .2s}
+.wlc-send-btn{width:50px;height:50px;background:var(--nbcc-navy);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;transition:background .2s}
 .wlc-send-btn:hover{background:#004488}
 .wlc-subject-wrap{width:100%;animation:fadeIn .2s ease}
-.wlc-subject-box{background:#f0f4ff;border:2px solid var(--ku-blue);border-radius:16px;padding:14px 16px}
-.wlc-subject-label{font-size:.85rem;font-weight:700;color:var(--ku-blue);margin-bottom:10px}
+.wlc-subject-box{background:#f0f4ff;border:2px solid var(--nbcc-red);border-radius:16px;padding:14px 16px}
+.wlc-subject-label{font-size:.85rem;font-weight:700;color:var(--nbcc-red);margin-bottom:10px}
 @media(max-width:480px){.wlc-menu{grid-template-columns:1fr}.wlc-name{font-size:1.5rem}}
 
 /* ── Search panel ── */
@@ -93,23 +93,23 @@ header{background:var(--ku-blue);color:#fff;padding:10px 16px;display:flex;align
 .nl-box{background:#fff;border-radius:var(--radius);padding:14px;border:1px solid var(--border)}
 .nl-row{display:flex;gap:7px}
 .nl-row input{flex:1;padding:10px 14px;border:2px solid var(--border);border-radius:12px;font-size:.88rem;outline:none;min-width:0}
-.nl-row input:focus{border-color:var(--ku-blue)}
-.go{padding:10px 18px;background:var(--ku-blue);color:#fff;border:none;border-radius:12px;cursor:pointer;font-weight:700;font-size:.86rem;flex-shrink:0}
+.nl-row input:focus{border-color:var(--nbcc-navy)}
+.go{padding:10px 18px;background:var(--nbcc-navy);color:#fff;border:none;border-radius:12px;cursor:pointer;font-weight:700;font-size:.86rem;flex-shrink:0}
 .go:disabled{background:#9ca3af;cursor:not-allowed}
 .tog-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;align-items:center}
 .tog{display:flex;align-items:center;gap:4px;font-size:.76rem;color:var(--mu);cursor:pointer}
-.tog input{accent-color:var(--ku-blue)}
+.tog input{accent-color:var(--nbcc-navy)}
 .yr{width:65px;padding:5px 7px;border:1.5px solid var(--border);border-radius:8px;font-size:.78rem;text-align:center;outline:none}
 .sstatus{font-size:.8rem;color:var(--mu);padding:4px 0;min-height:18px}
 
 /* ── Search cards ── */
 .scard{background:#fff;border-radius:12px;padding:14px;border:1px solid var(--border);box-shadow:var(--shadow)}
-.scard-title{font-weight:700;font-size:.86rem;color:var(--ku-blue);margin-bottom:4px}
-.bool-str{font-family:monospace;background:#1a1a2e;color:var(--ku-gold);padding:6px 10px;border-radius:8px;font-size:.76rem;margin:6px 0;word-break:break-all;overflow-x:auto}
+.scard-title{font-weight:700;font-size:.86rem;color:var(--nbcc-navy);margin-bottom:4px}
+.bool-str{font-family:monospace;background:#1a1a2e;color:var(--nbcc-red);padding:6px 10px;border-radius:8px;font-size:.76rem;margin:6px 0;word-break:break-all;overflow-x:auto}
 .slinks{display:flex;flex-direction:row;flex-wrap:wrap;gap:6px;margin-top:8px}
 .slink{display:flex;align-items:center;gap:6px;padding:8px 12px;border-radius:10px;text-decoration:none;font-size:.82rem;font-weight:600;transition:all .2s}
 .slink:hover{opacity:.85;transform:translateX(2px)}
-.slink.all{background:var(--ku-blue);color:#fff}
+.slink.all{background:var(--nbcc-navy);color:#fff}
 .slink.art{background:#fef3c7;color:#92400e;border:1px solid #fde68a}
 .slink.bk{background:#ede9fe;color:#5b21b6;border:1px solid #c4b5fd}
 
@@ -132,44 +132,44 @@ header{background:var(--ku-blue);color:#fff;padding:10px 16px;display:flex;align
 /* ── Result cards ── */
 .rcard{background:#fff;border-radius:10px;padding:12px;border:1px solid var(--border);margin-bottom:8px;transition:box-shadow .2s}
 .rcard:hover{box-shadow:0 2px 12px rgba(0,51,102,.12)}
-.rcard-title{font-size:.84rem;font-weight:700;color:var(--ku-blue);line-height:1.3;margin-bottom:4px}
-.rcard-title a{color:var(--ku-blue);text-decoration:none}.rcard-title a:hover{text-decoration:underline}
+.rcard-title{font-size:.84rem;font-weight:700;color:var(--nbcc-navy);line-height:1.3;margin-bottom:4px}
+.rcard-title a{color:var(--nbcc-navy);text-decoration:none}.rcard-title a:hover{text-decoration:underline}
 .rcard-meta{font-size:.74rem;color:var(--mu);line-height:1.5}
 .rcard-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
 .rcard-tag{font-size:.66rem;padding:2px 7px;border-radius:8px;background:var(--bg);color:var(--mu);font-weight:600}
 .rcard-tag.oa{background:#D1FAE5;color:#065F46}
 .rcard-actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
-.rcard-btn{padding:4px 10px;border-radius:8px;font-size:.72rem;border:1px solid var(--border);background:#fff;color:var(--ku-blue);cursor:pointer;font-weight:600;transition:all .2s}
-.rcard-btn:hover{background:var(--ku-blue);color:#fff}
+.rcard-btn{padding:4px 10px;border-radius:8px;font-size:.72rem;border:1px solid var(--border);background:#fff;color:var(--nbcc-navy);cursor:pointer;font-weight:600;transition:all .2s}
+.rcard-btn:hover{background:var(--nbcc-navy);color:#fff}
 .rcard-desc{font-size:.78rem;color:#374151;line-height:1.5;margin:5px 0 4px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.rcard-btn.primary{background:var(--ku-blue);color:#fff;border-color:var(--ku-blue)}
+.rcard-btn.primary{background:var(--nbcc-navy);color:#fff;border-color:var(--nbcc-navy)}
 .rcard-btn.primary:hover{background:#004488}
-.results-section-hdr{font-size:.82rem;font-weight:800;color:var(--ku-blue);margin:14px 0 6px;padding-bottom:4px;border-bottom:2px solid var(--ku-gold)}
+.results-section-hdr{font-size:.82rem;font-weight:800;color:var(--nbcc-navy);margin:14px 0 6px;padding-bottom:4px;border-bottom:2px solid var(--nbcc-red)}
 
 /* ── Guides / Services / Databases ── */
 .barea{padding:12px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:10px}
 .bcard{background:#fff;border-radius:var(--radius);padding:14px;border:1px solid var(--border)}
-.bcard h3{font-size:.88rem;font-weight:700;margin-bottom:10px;color:var(--ku-blue)}
+.bcard h3{font-size:.88rem;font-weight:700;margin-bottom:10px;color:var(--nbcc-navy)}
 .banner{border-radius:var(--radius);padding:14px;color:#fff;text-align:center}
 .banner h3{font-size:.95rem;font-weight:700;margin-bottom:4px}.banner p{font-size:.78rem;opacity:.9;margin-bottom:10px}
 .banner a{display:inline-block;padding:7px 20px;background:#fff;border-radius:20px;font-weight:700;font-size:.82rem;text-decoration:none}
 .ll a{display:block;padding:7px 0;font-size:.82rem;color:#0EA5E9;text-decoration:none;border-bottom:1px solid var(--border)}
-.ll a:last-child{border-bottom:none}.ll a:hover{color:var(--ku-blue)}
+.ll a:last-child{border-bottom:none}.ll a:hover{color:var(--nbcc-navy)}
 .guides-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .guide-card{background:#fff;border-radius:10px;padding:10px;border:1px solid var(--border);text-decoration:none;transition:all .2s;display:block}
-.guide-card:hover{border-color:var(--ku-blue);box-shadow:0 2px 8px rgba(0,51,102,.1)}
-.guide-card .icon{font-size:1.4rem;margin-bottom:4px}.guide-card .name{font-size:.78rem;font-weight:700;color:var(--ku-blue)}
+.guide-card:hover{border-color:var(--nbcc-navy);box-shadow:0 2px 8px rgba(0,51,102,.1)}
+.guide-card .icon{font-size:1.4rem;margin-bottom:4px}.guide-card .name{font-size:.78rem;font-weight:700;color:var(--nbcc-navy)}
 .guide-card .desc{font-size:.7rem;color:var(--mu);margin-top:2px}
 
 /* ── E-resources ── */
 .era{padding:12px;overflow-y:auto;flex:1}
 .abar{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px}
 .abtn{padding:4px 10px;border-radius:8px;border:1.5px solid var(--border);background:#fff;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap}
-.abtn:hover,.abtn.active{background:var(--ku-blue);color:#fff;border-color:var(--ku-blue)}
+.abtn:hover,.abtn.active{background:var(--nbcc-navy);color:#fff;border-color:var(--nbcc-navy)}
 .dg{margin-bottom:12px;border:1px solid var(--border);border-radius:12px;background:#fff;overflow:hidden}
 .dg summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;cursor:pointer}
 .dg summary::-webkit-details-marker{display:none}.dg summary:hover{background:#f8fafc}
-.dg h2{font-size:.9rem;font-weight:800;color:var(--ku-blue);margin:0}
+.dg h2{font-size:.9rem;font-weight:800;color:var(--nbcc-navy);margin:0}
 .db-toggle{font-size:.72rem;font-weight:700;color:var(--mu);white-space:nowrap}
 .db-group-items{padding:0 10px 10px}
 .di{background:#fff;border-radius:9px;padding:9px 12px;margin-bottom:5px;border:1px solid var(--border)}
@@ -191,18 +191,18 @@ header{background:var(--ku-blue);color:#fff;padding:10px 16px;display:flex;align
 
 <header>
   <div class="hdr-text">
-    <h1><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" style="vertical-align:middle;margin-right:4px"><ellipse cx="5.5" cy="12" rx="5" ry="2.5" fill="#a8d4f0" opacity=".85"/><ellipse cx="18.5" cy="12" rx="5" ry="2.5" fill="#a8d4f0" opacity=".85"/><ellipse cx="12" cy="18" rx="6" ry="6.5" fill="#1a3a6b"/><circle cx="12" cy="10" r="6" fill="#1a3a6b"/><rect x="6.5" y="7.5" width="11" height="5" rx="2" fill="#001a40"/><ellipse cx="9.5" cy="10" rx="2" ry="1.5" fill="#00ccee"/><ellipse cx="14.5" cy="10" rx="2" ry="1.5" fill="#00ccee"/><path d="M9.5 12 Q12 13.5 14.5 12" fill="none" stroke="#00ccee" stroke-width=".9" stroke-linecap="round"/><line x1="9.5" y1="4.5" x2="7" y2="2" stroke="#1a3a6b" stroke-width="1.5" stroke-linecap="round"/><circle cx="7" cy="2" r="1.3" fill="#00ccee"/><line x1="14.5" y1="4.5" x2="17" y2="2" stroke="#1a3a6b" stroke-width="1.5" stroke-linecap="round"/><ellipse cx="17" cy="1.5" rx="1.8" ry="2" fill="#e8e8e8" stroke="#aaa" stroke-width=".6"/><text x="12" y="21" font-family="Arial,sans-serif" font-size="3.5" font-weight="bold" fill="#C8A951" text-anchor="middle">LB</text></svg> LibBee</h1>
-    <p>Khalifa University Library AI Assistant</p>
+    <h1><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" style="vertical-align:middle;margin-right:4px"><polygon points="12,1 13.5,9 20,4 15,10.5 23,12 15,13.5 20,20 13.5,15 12,23 10.5,15 4,20 9,13.5 1,12 9,10.5 4,4 10.5,9" fill="#003366"/><circle cx="12" cy="12" r="6.5" fill="#003366"/><circle cx="12" cy="12" r="6.5" fill="none" stroke="#B5121B" stroke-width=".8"/><circle cx="12" cy="12" r="5" fill="#001a40"/><ellipse cx="9.5" cy="11" rx="1.5" ry="1.3" fill="#00ccee"/><ellipse cx="14.5" cy="11" rx="1.5" ry="1.3" fill="#00ccee"/><path d="M9.5 13.5 Q12 15.5 14.5 13.5" fill="none" stroke="#00ccee" stroke-width=".8" stroke-linecap="round"/><circle cx="12" cy="4" r="1" fill="#FFB800"/></svg> LibNova</h1>
+    <p>NBCC Library AI Assistant</p>
   </div>
   <div class="model-toggle">
     <button id="btnClaude" onclick="setModel('claude')">Claude</button>
     <button id="btnGPT" class="active-gpt" onclick="setModel('gpt')">ChatGPT</button>
   </div>
-  <a class="hdr-acct" href="https://khalifa.primo.exlibrisgroup.com/discovery/account?vid=971KUOSTAR_INST:KU&section=overview" target="_blank">👤 My Account</a>
+  <a class="hdr-acct" href="https://nbcc.primo.exlibrisgroup.com/discovery/account?vid=NBCC_INST:NBCC&section=overview" target="_blank">👤 My Account</a>
 </header>
 
 <div class="tabs">
-  <div class="tab active" onclick="switchTab('chat',this)">💬 Ask LibBee</div>
+  <div class="tab active" onclick="switchTab('chat',this)">💬 Ask LibNova</div>
   <div class="tab" onclick="switchTab('search',this)">🔍 AI Search</div>
   <div class="tab" onclick="switchTab('services',this)">🏛️ Services</div>
   <div class="tab" onclick="switchTab('eresources',this)">🗄️ Databases</div>
@@ -214,30 +214,12 @@ header{background:var(--ku-blue);color:#fff;padding:10px 16px;display:flex;align
   <!-- ── Welcome screen (hidden once chat starts) ── -->
   <div id="welcome-screen">
     <div class="wlc-inner">
-      <!-- LibBee avatar + name -->
+      <!-- LibNova avatar + name -->
       <div class="wlc-avatar-wrap">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="72" height="72">
-          <ellipse cx="18" cy="36" rx="18" ry="9" fill="#a8d4f0" opacity=".85"/>
-          <ellipse cx="62" cy="36" rx="18" ry="9" fill="#a8d4f0" opacity=".85"/>
-          <ellipse cx="40" cy="58" rx="20" ry="22" fill="#1a3a6b"/>
-          <ellipse cx="40" cy="66" rx="12" ry="6" fill="#243f7a"/>
-          <circle cx="40" cy="32" r="20" fill="#1a3a6b"/>
-          <rect x="22" y="25" width="36" height="14" rx="6" fill="#001a40"/>
-          <ellipse cx="32" cy="32" rx="6.5" ry="5" fill="#00ccee"/>
-          <ellipse cx="48" cy="32" rx="6.5" ry="5" fill="#00ccee"/>
-          <ellipse cx="32" cy="32" rx="3" ry="2.5" fill="#004466"/>
-          <ellipse cx="48" cy="32" rx="3" ry="2.5" fill="#004466"/>
-          <path d="M32 38 Q40 44 48 38" fill="none" stroke="#00ccee" stroke-width="2.5" stroke-linecap="round"/>
-          <line x1="32" y1="13" x2="24" y2="5" stroke="#1a3a6b" stroke-width="4" stroke-linecap="round"/>
-          <circle cx="24" cy="5" r="4" fill="#00ccee"/>
-          <line x1="48" y1="13" x2="56" y2="5" stroke="#1a3a6b" stroke-width="4" stroke-linecap="round"/>
-          <ellipse cx="56" cy="4" rx="5" ry="6" fill="#e8e8e8" stroke="#aaa" stroke-width="1.5"/>
-          <ellipse cx="56" cy="5" rx="2.5" ry="2.5" fill="#ffe066" opacity=".8"/>
-          <text x="40" y="72" font-family="Arial,sans-serif" font-size="10" font-weight="bold" fill="#C8A951" text-anchor="middle">LB</text>
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="72" height="72"><polygon points="40,4 44,28 64,14 48,30 76,40 48,50 64,66 44,52 40,76 36,52 16,66 32,50 4,40 32,30 16,14 36,28" fill="#003366" opacity=".4"/><polygon points="40,4 44,28 64,14 48,30 76,40 48,50 64,66 44,52 40,76 36,52 16,66 32,50 4,40 32,30 16,14 36,28" fill="#003366"/><circle cx="40" cy="40" r="22" fill="#003366"/><circle cx="40" cy="40" r="22" fill="none" stroke="#B5121B" stroke-width="2.5"/><circle cx="40" cy="40" r="17" fill="#001a40"/><ellipse cx="31" cy="37" rx="5" ry="4" fill="#00ccee"/><ellipse cx="49" cy="37" rx="5" ry="4" fill="#00ccee"/><ellipse cx="31" cy="37" rx="2.5" ry="2" fill="#003366"/><ellipse cx="49" cy="37" rx="2.5" ry="2" fill="#003366"/><circle cx="32.5" cy="36" r="1" fill="#fff" opacity=".7"/><circle cx="50.5" cy="36" r="1" fill="#fff" opacity=".7"/><path d="M31 46 Q40 54 49 46" fill="none" stroke="#00ccee" stroke-width="2.5" stroke-linecap="round"/><circle cx="40" cy="13" r="3.5" fill="#FFB800"/><circle cx="11" cy="40" r="2" fill="#FFB800" opacity=".7"/><circle cx="69" cy="40" r="2" fill="#FFB800" opacity=".7"/><circle cx="17" cy="17" r="1.5" fill="#B5121B" opacity=".6"/><circle cx="63" cy="17" r="1.5" fill="#B5121B" opacity=".6"/></svg>
       </div>
-      <h2 class="wlc-name">LibBee</h2>
-      <p class="wlc-tagline" id="initial-greeting">Hello! I'm <strong>LibBee</strong>, the Khalifa University Library AI Assistant. How can I help you today?</p>
+      <h2 class="wlc-name">LibNova</h2>
+      <p class="wlc-tagline" id="initial-greeting">Hello! I'm <strong>LibNova</strong>, the NBCC Library AI Assistant. How can I help you today?</p>
 
       <!-- Quick-start menu grid (Aisha-style) -->
       <div class="wlc-menu" id="wlc-menu">
@@ -290,7 +272,7 @@ header{background:var(--ku-blue);color:#fff;padding:10px 16px;display:flex;align
       <div class="chip" onclick="sendChat('I cannot access a library resource or database')">🔒 Can't Access</div>
       <div class="chip" onclick="sendChat('What library events and workshops are coming up?')">📅 Events</div>
       <div class="chip" onclick="sendChat('Can I request an Interlibrary Loan?')">📬 ILL Request</div>
-      <a class="chip" href="https://library.ku.ac.ae/AskUs" target="_blank">💬 Ask a Librarian</a>
+      <a class="chip" href="https://library.nbcc.ca/AskUs" target="_blank">💬 Ask a Librarian</a>
     </div>
     <div class="cin">
       <button class="clr" onclick="clearChat()">Clear chat</button>
@@ -304,7 +286,7 @@ header{background:var(--ku-blue);color:#fff;padding:10px 16px;display:flex;align
 <div class="panel" id="panel-search">
   <div class="sarea">
     <div class="nl-box">
-      <div style="font-weight:700;color:var(--ku-blue);margin-bottom:10px;font-size:.95rem">🔍 Smart Search — AI builds query, PRIMO returns real results</div>
+      <div style="font-weight:700;color:var(--nbcc-navy);margin-bottom:10px;font-size:.95rem">🔍 Smart Search — AI builds query, PRIMO returns real results</div>
       <div class="nl-row">
         <input type="text" id="sIn" placeholder='e.g. "AI in education from 2022 peer reviewed"' onkeydown="if(event.key==='Enter')doSearch()">
         <button class="go" id="searchBtn" onclick="doSearch()">Search</button>
@@ -324,23 +306,23 @@ header{background:var(--ku-blue);color:#fff;padding:10px 16px;display:flex;align
 <!-- ═══ SERVICES PANEL ═══ -->
 <div class="panel" id="panel-services">
   <div class="barea">
-    <div class="banner" style="background:var(--ku-blue)">
+    <div class="banner" style="background:var(--nbcc-navy)">
       <h3>📋 My Library Account</h3><p>View loans, renewals, requests, fines & fees</p>
-      <a href="https://khalifa.primo.exlibrisgroup.com/discovery/account?vid=971KUOSTAR_INST:KU&section=overview" target="_blank" style="color:var(--ku-blue)">Open My Account →</a>
+      <a href="https://nbcc.primo.exlibrisgroup.com/discovery/account?vid=NBCC_INST:NBCC&section=overview" target="_blank" style="color:var(--nbcc-navy)">Open My Account →</a>
     </div>
     <div class="bcard"><h3>🔗 All Library Services</h3><div class="ll">
-      <a href="https://khalifa.primo.exlibrisgroup.com/discovery/account?vid=971KUOSTAR_INST:KU&section=overview" target="_blank">📋 My Library Account</a>
-      <a href="https://library.ku.ac.ae/ill/" target="_blank">📬 Interlibrary Loan (ILL)</a>
-      <a href="https://library.ku.ac.ae/rooms/" target="_blank">🚪 Reserve a Study Room</a>
-      <a href="https://library.ku.ac.ae/hours" target="_blank">⏰ Library Hours</a>
-      <a href="https://library.ku.ac.ae/oa/" target="_blank">🔓 Open Access Publishing</a>
-      <a href="https://library.ku.ac.ae/requesttitle/" target="_blank">📥 Request New Material</a>
-      <a href="https://library.ku.ac.ae/AskUs" target="_blank">💬 Ask a Librarian</a>
-      <a href="https://library.ku.ac.ae/google" target="_blank">🎓 Google Scholar @ KU</a>
-      <a href="https://library.ku.ac.ae/orcid" target="_blank">🆔 ORCiD Guide</a>
-      <a href="https://khazna.ku.ac.ae/" target="_blank">🗄️ Khazna Repository</a>
-      <a href="https://library.ku.ac.ae/med/" target="_blank">🏥 Medical Library</a>
-      <a href="https://library.ku.ac.ae/alumni/" target="_blank">🎓 Alumni Services</a>
+      <a href="https://nbcc.primo.exlibrisgroup.com/discovery/account?vid=NBCC_INST:NBCC&section=overview" target="_blank">📋 My Library Account</a>
+      <a href="https://library.nbcc.ca/ill/" target="_blank">📬 Interlibrary Loan (ILL)</a>
+      <a href="https://library.nbcc.ca/rooms/" target="_blank">🚪 Reserve a Study Room</a>
+      <a href="https://library.nbcc.ca/hours" target="_blank">⏰ Library Hours</a>
+      <a href="https://library.nbcc.ca/oa/" target="_blank">🔓 Open Access Publishing</a>
+      <a href="https://library.nbcc.ca/requesttitle/" target="_blank">📥 Request New Material</a>
+      <a href="https://library.nbcc.ca/AskUs" target="_blank">💬 Ask a Librarian</a>
+      <a href="https://library.nbcc.ca/google" target="_blank">🎓 Google Scholar @ KU</a>
+      <a href="https://library.nbcc.ca/orcid" target="_blank">🆔 ORCiD Guide</a>
+      <a href="https://khazna.nbcc.ca/" target="_blank">🗄️ NBCC Repository Repository</a>
+      <a href="https://library.nbcc.ca/med/" target="_blank">🏥 Medical Library</a>
+      <a href="https://library.nbcc.ca/alumni/" target="_blank">🎓 Alumni Services</a>
     </div></div>
   </div>
 </div>
@@ -349,7 +331,7 @@ header{background:var(--ku-blue);color:#fff;padding:10px 16px;display:flex;align
 <div class="panel" id="panel-eresources">
   <div class="era">
     <div style="font-size:.78rem;font-weight:700;color:var(--mu);text-transform:uppercase;margin-bottom:8px">
-      Databases A–Z — <a href="https://library.ku.ac.ae/eresources" target="_blank" style="color:#0EA5E9">View full list →</a>
+      Databases A–Z — <a href="https://library.nbcc.ca/eresources" target="_blank" style="color:#0EA5E9">View full list →</a>
     </div>
     <div class="abar" id="abar"></div>
     <div id="dbList"></div>
@@ -360,10 +342,10 @@ header{background:var(--ku-blue);color:#fff;padding:10px 16px;display:flex;align
 // ═══════════════════════════════════════════════════════════════
 // CONFIG — single source of truth, no Cloudflare
 // ═══════════════════════════════════════════════════════════════
-const API_URL = 'https://nikeshn-libbee.hf.space';
-const PRIMO_BASE = 'https://khalifa.primo.exlibrisgroup.com/discovery/search';
-const PRIMO_AI_URL = 'https://khalifa.primo.exlibrisgroup.com/discovery/researchAssistant?vid=971KUOSTAR_INST:KU&query=';
-const VID = '971KUOSTAR_INST:KU';
+const API_URL = 'https://nikeshn-libnova.hf.space';
+const PRIMO_BASE = 'https://nbcc.primo.exlibrisgroup.com/discovery/search';
+const PRIMO_AI_URL = 'https://nbcc.primo.exlibrisgroup.com/discovery/researchAssistant?vid=NBCC_INST:NBCC&query=';
+const VID = 'NBCC_INST:NBCC';
 const FETCH_TIMEOUT = 35000;
 
 var currentModel = 'gpt';
@@ -385,7 +367,7 @@ window.wlcAskSubject = function() {
   var btns = document.querySelectorAll('.wlc-btn');
   btns.forEach(function(b) { b.style.background = ''; b.style.borderColor = ''; });
   btns[0].style.background = '#e8f0fe';
-  btns[0].style.borderColor = 'var(--ku-blue)';
+  btns[0].style.borderColor = 'var(--nbcc-navy)';
   // Focus the input
   setTimeout(function() {
     var inp = document.getElementById('wlcSubjectIn');
@@ -448,22 +430,22 @@ function showWelcomeScreen() {
 window._primoResults = {};
 
 const STORAGE_KEYS = {
-  sessionId: 'libbee_session_id',
-  searchContexts: 'libbee_search_contexts',
-  activeContextId: 'libbee_active_search_context_id'
+  sessionId: 'libnova_session_id',
+  searchContexts: 'libnova_search_contexts',
+  activeContextId: 'libnova_active_search_context_id'
 };
 
 function makeSessionId() {
   return (window.crypto && crypto.randomUUID)
     ? crypto.randomUUID()
-    : 'libbee-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
+    : 'libnova-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
 }
 
-let libbeeSessionId = (function() {
+let libnovaSessionId = (function() {
   try { return localStorage.getItem(STORAGE_KEYS.sessionId) || makeSessionId(); }
   catch(_) { return makeSessionId(); }
 })();
-try { localStorage.setItem(STORAGE_KEYS.sessionId, libbeeSessionId); } catch(_) {}
+try { localStorage.setItem(STORAGE_KEYS.sessionId, libnovaSessionId); } catch(_) {}
 
 let recentSearchContexts = [];
 try {
@@ -479,7 +461,7 @@ let activeSearchContextId = (function() {
 
 function persistClientState() {
   try {
-    localStorage.setItem(STORAGE_KEYS.sessionId, libbeeSessionId);
+    localStorage.setItem(STORAGE_KEYS.sessionId, libnovaSessionId);
     localStorage.setItem(STORAGE_KEYS.searchContexts, JSON.stringify(recentSearchContexts.slice(0, 5)));
     if (activeSearchContextId) localStorage.setItem(STORAGE_KEYS.activeContextId, activeSearchContextId);
     else localStorage.removeItem(STORAGE_KEYS.activeContextId);
@@ -495,7 +477,7 @@ function upsertSearchContext(ctx) {
 
 function getClientStatePayload(meta = {}) {
   return {
-    session_id: libbeeSessionId,
+    session_id: libnovaSessionId,
     active_search_context_id: meta.contextId || activeSearchContextId || null,
     recent_search_contexts: recentSearchContexts.slice(0, 5),
     follow_up_action: meta.followUpAction || null,
@@ -564,7 +546,7 @@ function addMsg(role, content) {
 
   const av = document.createElement('div');
   av.className = 'av';
-  if (role === 'bot') { av.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="30" height="30"><ellipse cx="7" cy="14" rx="7" ry="3.5" fill="#a8d4f0" opacity=".85"/><ellipse cx="23" cy="14" rx="7" ry="3.5" fill="#a8d4f0" opacity=".85"/><ellipse cx="15" cy="22" rx="7.5" ry="8" fill="#1a3a6b"/><ellipse cx="15" cy="25" rx="4.5" ry="2" fill="#243f7a"/><circle cx="15" cy="12" r="7.5" fill="#1a3a6b"/><rect x="8" y="9.5" width="14" height="5.5" rx="2.5" fill="#001a40"/><ellipse cx="12" cy="12.3" rx="2.5" ry="1.8" fill="#00ccee"/><ellipse cx="18" cy="12.3" rx="2.5" ry="1.8" fill="#00ccee"/><ellipse cx="12" cy="12.3" rx="1.2" ry="1" fill="#004466"/><ellipse cx="18" cy="12.3" rx="1.2" ry="1" fill="#004466"/><path d="M12 14.5 Q15 16.5 18 14.5" fill="none" stroke="#00ccee" stroke-width="1" stroke-linecap="round"/><line x1="12" y1="5" x2="9" y2="2" stroke="#1a3a6b" stroke-width="1.8" stroke-linecap="round"/><circle cx="9" cy="2" r="1.5" fill="#00ccee"/><line x1="18" y1="5" x2="21" y2="2" stroke="#1a3a6b" stroke-width="1.8" stroke-linecap="round"/><ellipse cx="21" cy="1.5" rx="2" ry="2.2" fill="#e8e8e8" stroke="#aaa" stroke-width=".8"/><ellipse cx="21" cy="2" rx="1" ry="1" fill="#ffe066" opacity=".8"/><text x="15" y="27" font-family="Arial,sans-serif" font-size="4" font-weight="bold" fill="#C8A951" text-anchor="middle">LB</text></svg>'; }
+  if (role === 'bot') { av.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="30" height="30"><polygon points="15,1.5 16.5,10.5 24,6 18,12 28,15 18,18 24,24 16.5,19.5 15,28.5 13.5,19.5 6,24 12,18 2,15 12,12 6,6 13.5,10.5" fill="#003366"/><circle cx="15" cy="15" r="8.5" fill="#003366"/><circle cx="15" cy="15" r="8.5" fill="none" stroke="#B5121B" stroke-width="1"/><circle cx="15" cy="15" r="6.5" fill="#001a40"/><ellipse cx="11.5" cy="13.5" rx="2" ry="1.7" fill="#00ccee"/><ellipse cx="18.5" cy="13.5" rx="2" ry="1.7" fill="#00ccee"/><ellipse cx="11.5" cy="13.5" rx="1" ry=".9" fill="#003366"/><ellipse cx="18.5" cy="13.5" rx="1" ry=".9" fill="#003366"/><path d="M11.5 17 Q15 19.5 18.5 17" fill="none" stroke="#00ccee" stroke-width="1" stroke-linecap="round"/><circle cx="15" cy="5.5" r="1.5" fill="#FFB800"/></svg>'; }
   else { av.textContent = '👤'; }
 
   const bub = document.createElement('div');
@@ -949,9 +931,9 @@ async function executeSearch(query, opts = {}) {
 
     let html = '';
     if (data.results && data.results.length > 0) {
-      html += `<div style="font-size:.82rem;font-weight:700;color:var(--ku-blue);margin:10px 0 6px">📄 ${(data.total||0).toLocaleString()} results — showing top ${data.results.length}:</div>`;
+      html += `<div style="font-size:.82rem;font-weight:700;color:var(--nbcc-navy);margin:10px 0 6px">📄 ${(data.total||0).toLocaleString()} results — showing top ${data.results.length}:</div>`;
       html += renderResultsWithSections(data.results, sid);
-      html += `<div style="text-align:center;margin-top:10px"><a href="${urlAll}" target="_blank" style="display:inline-block;padding:8px 18px;background:var(--ku-blue);color:#fff;text-decoration:none;border-radius:8px;font-weight:600;font-size:.82rem">View more in PRIMO Library Discovery →</a></div>`;
+      html += `<div style="text-align:center;margin-top:10px"><a href="${urlAll}" target="_blank" style="display:inline-block;padding:8px 18px;background:var(--nbcc-navy);color:#fff;text-decoration:none;border-radius:8px;font-weight:600;font-size:.82rem">View more in PRIMO Library Discovery →</a></div>`;
     } else if (data.error) {
       html = `<div class="error-banner">⚠️ ${data.error}</div>`;
     } else {
@@ -1035,9 +1017,9 @@ async function doSearch() {
     </div>`;
 
     if (data.results && data.results.length > 0) {
-      html += `<div style="font-size:.84rem;font-weight:700;color:var(--ku-blue);margin:12px 0 6px">📄 ${(data.total||0).toLocaleString()} results — showing top ${data.results.length}:</div>`;
+      html += `<div style="font-size:.84rem;font-weight:700;color:var(--nbcc-navy);margin:12px 0 6px">📄 ${(data.total||0).toLocaleString()} results — showing top ${data.results.length}:</div>`;
       html += renderResultsWithSections(data.results, sid);
-      html += `<div style="text-align:center;margin-top:12px"><a href="${urlAll}" target="_blank" style="display:inline-block;padding:10px 20px;background:var(--ku-blue);color:#fff;text-decoration:none;border-radius:8px;font-weight:600">View more in PRIMO Library Discovery →</a></div>`;
+      html += `<div style="text-align:center;margin-top:12px"><a href="${urlAll}" target="_blank" style="display:inline-block;padding:10px 20px;background:var(--nbcc-navy);color:#fff;text-decoration:none;border-radius:8px;font-weight:600">View more in PRIMO Library Discovery →</a></div>`;
     } else if (data.error) {
       html += `<div class="error-banner">⚠️ ${data.error}</div>`;
     } else {
@@ -1070,11 +1052,11 @@ function buildAIToolsPanel(naturalQuery, options = {}) {
   const isMedical = !!options.isMedical;
   return `<div class="ai-panel">
     <div class="ai-panel-title">✨ For deeper research, try the AI research tools below</div>
-    <div class="ai-row-label">🔐 KU subscribed AI tools</div>
+    <div class="ai-row-label">🔐 NBCC subscribed AI tools</div>
     <div class="ai-tools-strip">
       <a class="ai-tool-chip leapspace" href="https://www.sciencedirect.com/leapspace?query=${nq}" target="_blank">🔬 LeapSpace</a>
-      <a class="ai-tool-chip scopus" href="https://www-scopus-com.khalifa.idm.oclc.org/pages/ai?query=${nq}" target="_blank">🔭 Scopus AI</a>
-      <a class="ai-tool-chip ebscoai" href="https://research-ebsco-com.khalifa.idm.oclc.org/c/yst6t2/search/results?q=${nq}&autocorrect=y&expanders=concept&limiters=None&searchMode=enhanced&searchSegment=all-results" target="_blank">📰 EBSCO AI</a>
+      <a class="ai-tool-chip scopus" href="https://www-scopus-com.nbcc.idm.oclc.org/pages/ai?query=${nq}" target="_blank">🔭 Scopus AI</a>
+      <a class="ai-tool-chip ebscoai" href="https://research-ebsco-com.nbcc.idm.oclc.org/c/yst6t2/search/results?q=${nq}&autocorrect=y&expanders=concept&limiters=None&searchMode=enhanced&searchSegment=all-results" target="_blank">📰 EBSCO AI</a>
       <a class="ai-tool-chip primoai" href="${primoAiUrl}" target="_blank">⭐ PRIMO AI Assistant</a>
     </div>
     <div class="ai-row-label">🆓 Freemium AI tools</div>
@@ -1170,7 +1152,7 @@ function renderResultsWithSections(results, sid) {
   const oa    = results.filter(r => r._source === 'OpenAlex');
   let html = '';
   if (primo.length > 0) {
-    html += `<div class="results-section-hdr">📚 KU Library Results (PRIMO)</div>`;
+    html += `<div class="results-section-hdr">📚 NBCC Library Results (PRIMO)</div>`;
     html += primo.map((r, i) => renderResultCard(r, i, sid, i + 1)).join('');
   }
   if (oa.length > 0) {
@@ -1185,76 +1167,76 @@ function renderResultsWithSections(results, sid) {
 // ═══════════════════════════════════════════════════════════════
 const DB_SUBJECTS = [
   {key:'general', label:'General Research', items:[
-    {name:'PRIMO',desc:'Search books, articles, journals in one place.',url:'https://khalifa.primo.exlibrisgroup.com/discovery/search?vid=971KUOSTAR_INST:KU'},
-    {name:'Scopus',desc:'Multidisciplinary abstract and citation database.',url:'https://khalifa.idm.oclc.org/login?url=https://www.scopus.com/home.url'},
-    {name:'Web of Science',desc:'Citation database for multidisciplinary research.',url:'https://khalifa.idm.oclc.org/login?url=https://www.webofscience.com'},
-    {name:'ScienceDirect',desc:'Full-text journals and books across many disciplines.',url:'https://khalifa.idm.oclc.org/login?url=https://www.sciencedirect.com'},
-    {name:'Google Scholar @ KU',desc:'Google Scholar with KU full-text access.',url:'https://library.ku.ac.ae/google'},
+    {name:'PRIMO',desc:'Search books, articles, journals in one place.',url:'https://nbcc.primo.exlibrisgroup.com/discovery/search?vid=NBCC_INST:NBCC'},
+    {name:'Scopus',desc:'Multidisciplinary abstract and citation database.',url:'https://nbcc.idm.oclc.org/login?url=https://www.scopus.com/home.url'},
+    {name:'Web of Science',desc:'Citation database for multidisciplinary research.',url:'https://nbcc.idm.oclc.org/login?url=https://www.webofscience.com'},
+    {name:'ScienceDirect',desc:'Full-text journals and books across many disciplines.',url:'https://nbcc.idm.oclc.org/login?url=https://www.sciencedirect.com'},
+    {name:'Google Scholar @ KU',desc:'Google Scholar with NBCC full-text access.',url:'https://library.nbcc.ca/google'},
   ]},
   {key:'computing', label:'Computer Science & AI', items:[
-    {name:'IEEE Xplore',desc:'Electrical, computer engineering, and computing.',url:'https://khalifa.idm.oclc.org/login?url=https://ieeexplore.ieee.org/Xplore/dynhome.jsp'},
-    {name:'ACM Digital Library',desc:'Computer science journals, proceedings, and books.',url:'https://khalifa.idm.oclc.org/login?url=http://dl.acm.org'},
+    {name:'IEEE Xplore',desc:'Electrical, computer engineering, and computing.',url:'https://nbcc.idm.oclc.org/login?url=https://ieeexplore.ieee.org/Xplore/dynhome.jsp'},
+    {name:'ACM Digital Library',desc:'Computer science journals, proceedings, and books.',url:'https://nbcc.idm.oclc.org/login?url=http://dl.acm.org'},
     {name:'arXiv.org',desc:'Open-access preprints in CS, math, and physics.',url:'https://arxiv.org/'},
-    {name:'ScienceDirect',desc:'Computer science and engineering journals.',url:'https://khalifa.idm.oclc.org/login?url=https://www.sciencedirect.com'},
+    {name:'ScienceDirect',desc:'Computer science and engineering journals.',url:'https://nbcc.idm.oclc.org/login?url=https://www.sciencedirect.com'},
   ]},
   {key:'electrical', label:'Electrical Engineering', items:[
-    {name:'IEEE Xplore',desc:'Core database for electrical engineering and standards.',url:'https://khalifa.idm.oclc.org/login?url=https://ieeexplore.ieee.org/Xplore/dynhome.jsp'},
-    {name:'ScienceDirect',desc:'Electrical engineering and electronics journals.',url:'https://khalifa.idm.oclc.org/login?url=https://www.sciencedirect.com'},
-    {name:'Scopus',desc:'Find electrical engineering literature.',url:'https://khalifa.idm.oclc.org/login?url=https://www.scopus.com/home.url'},
+    {name:'IEEE Xplore',desc:'Core database for electrical engineering and standards.',url:'https://nbcc.idm.oclc.org/login?url=https://ieeexplore.ieee.org/Xplore/dynhome.jsp'},
+    {name:'ScienceDirect',desc:'Electrical engineering and electronics journals.',url:'https://nbcc.idm.oclc.org/login?url=https://www.sciencedirect.com'},
+    {name:'Scopus',desc:'Find electrical engineering literature.',url:'https://nbcc.idm.oclc.org/login?url=https://www.scopus.com/home.url'},
   ]},
   {key:'civil', label:'Civil Engineering', items:[
-    {name:'ASCE Library',desc:'Civil and structural engineering journals.',url:'https://khalifa.idm.oclc.org/login?url=https://ascelibrary.org'},
-    {name:'ASTM Compass',desc:'Engineering standards and specifications.',url:'https://khalifa.idm.oclc.org/login?url=https://secure.astm.org/login'},
-    {name:'Knovel',desc:'Civil engineering reference books.',url:'https://khalifa.idm.oclc.org/login?url=https://app.knovel.com/kn'},
+    {name:'ASCE Library',desc:'Civil and structural engineering journals.',url:'https://nbcc.idm.oclc.org/login?url=https://ascelibrary.org'},
+    {name:'ASTM Compass',desc:'Engineering standards and specifications.',url:'https://nbcc.idm.oclc.org/login?url=https://secure.astm.org/login'},
+    {name:'Knovel',desc:'Civil engineering reference books.',url:'https://nbcc.idm.oclc.org/login?url=https://app.knovel.com/kn'},
   ]},
   {key:'aerospace', label:'Aerospace Engineering', items:[
-    {name:'AIAA',desc:'Aerospace science and engineering.',url:'https://khalifa.idm.oclc.org/login?url=https://arc.aiaa.org/'},
-    {name:'ASME Digital Library',desc:'Mechanical and aerospace engineering.',url:'https://khalifa.idm.oclc.org/login?url=https://asmedigitalcollection.asme.org'},
-    {name:'Knovel',desc:'Engineering handbooks and technical reference.',url:'https://khalifa.idm.oclc.org/login?url=https://app.knovel.com/kn'},
+    {name:'AIAA',desc:'Aerospace science and engineering.',url:'https://nbcc.idm.oclc.org/login?url=https://arc.aiaa.org/'},
+    {name:'ASME Digital Library',desc:'Mechanical and aerospace engineering.',url:'https://nbcc.idm.oclc.org/login?url=https://asmedigitalcollection.asme.org'},
+    {name:'Knovel',desc:'Engineering handbooks and technical reference.',url:'https://nbcc.idm.oclc.org/login?url=https://app.knovel.com/kn'},
   ]},
   {key:'chemical', label:'Chemical Engineering & Chemistry', items:[
-    {name:'ACS',desc:'Chemistry and chemical engineering journals.',url:'https://khalifa.idm.oclc.org/login?url=https://pubs.acs.org'},
-    {name:'SciFindern',desc:'Chemistry research and reaction searching.',url:'https://khalifa.idm.oclc.org/login?url=https://scifinder-n.cas.org'},
-    {name:'RSC Journals',desc:'Royal Society of Chemistry journals.',url:'https://khalifa.idm.oclc.org/login?url=https://pubs.rsc.org/'},
-    {name:'Knovel',desc:'Process and thermodynamics handbooks.',url:'https://khalifa.idm.oclc.org/login?url=https://app.knovel.com/kn'},
+    {name:'ACS',desc:'Chemistry and chemical engineering journals.',url:'https://nbcc.idm.oclc.org/login?url=https://pubs.acs.org'},
+    {name:'SciFindern',desc:'Chemistry research and reaction searching.',url:'https://nbcc.idm.oclc.org/login?url=https://scifinder-n.cas.org'},
+    {name:'RSC Journals',desc:'Royal Society of Chemistry journals.',url:'https://nbcc.idm.oclc.org/login?url=https://pubs.rsc.org/'},
+    {name:'Knovel',desc:'Process and thermodynamics handbooks.',url:'https://nbcc.idm.oclc.org/login?url=https://app.knovel.com/kn'},
   ]},
   {key:'medical', label:'Medicine & Health Sciences', items:[
-    {name:'PubMed @ KU',desc:'Core biomedical literature database.',url:'https://www.ncbi.nlm.nih.gov/pubmed/?otool=iaekustlib'},
-    {name:'Embase',desc:'Biomedical, drugs, and clinical medicine.',url:'https://khalifa.idm.oclc.org/login?url=https://www.embase.com'},
-    {name:'CINAHL Ultimate',desc:'Nursing and allied health literature.',url:'https://khalifa.idm.oclc.org/login?url=https://search.ebscohost.com/login.aspx?authtype=ip,uid&profile=ehost&defaultdb=cul'},
-    {name:'Cochrane Library',desc:'Systematic reviews and evidence-based medicine.',url:'https://khalifa.idm.oclc.org/login?url=https://www.cochranelibrary.com'},
-    {name:'ClinicalKey Student',desc:'Medical textbooks and clinical learning tools.',url:'https://khalifa.idm.oclc.org/login?url=https://www.clinicalkey.com/student/login'},
-    {name:'UpToDate',desc:'Clinical decision support.',url:'https://khalifa.idm.oclc.org/login?url=https://www.uptodate.com/'},
+    {name:'PubMed @ NBCC',desc:'Core biomedical literature database.',url:'https://www.ncbi.nlm.nih.gov/pubmed/?otool=nbcclib'},
+    {name:'Embase',desc:'Biomedical, drugs, and clinical medicine.',url:'https://nbcc.idm.oclc.org/login?url=https://www.embase.com'},
+    {name:'CINAHL Ultimate',desc:'Nursing and allied health literature.',url:'https://nbcc.idm.oclc.org/login?url=https://search.ebscohost.com/login.aspx?authtype=ip,uid&profile=ehost&defaultdb=cul'},
+    {name:'Cochrane Library',desc:'Systematic reviews and evidence-based medicine.',url:'https://nbcc.idm.oclc.org/login?url=https://www.cochranelibrary.com'},
+    {name:'ClinicalKey Student',desc:'Medical textbooks and clinical learning tools.',url:'https://nbcc.idm.oclc.org/login?url=https://www.clinicalkey.com/student/login'},
+    {name:'UpToDate',desc:'Clinical decision support.',url:'https://nbcc.idm.oclc.org/login?url=https://www.uptodate.com/'},
   ]},
   {key:'biomedical', label:'Biomedical Engineering', items:[
-    {name:'PubMed @ KU',desc:'Biomedical and life sciences literature.',url:'https://www.ncbi.nlm.nih.gov/pubmed/?otool=iaekustlib'},
-    {name:'IEEE Xplore',desc:'Biomedical engineering and devices.',url:'https://khalifa.idm.oclc.org/login?url=https://ieeexplore.ieee.org/Xplore/dynhome.jsp'},
-    {name:'ScienceDirect',desc:'Biomedical engineering journals.',url:'https://khalifa.idm.oclc.org/login?url=https://www.sciencedirect.com'},
+    {name:'PubMed @ NBCC',desc:'Biomedical and life sciences literature.',url:'https://www.ncbi.nlm.nih.gov/pubmed/?otool=nbcclib'},
+    {name:'IEEE Xplore',desc:'Biomedical engineering and devices.',url:'https://nbcc.idm.oclc.org/login?url=https://ieeexplore.ieee.org/Xplore/dynhome.jsp'},
+    {name:'ScienceDirect',desc:'Biomedical engineering journals.',url:'https://nbcc.idm.oclc.org/login?url=https://www.sciencedirect.com'},
   ]},
   {key:'energy', label:'Energy & Petroleum Engineering', items:[
-    {name:'OnePetro',desc:'Oil, gas, and petroleum engineering literature.',url:'https://khalifa.idm.oclc.org/login?url=https://www.onepetro.org/'},
-    {name:'ScienceDirect',desc:'Energy and petroleum journals.',url:'https://khalifa.idm.oclc.org/login?url=https://www.sciencedirect.com'},
-    {name:'Knovel',desc:'Energy and engineering reference books.',url:'https://khalifa.idm.oclc.org/login?url=https://app.knovel.com/kn'},
+    {name:'OnePetro',desc:'Oil, gas, and petroleum engineering literature.',url:'https://nbcc.idm.oclc.org/login?url=https://www.onepetro.org/'},
+    {name:'ScienceDirect',desc:'Energy and petroleum journals.',url:'https://nbcc.idm.oclc.org/login?url=https://www.sciencedirect.com'},
+    {name:'Knovel',desc:'Energy and engineering reference books.',url:'https://nbcc.idm.oclc.org/login?url=https://app.knovel.com/kn'},
   ]},
   {key:'physics', label:'Physics & Mathematics', items:[
-    {name:'APS Journals',desc:'American Physical Society journals.',url:'https://khalifa.idm.oclc.org/login?url=https://journals.aps.org'},
-    {name:'AIP',desc:'American Institute of Physics journals.',url:'https://khalifa.idm.oclc.org/login?url=https://aip.scitation.org'},
+    {name:'APS Journals',desc:'American Physical Society journals.',url:'https://nbcc.idm.oclc.org/login?url=https://journals.aps.org'},
+    {name:'AIP',desc:'American Institute of Physics journals.',url:'https://nbcc.idm.oclc.org/login?url=https://aip.scitation.org'},
     {name:'arXiv.org',desc:'Open-access preprints in physics and math.',url:'https://arxiv.org/'},
-    {name:'MathSciNet',desc:'Mathematics literature and reviews.',url:'https://khalifa.idm.oclc.org/login?url=https://search.ebscohost.com/login.aspx?authtype=ip,uid&profile=ehost&defaultdb=msn'},
+    {name:'MathSciNet',desc:'Mathematics literature and reviews.',url:'https://nbcc.idm.oclc.org/login?url=https://search.ebscohost.com/login.aspx?authtype=ip,uid&profile=ehost&defaultdb=msn'},
   ]},
   {key:'business', label:'Business & Management', items:[
-    {name:'Business Source Ultimate',desc:'Core business and management database.',url:'https://khalifa.idm.oclc.org/login?url=https://search.ebscohost.com/login.aspx?authtype=ip,uid&profile=ehost&defaultdb=bsu'},
-    {name:'Emerald Insight',desc:'Management, strategy, and leadership journals.',url:'https://khalifa.idm.oclc.org/login?url=https://www.emerald.com/insight'},
-    {name:'ProQuest',desc:'Business and multidisciplinary sources.',url:'https://khalifa.idm.oclc.org/login?url=https://search.proquest.com/?accountid=174135'},
+    {name:'Business Source Ultimate',desc:'Core business and management database.',url:'https://nbcc.idm.oclc.org/login?url=https://search.ebscohost.com/login.aspx?authtype=ip,uid&profile=ehost&defaultdb=bsu'},
+    {name:'Emerald Insight',desc:'Management, strategy, and leadership journals.',url:'https://nbcc.idm.oclc.org/login?url=https://www.emerald.com/insight'},
+    {name:'ProQuest',desc:'Business and multidisciplinary sources.',url:'https://nbcc.idm.oclc.org/login?url=https://search.proquest.com/?accountid=174135'},
   ]},
   {key:'metrics', label:'Journal Metrics & Research Impact', items:[
-    {name:'Web of Science / JCR',desc:'Journal Citation Reports and impact factors.',url:'https://khalifa.idm.oclc.org/login?url=https://www.webofscience.com'},
-    {name:'Scopus / CiteScore',desc:'CiteScore and source-level metrics.',url:'https://khalifa.idm.oclc.org/login?url=https://www.scopus.com/home.url'},
-    {name:'SciVal',desc:'Research performance analytics.',url:'https://khalifa.idm.oclc.org/login?url=https://scival.com/'},
+    {name:'Web of Science / JCR',desc:'Journal Citation Reports and impact factors.',url:'https://nbcc.idm.oclc.org/login?url=https://www.webofscience.com'},
+    {name:'Scopus / CiteScore',desc:'CiteScore and source-level metrics.',url:'https://nbcc.idm.oclc.org/login?url=https://www.scopus.com/home.url'},
+    {name:'SciVal',desc:'Research performance analytics.',url:'https://nbcc.idm.oclc.org/login?url=https://scival.com/'},
   ]},
   {key:'theses', label:'Dissertations & Theses', items:[
-    {name:'ProQuest Dissertations & Theses',desc:'Global dissertations and theses.',url:'https://khalifa.idm.oclc.org/login?url=https://www.proquest.com/pqdtglobal'},
-    {name:'Khazna',desc:'KU institutional repository.',url:'https://khazna.ku.ac.ae/'},
+    {name:'ProQuest Dissertations & Theses',desc:'Global dissertations and theses.',url:'https://nbcc.idm.oclc.org/login?url=https://www.proquest.com/pqdtglobal'},
+    {name:'NBCC Repository',desc:'KU institutional repository.',url:'https://khazna.nbcc.ca/'},
   ]},
 ];
 
@@ -1296,7 +1278,7 @@ document.addEventListener('DOMContentLoaded', () => {
     else p.style.display = 'flex';
   });
   buildDB('');
-  console.log('LibBee loaded — API:', API_URL);
+  console.log('LibNova loaded — API:', API_URL);
   // Load runtime config — updates greeting and shows announcement
   fetch(API_URL + '/admin/public-config')
     .then(r => r.ok ? r.json() : null)
