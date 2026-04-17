@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Ask LibBee — KU Library AI</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><ellipse cx='25' cy='44' rx='24' ry='13' fill='%23a8d4f0' opacity='.85'/><ellipse cx='75' cy='44' rx='24' ry='13' fill='%23a8d4f0' opacity='.85'/><ellipse cx='50' cy='70' rx='26' ry='30' fill='%231a3a6b'/><ellipse cx='50' cy='78' rx='15' ry='8' fill='%23243f7a'/><circle cx='50' cy='40' r='26' fill='%231a3a6b'/><rect x='28' y='32' width='44' height='18' rx='7' fill='%23001a40'/><ellipse cx='40' cy='41' rx='8' ry='6' fill='%2300ccee'/><ellipse cx='60' cy='41' rx='8' ry='6' fill='%2300ccee'/><ellipse cx='40' cy='41' rx='4' ry='3' fill='%23004466'/><ellipse cx='60' cy='41' rx='4' ry='3' fill='%23004466'/><path d='M40 49 Q50 56 60 49' fill='none' stroke='%2300ccee' stroke-width='2.5' stroke-linecap='round'/><line x1='40' y1='16' x2='28' y2='5' stroke='%231a3a6b' stroke-width='5' stroke-linecap='round'/><circle cx='28' cy='5' r='5' fill='%2300ccee'/><line x1='60' y1='16' x2='72' y2='5' stroke='%231a3a6b' stroke-width='5' stroke-linecap='round'/><ellipse cx='72' cy='4' rx='6' ry='7' fill='%23e8e8e8' stroke='%23aaa' stroke-width='1.5'/><ellipse cx='72' cy='5' rx='3' ry='3' fill='%23ffe066' opacity='.8'/><text x='50' y='86' font-family='Arial,sans-serif' font-size='16' font-weight='bold' fill='%23C8A951' text-anchor='middle'>LB</text></svg>">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--ku-gold:#C8A951;--ku-blue:#003366;--bg:#F0F4F8;--text:#1a1a2e;--mu:#6b7280;--border:#d1d5db;--shadow:0 2px 8px rgba(0,51,102,.08);--radius:14px}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);height:100dvh;display:flex;flex-direction:column;overflow:hidden}
+
+/* ── Header ── */
+header{background:var(--ku-blue);color:#fff;padding:10px 16px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 12px rgba(0,51,102,.4);flex-shrink:0}
+.hdr-text{flex:1}.hdr-text h1{font-size:1rem;font-weight:700}.hdr-text p{font-size:.7rem;opacity:.8;margin-top:1px}
+.hdr-acct{padding:5px 12px;background:var(--ku-gold);border:none;border-radius:20px;color:#1a1a2e;font-size:.72rem;font-weight:700;text-decoration:none;white-space:nowrap;flex-shrink:0}
+.model-toggle{display:flex;gap:4px;background:rgba(255,255,255,.12);padding:3px 4px;border-radius:20px;flex-shrink:0}
+.model-toggle button{padding:4px 10px;border-radius:16px;font-size:.68rem;font-weight:700;cursor:pointer;border:none;transition:all .25s;white-space:nowrap}
+.model-toggle button.active-gpt{background:#10A37F;color:#fff;box-shadow:0 1px 6px rgba(16,163,127,.4)}
+.model-toggle button.active-claude{background:#D97706;color:#fff;box-shadow:0 1px 6px rgba(217,119,6,.4)}
+.model-toggle button:not(.active-gpt):not(.active-claude){background:transparent;color:rgba(255,255,255,.6)}
+
+/* ── Tabs ── */
+.tabs{display:flex;background:#fff;border-bottom:2px solid var(--border);flex-shrink:0;overflow-x:auto}.tabs::-webkit-scrollbar{display:none}
+.tab{padding:9px 14px;font-size:.76rem;font-weight:600;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;color:var(--mu);transition:all .2s;flex-shrink:0}
+.tab.active{color:var(--ku-blue);border-bottom-color:var(--ku-gold)}
+
+/* ── Panels ── */
+.panel{display:none;flex:1;flex-direction:column;overflow:hidden}.panel.active{display:flex}
+
+/* ── Chat ── */
+.msgs{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+.msg{display:flex;gap:8px;align-items:flex-start;max-width:100%}.msg.bot{align-self:stretch;max-width:100%}.msg.user{align-self:flex-end;flex-direction:row-reverse;max-width:72%}
+.av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.msg.bot .av{background:var(--ku-blue);color:#fff}.msg.user .av{background:var(--ku-gold);color:#1a1a2e}
+.bub{padding:9px 13px;border-radius:16px;font-size:.86rem;line-height:1.6;word-wrap:break-word;max-width:none}.msg.bot .bub{width:min(1100px,calc(100vw - 110px));max-width:min(1100px,calc(100vw - 110px))}.msg.user .bub{max-width:min(760px,calc(100vw - 110px))}
+.msg.bot .bub{background:#fff;border:1px solid var(--border);border-top-left-radius:4px;box-shadow:var(--shadow)}
+.msg.user .bub{background:var(--ku-blue);color:#fff;border-top-right-radius:4px}
+.typing{display:flex;gap:4px;padding:4px 0;align-items:center}.typing span{width:7px;height:7px;background:var(--ku-gold);border-radius:50%;animation:bounce 1.2s infinite;flex-shrink:0}
+.typing span:nth-child(2){animation-delay:.2s}.typing span:nth-child(3){animation-delay:.4s}
+@keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-7px)}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.msg{animation:fadeIn .25s ease}
+
+/* ── Follow-up chips ── */
+.followups{display:flex;flex-wrap:wrap;gap:5px;padding:2px 12px 8px 50px}
+.fq{padding:4px 10px;border-radius:20px;font-size:.72rem;border:1.5px solid var(--ku-blue);color:var(--ku-blue);cursor:pointer;background:#fff;transition:all .2s}
+.fq:hover{background:var(--ku-blue);color:#fff}
+
+/* ── Search recovery banner ── */
+.search-recovery{margin:4px 12px 8px 50px;padding:10px 14px;background:linear-gradient(135deg,#eff6ff,#f5f3ff);border-radius:12px;border:1.5px solid #c4b5fd;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.search-recovery-text{font-size:.78rem;color:#4c1d95;font-weight:600}
+.search-recovery-btn{padding:6px 14px;background:var(--ku-blue);color:#fff;border:none;border-radius:9px;font-size:.76rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0}
+.search-recovery-btn:hover{background:#004488}
+
+/* ── Chat bottom / input ── */
+.chat-bottom{position:sticky;bottom:0;background:#fff;border-top:1px solid var(--border);z-index:8;box-shadow:0 -2px 10px rgba(0,0,0,.04)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;padding:8px 12px 6px;overflow-x:auto;background:#fff}.chips::-webkit-scrollbar{display:none}
+.chip{padding:5px 11px;border-radius:20px;font-size:.74rem;border:1.5px solid var(--ku-blue);color:var(--ku-blue);cursor:pointer;background:#fff;transition:all .2s;white-space:nowrap;text-decoration:none;display:inline-block}
+.chip:hover{background:var(--ku-blue);color:#fff}
+.cin{padding:10px 12px;display:flex;gap:7px;align-items:center}
+.cin input{flex:1;padding:9px 13px;border:2px solid var(--border);border-radius:24px;font-size:.86rem;outline:none;min-width:0}
+.cin input:focus{border-color:var(--ku-blue)}
+.cin input:disabled{background:#f3f4f6}
+.send{width:38px;height:38px;border-radius:50%;background:var(--ku-blue);color:#fff;border:none;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s}
+.send:hover{background:#004488}.send:disabled{background:#9ca3af;cursor:not-allowed}
+.clr{padding:8px 12px;background:var(--bg);border:1.5px solid var(--border);border-radius:16px;font-size:.74rem;color:var(--mu);cursor:pointer;white-space:nowrap;flex-shrink:0;font-weight:600}
+
+/* ── Welcome screen ── */
+#welcome-screen{flex:1;display:flex;align-items:center;justify-content:center;overflow-y:auto;padding:24px 16px}
+.wlc-inner{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%;max-width:580px}
+.wlc-avatar-wrap{width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,#e8f0fe,#dbeafe);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,51,102,.15);border:3px solid rgba(0,51,102,.12)}
+.wlc-name{font-size:1.9rem;font-weight:800;color:var(--ku-blue);letter-spacing:-.5px}
+.wlc-tagline{font-size:.88rem;color:var(--mu);text-align:center;line-height:1.5;max-width:420px}
+.wlc-tagline strong{color:var(--ku-blue)}
+.wlc-menu{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;margin-top:4px}
+.wlc-btn{padding:13px 16px;background:#fff;border:1.5px solid var(--border);border-radius:14px;font-size:.84rem;font-weight:600;color:var(--text);cursor:pointer;text-align:left;transition:all .2s;box-shadow:0 1px 4px rgba(0,0,0,.05);line-height:1.3}
+.wlc-btn:hover{border-color:var(--ku-blue);background:#f0f4ff;color:var(--ku-blue);box-shadow:0 3px 12px rgba(0,51,102,.12);transform:translateY(-1px)}
+.wlc-search-wrap{width:100%;margin-top:6px}
+.wlc-search-row{display:flex;gap:0;background:#fff;border:2.5px solid var(--ku-blue);border-radius:28px;overflow:hidden;box-shadow:0 4px 16px rgba(0,51,102,.14);transition:box-shadow .2s}
+.wlc-search-row:focus-within{box-shadow:0 4px 20px rgba(0,51,102,.25)}
+.wlc-input{flex:1;padding:13px 20px;border:none;outline:none;font-size:.92rem;color:var(--text);background:transparent;min-width:0}
+.wlc-input::placeholder{color:#9ca3af}
+.wlc-send-btn{width:50px;height:50px;background:var(--ku-blue);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;transition:background .2s}
+.wlc-send-btn:hover{background:#004488}
+.wlc-subject-wrap{width:100%;animation:fadeIn .2s ease}
+.wlc-subject-box{background:#f0f4ff;border:2px solid var(--ku-blue);border-radius:16px;padding:14px 16px}
+.wlc-subject-label{font-size:.85rem;font-weight:700;color:var(--ku-blue);margin-bottom:10px}
+@media(max-width:480px){.wlc-menu{grid-template-columns:1fr}.wlc-name{font-size:1.5rem}}
+
+/* ── Search panel ── */
+.sarea{padding:12px;display:flex;flex-direction:column;gap:10px;overflow-y:auto;flex:1;max-width:900px;margin:0 auto;width:100%}
+.nl-box{background:#fff;border-radius:var(--radius);padding:14px;border:1px solid var(--border)}
+.nl-row{display:flex;gap:7px}
+.nl-row input{flex:1;padding:10px 14px;border:2px solid var(--border);border-radius:12px;font-size:.88rem;outline:none;min-width:0}
+.nl-row input:focus{border-color:var(--ku-blue)}
+.go{padding:10px 18px;background:var(--ku-blue);color:#fff;border:none;border-radius:12px;cursor:pointer;font-weight:700;font-size:.86rem;flex-shrink:0}
+.go:disabled{background:#9ca3af;cursor:not-allowed}
+.tog-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;align-items:center}
+.tog{display:flex;align-items:center;gap:4px;font-size:.76rem;color:var(--mu);cursor:pointer}
+.tog input{accent-color:var(--ku-blue)}
+.yr{width:65px;padding:5px 7px;border:1.5px solid var(--border);border-radius:8px;font-size:.78rem;text-align:center;outline:none}
+.sstatus{font-size:.8rem;color:var(--mu);padding:4px 0;min-height:18px}
+
+/* ── Search cards ── */
+.scard{background:#fff;border-radius:12px;padding:14px;border:1px solid var(--border);box-shadow:var(--shadow)}
+.scard-title{font-weight:700;font-size:.86rem;color:var(--ku-blue);margin-bottom:4px}
+.bool-str{font-family:monospace;background:#1a1a2e;color:var(--ku-gold);padding:6px 10px;border-radius:8px;font-size:.76rem;margin:6px 0;word-break:break-all;overflow-x:auto}
+.slinks{display:flex;flex-direction:row;flex-wrap:wrap;gap:6px;margin-top:8px}
+.slink{display:flex;align-items:center;gap:6px;padding:8px 12px;border-radius:10px;text-decoration:none;font-size:.82rem;font-weight:600;transition:all .2s}
+.slink:hover{opacity:.85;transform:translateX(2px)}
+.slink.all{background:var(--ku-blue);color:#fff}
+.slink.art{background:#fef3c7;color:#92400e;border:1px solid #fde68a}
+.slink.bk{background:#ede9fe;color:#5b21b6;border:1px solid #c4b5fd}
+
+/* ── AI Tools panel ── */
+.ai-panel{margin-top:10px;padding:10px 12px;background:linear-gradient(135deg,#f0f4ff,#faf5ff);border-radius:12px;border:1px solid #c4b5fd}
+.ai-panel-title{font-size:.75rem;font-weight:800;color:#5b21b6;margin-bottom:6px}
+.ai-row-label{font-size:.67rem;font-weight:700;color:var(--mu);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+.ai-tools-strip{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
+.ai-tool-chip{display:inline-flex;align-items:center;gap:4px;padding:5px 9px;border-radius:20px;text-decoration:none;font-size:.72rem;font-weight:700;transition:all .2s;border:1.5px solid transparent;white-space:nowrap}
+.ai-tool-chip:hover{transform:translateY(-1px);box-shadow:0 2px 8px rgba(0,0,0,.14)}
+.ai-tool-chip.leapspace{background:#fff7ed;color:#9a3412;border-color:#fed7aa}
+.ai-tool-chip.scopus{background:#eff6ff;color:#1e40af;border-color:#bfdbfe}
+.ai-tool-chip.ebscoai{background:#fce7f3;color:#9d174d;border-color:#f9a8d4}
+.ai-tool-chip.primoai{background:linear-gradient(135deg,#fef9c3,#ede9fe);color:#5b21b6;border-color:#c4b5fd}
+.ai-tool-chip.consensus{background:#fdf4ff;color:#86198f;border-color:#f0abfc}
+.ai-tool-chip.scispace{background:#ecfdf5;color:#065f46;border-color:#6ee7b7}
+.ai-tool-chip.perplexity{background:#f5f3ff;color:#4c1d95;border-color:#ddd6fe}
+.ai-tool-chip.openalex{background:#f0f9ff;color:#0c4a6e;border-color:#bae6fd}
+
+/* ── Result cards ── */
+.rcard{background:#fff;border-radius:10px;padding:12px;border:1px solid var(--border);margin-bottom:8px;transition:box-shadow .2s}
+.rcard:hover{box-shadow:0 2px 12px rgba(0,51,102,.12)}
+.rcard-title{font-size:.84rem;font-weight:700;color:var(--ku-blue);line-height:1.3;margin-bottom:4px}
+.rcard-title a{color:var(--ku-blue);text-decoration:none}.rcard-title a:hover{text-decoration:underline}
+.rcard-meta{font-size:.74rem;color:var(--mu);line-height:1.5}
+.rcard-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
+.rcard-tag{font-size:.66rem;padding:2px 7px;border-radius:8px;background:var(--bg);color:var(--mu);font-weight:600}
+.rcard-tag.oa{background:#D1FAE5;color:#065F46}
+.rcard-actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.rcard-btn{padding:4px 10px;border-radius:8px;font-size:.72rem;border:1px solid var(--border);background:#fff;color:var(--ku-blue);cursor:pointer;font-weight:600;transition:all .2s}
+.rcard-btn:hover{background:var(--ku-blue);color:#fff}
+.rcard-desc{font-size:.78rem;color:#374151;line-height:1.5;margin:5px 0 4px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.rcard-btn.primary{background:var(--ku-blue);color:#fff;border-color:var(--ku-blue)}
+.rcard-btn.primary:hover{background:#004488}
+.results-section-hdr{font-size:.82rem;font-weight:800;color:var(--ku-blue);margin:14px 0 6px;padding-bottom:4px;border-bottom:2px solid var(--ku-gold)}
+
+/* ── Guides / Services / Databases ── */
+.barea{padding:12px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:10px}
+.bcard{background:#fff;border-radius:var(--radius);padding:14px;border:1px solid var(--border)}
+.bcard h3{font-size:.88rem;font-weight:700;margin-bottom:10px;color:var(--ku-blue)}
+.banner{border-radius:var(--radius);padding:14px;color:#fff;text-align:center}
+.banner h3{font-size:.95rem;font-weight:700;margin-bottom:4px}.banner p{font-size:.78rem;opacity:.9;margin-bottom:10px}
+.banner a{display:inline-block;padding:7px 20px;background:#fff;border-radius:20px;font-weight:700;font-size:.82rem;text-decoration:none}
+.ll a{display:block;padding:7px 0;font-size:.82rem;color:#0EA5E9;text-decoration:none;border-bottom:1px solid var(--border)}
+.ll a:last-child{border-bottom:none}.ll a:hover{color:var(--ku-blue)}
+.guides-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.guide-card{background:#fff;border-radius:10px;padding:10px;border:1px solid var(--border);text-decoration:none;transition:all .2s;display:block}
+.guide-card:hover{border-color:var(--ku-blue);box-shadow:0 2px 8px rgba(0,51,102,.1)}
+.guide-card .icon{font-size:1.4rem;margin-bottom:4px}.guide-card .name{font-size:.78rem;font-weight:700;color:var(--ku-blue)}
+.guide-card .desc{font-size:.7rem;color:var(--mu);margin-top:2px}
+
+/* ── E-resources ── */
+.era{padding:12px;overflow-y:auto;flex:1}
+.abar{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px}
+.abtn{padding:4px 10px;border-radius:8px;border:1.5px solid var(--border);background:#fff;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap}
+.abtn:hover,.abtn.active{background:var(--ku-blue);color:#fff;border-color:var(--ku-blue)}
+.dg{margin-bottom:12px;border:1px solid var(--border);border-radius:12px;background:#fff;overflow:hidden}
+.dg summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;cursor:pointer}
+.dg summary::-webkit-details-marker{display:none}.dg summary:hover{background:#f8fafc}
+.dg h2{font-size:.9rem;font-weight:800;color:var(--ku-blue);margin:0}
+.db-toggle{font-size:.72rem;font-weight:700;color:var(--mu);white-space:nowrap}
+.db-group-items{padding:0 10px 10px}
+.di{background:#fff;border-radius:9px;padding:9px 12px;margin-bottom:5px;border:1px solid var(--border)}
+.di h4{font-size:.82rem;font-weight:700}.di p{font-size:.75rem;color:var(--mu);margin-top:2px}
+.di a{font-size:.72rem;color:#0EA5E9;display:inline-block;margin-top:3px}
+
+/* ── Error / misc ── */
+.error-banner{padding:14px;background:#fef2f2;border:1px solid #fee2e2;border-radius:8px;color:#991b1b;margin-top:8px;font-size:.84rem}
+.feedback-box{margin-top:8px;font-size:.74rem;color:var(--mu);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:#c4b5fd;border-radius:10px}
+
+/* ── Responsive ── */
+@media(max-width:480px){.guides-grid{grid-template-columns:1fr}.msg.user{max-width:96%}.msg.bot .bub{width:calc(100vw - 64px);max-width:calc(100vw - 64px)}.msg.user .bub{max-width:calc(100vw - 64px)}.model-toggle button{padding:3px 7px;font-size:.62rem}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hdr-text">
+    <h1><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" style="vertical-align:middle;margin-right:4px"><ellipse cx="5.5" cy="12" rx="5" ry="2.5" fill="#a8d4f0" opacity=".85"/><ellipse cx="18.5" cy="12" rx="5" ry="2.5" fill="#a8d4f0" opacity=".85"/><ellipse cx="12" cy="18" rx="6" ry="6.5" fill="#1a3a6b"/><circle cx="12" cy="10" r="6" fill="#1a3a6b"/><rect x="6.5" y="7.5" width="11" height="5" rx="2" fill="#001a40"/><ellipse cx="9.5" cy="10" rx="2" ry="1.5" fill="#00ccee"/><ellipse cx="14.5" cy="10" rx="2" ry="1.5" fill="#00ccee"/><path d="M9.5 12 Q12 13.5 14.5 12" fill="none" stroke="#00ccee" stroke-width=".9" stroke-linecap="round"/><line x1="9.5" y1="4.5" x2="7" y2="2" stroke="#1a3a6b" stroke-width="1.5" stroke-linecap="round"/><circle cx="7" cy="2" r="1.3" fill="#00ccee"/><line x1="14.5" y1="4.5" x2="17" y2="2" stroke="#1a3a6b" stroke-width="1.5" stroke-linecap="round"/><ellipse cx="17" cy="1.5" rx="1.8" ry="2" fill="#e8e8e8" stroke="#aaa" stroke-width=".6"/><text x="12" y="21" font-family="Arial,sans-serif" font-size="3.5" font-weight="bold" fill="#C8A951" text-anchor="middle">LB</text></svg> LibBee</h1>
+    <p>Khalifa University Library AI Assistant</p>
+  </div>
+  <div class="model-toggle">
+    <button id="btnClaude" onclick="setModel('claude')">Claude</button>
+    <button id="btnGPT" class="active-gpt" onclick="setModel('gpt')">ChatGPT</button>
+  </div>
+  <a class="hdr-acct" href="https://khalifa.primo.exlibrisgroup.com/discovery/account?vid=971KUOSTAR_INST:KU&section=overview" target="_blank">👤 My Account</a>
+</header>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('chat',this)">💬 Ask LibBee</div>
+  <div class="tab" onclick="switchTab('search',this)">🔍 AI Search</div>
+  <div class="tab" onclick="switchTab('services',this)">🏛️ Services</div>
+  <div class="tab" onclick="switchTab('eresources',this)">🗄️ Databases</div>
+</div>
+
+<!-- ═══ CHAT PANEL ═══ -->
+<div class="panel active" id="panel-chat">
+
+  <!-- ── Welcome screen (hidden once chat starts) ── -->
+  <div id="welcome-screen">
+    <div class="wlc-inner">
+      <!-- LibBee avatar + name -->
+      <div class="wlc-avatar-wrap">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="72" height="72">
+          <ellipse cx="18" cy="36" rx="18" ry="9" fill="#a8d4f0" opacity=".85"/>
+          <ellipse cx="62" cy="36" rx="18" ry="9" fill="#a8d4f0" opacity=".85"/>
+          <ellipse cx="40" cy="58" rx="20" ry="22" fill="#1a3a6b"/>
+          <ellipse cx="40" cy="66" rx="12" ry="6" fill="#243f7a"/>
+          <circle cx="40" cy="32" r="20" fill="#1a3a6b"/>
+          <rect x="22" y="25" width="36" height="14" rx="6" fill="#001a40"/>
+          <ellipse cx="32" cy="32" rx="6.5" ry="5" fill="#00ccee"/>
+          <ellipse cx="48" cy="32" rx="6.5" ry="5" fill="#00ccee"/>
+          <ellipse cx="32" cy="32" rx="3" ry="2.5" fill="#004466"/>
+          <ellipse cx="48" cy="32" rx="3" ry="2.5" fill="#004466"/>
+          <path d="M32 38 Q40 44 48 38" fill="none" stroke="#00ccee" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="32" y1="13" x2="24" y2="5" stroke="#1a3a6b" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="24" cy="5" r="4" fill="#00ccee"/>
+          <line x1="48" y1="13" x2="56" y2="5" stroke="#1a3a6b" stroke-width="4" stroke-linecap="round"/>
+          <ellipse cx="56" cy="4" rx="5" ry="6" fill="#e8e8e8" stroke="#aaa" stroke-width="1.5"/>
+          <ellipse cx="56" cy="5" rx="2.5" ry="2.5" fill="#ffe066" opacity=".8"/>
+          <text x="40" y="72" font-family="Arial,sans-serif" font-size="10" font-weight="bold" fill="#C8A951" text-anchor="middle">LB</text>
+        </svg>
+      </div>
+      <h2 class="wlc-name">LibBee</h2>
+      <p class="wlc-tagline" id="initial-greeting">Hello! I'm <strong>LibBee</strong>, the Khalifa University Library AI Assistant. How can I help you today?</p>
+
+      <!-- Quick-start menu grid (Aisha-style) -->
+      <div class="wlc-menu" id="wlc-menu">
+        <button class="wlc-btn" onclick="wlcAskSubject()">📚 Find Articles &amp; Books</button>
+        <button class="wlc-btn" onclick="wlcSend('What are the library hours?')">⏰ Library Hours</button>
+        <button class="wlc-btn" onclick="wlcSend('How do I reserve a study room?')">🚪 Study Rooms</button>
+        <button class="wlc-btn" onclick="wlcSend('I cannot access a library resource or database')">🔒 Can't Access a Resource</button>
+        <button class="wlc-btn" onclick="wlcSend('What library events and workshops are coming up?')">📅 Library Events &amp; Workshops</button>
+        <button class="wlc-btn" onclick="wlcSend('Can I request an Interlibrary Loan?')">📬 ILL Request</button>
+      </div>
+
+      <!-- Subject prompt (shown when Find Articles clicked) -->
+      <div class="wlc-subject-wrap" id="wlc-subject-wrap" style="display:none">
+        <div class="wlc-subject-box">
+          <div class="wlc-subject-label">📚 What subject or topic are you researching?</div>
+          <div class="wlc-search-row" style="margin-top:0">
+            <input type="text" id="wlcSubjectIn" class="wlc-input"
+              placeholder="e.g. machine learning, petroleum engineering, diabetes…"
+              onkeydown="if(event.key==='Enter')wlcSubjectSubmit()">
+            <button class="wlc-send-btn" onclick="wlcSubjectSubmit()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </div>
+          <div style="font-size:.72rem;color:#9ca3af;margin-top:6px">Press Enter or click the arrow to search PRIMO and see AI research tools</div>
+        </div>
+      </div>
+
+      <!-- Prominent search bar -->
+      <div class="wlc-search-wrap">
+        <div class="wlc-search-row">
+          <input type="text" id="wlcIn" class="wlc-input" placeholder="Ask me anything about the library…"
+            onkeydown="if(event.key==='Enter')wlcSubmit()">
+          <button class="wlc-send-btn" onclick="wlcSubmit()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Actual chat messages (hidden until first message) ── -->
+  <div class="msgs" id="chatMsgs" style="display:none"></div>
+
+  <div class="chat-bottom" id="chat-bottom-bar" style="display:none">
+    <div class="chips" id="chips">
+      <div class="chip" onclick="promptFindArticles()">📚 Find Articles</div>
+      <div class="chip" onclick="sendChat('What are the library hours?')">⏰ Hours</div>
+      <div class="chip" onclick="sendChat('How do I get full text for an article?')">📄 Full Text</div>
+      <div class="chip" onclick="sendChat('How do I reserve a study room?')">🚪 Study Rooms</div>
+      <div class="chip" onclick="sendChat('I cannot access a library resource or database')">🔒 Can't Access</div>
+      <div class="chip" onclick="sendChat('What library events and workshops are coming up?')">📅 Events</div>
+      <div class="chip" onclick="sendChat('Can I request an Interlibrary Loan?')">📬 ILL Request</div>
+      <a class="chip" href="https://library.ku.ac.ae/AskUs" target="_blank">💬 Ask a Librarian</a>
+    </div>
+    <div class="cin">
+      <button class="clr" onclick="clearChat()">Clear chat</button>
+      <input type="text" id="chatIn" placeholder="Ask me anything…" onkeydown="if(event.key==='Enter'&&!isSending)sendChat()">
+      <button class="send" id="sendBtn" onclick="sendChat()">➤</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SEARCH PANEL ═══ -->
+<div class="panel" id="panel-search">
+  <div class="sarea">
+    <div class="nl-box">
+      <div style="font-weight:700;color:var(--ku-blue);margin-bottom:10px;font-size:.95rem">🔍 Smart Search — AI builds query, PRIMO returns real results</div>
+      <div class="nl-row">
+        <input type="text" id="sIn" placeholder='e.g. "AI in education from 2022 peer reviewed"' onkeydown="if(event.key==='Enter')doSearch()">
+        <button class="go" id="searchBtn" onclick="doSearch()">Search</button>
+      </div>
+      <div class="tog-row">
+        <label class="tog"><input type="checkbox" id="sPR"> 🔬 Peer Reviewed</label>
+        <label class="tog"><input type="checkbox" id="sOA"> 🔓 Open Access</label>
+        <span style="font-size:.76rem;color:var(--mu)">📅</span>
+        <input class="yr" type="text" id="sYF" placeholder="From">–<input class="yr" type="text" id="sYT" placeholder="To">
+      </div>
+    </div>
+    <div class="sstatus" id="sStatus"></div>
+    <div id="sResults"></div>
+  </div>
+</div>
+
+<!-- ═══ SERVICES PANEL ═══ -->
+<div class="panel" id="panel-services">
+  <div class="barea">
+    <div class="banner" style="background:var(--ku-blue)">
+      <h3>📋 My Library Account</h3><p>View loans, renewals, requests, fines & fees</p>
+      <a href="https://khalifa.primo.exlibrisgroup.com/discovery/account?vid=971KUOSTAR_INST:KU&section=overview" target="_blank" style="color:var(--ku-blue)">Open My Account →</a>
+    </div>
+    <div class="bcard"><h3>🔗 All Library Services</h3><div class="ll">
+      <a href="https://khalifa.primo.exlibrisgroup.com/discovery/account?vid=971KUOSTAR_INST:KU&section=overview" target="_blank">📋 My Library Account</a>
+      <a href="https://library.ku.ac.ae/ill/" target="_blank">📬 Interlibrary Loan (ILL)</a>
+      <a href="https://library.ku.ac.ae/rooms/" target="_blank">🚪 Reserve a Study Room</a>
+      <a href="https://library.ku.ac.ae/hours" target="_blank">⏰ Library Hours</a>
+      <a href="https://library.ku.ac.ae/oa/" target="_blank">🔓 Open Access Publishing</a>
+      <a href="https://library.ku.ac.ae/requesttitle/" target="_blank">📥 Request New Material</a>
+      <a href="https://library.ku.ac.ae/AskUs" target="_blank">💬 Ask a Librarian</a>
+      <a href="https://library.ku.ac.ae/google" target="_blank">🎓 Google Scholar @ KU</a>
+      <a href="https://library.ku.ac.ae/orcid" target="_blank">🆔 ORCiD Guide</a>
+      <a href="https://khazna.ku.ac.ae/" target="_blank">🗄️ Khazna Repository</a>
+      <a href="https://library.ku.ac.ae/med/" target="_blank">🏥 Medical Library</a>
+      <a href="https://library.ku.ac.ae/alumni/" target="_blank">🎓 Alumni Services</a>
+    </div></div>
+  </div>
+</div>
+
+<!-- ═══ DATABASES PANEL ═══ -->
+<div class="panel" id="panel-eresources">
+  <div class="era">
+    <div style="font-size:.78rem;font-weight:700;color:var(--mu);text-transform:uppercase;margin-bottom:8px">
+      Databases A–Z — <a href="https://library.ku.ac.ae/eresources" target="_blank" style="color:#0EA5E9">View full list →</a>
+    </div>
+    <div class="abar" id="abar"></div>
+    <div id="dbList"></div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// CONFIG — single source of truth, no Cloudflare
+// ═══════════════════════════════════════════════════════════════
+const API_URL = 'https://nikeshn-libbee.hf.space';
+const PRIMO_BASE = 'https://khalifa.primo.exlibrisgroup.com/discovery/search';
+const PRIMO_AI_URL = 'https://khalifa.primo.exlibrisgroup.com/discovery/researchAssistant?vid=971KUOSTAR_INST:KU&query=';
+const VID = '971KUOSTAR_INST:KU';
+const FETCH_TIMEOUT = 35000;
+
+var currentModel = 'gpt';
+var chatHistory = [];
+var isSending = false;
+
+function promptFindArticles() {
+  wlcAskSubject();
+}
+
+// ── Welcome screen helpers (explicitly global) ─────────────────────────────
+window.wlcAskSubject = function() {
+  // Hide the main search bar, show the subject input
+  var sw = document.getElementById('wlc-subject-wrap');
+  var mainSearch = document.querySelector('.wlc-search-wrap');
+  if (sw) { sw.style.display = 'block'; }
+  if (mainSearch) mainSearch.style.display = 'none';
+  // Highlight the Find Articles button
+  var btns = document.querySelectorAll('.wlc-btn');
+  btns.forEach(function(b) { b.style.background = ''; b.style.borderColor = ''; });
+  btns[0].style.background = '#e8f0fe';
+  btns[0].style.borderColor = 'var(--ku-blue)';
+  // Focus the input
+  setTimeout(function() {
+    var inp = document.getElementById('wlcSubjectIn');
+    if (inp) inp.focus();
+  }, 50);
+};
+
+window.wlcSubjectSubmit = function() {
+  var val = document.getElementById('wlcSubjectIn').value.trim();
+  if (!val) return;
+  showChatUI();
+  sendChat('Find research on ' + val);
+};
+window.wlcSubmit = function() {
+  var val = document.getElementById('wlcIn').value.trim();
+  if (!val) return;
+  showChatUI();
+  sendChat(val);
+};
+
+window.wlcSend = function(text) {
+  showChatUI();
+  sendChat(text);
+};
+
+function showChatUI() {
+  var ws = document.getElementById('welcome-screen');
+  var msgs = document.getElementById('chatMsgs');
+  var bar = document.getElementById('chat-bottom-bar');
+  if (ws)   ws.style.display   = 'none';
+  if (msgs) msgs.style.display = 'flex';
+  if (bar)  bar.style.display  = 'block';
+}
+
+function showWelcomeScreen() {
+  var ws = document.getElementById('welcome-screen');
+  var msgs = document.getElementById('chatMsgs');
+  var bar = document.getElementById('chat-bottom-bar');
+  if (ws)   ws.style.display   = 'flex';
+  if (msgs) { msgs.style.display = 'none'; msgs.innerHTML = ''; }
+  if (bar)  bar.style.display  = 'none';
+  var wi = document.getElementById('wlcIn');
+  if (wi) wi.value = '';
+  chatHistory = [];
+  isSending = false;
+  document.getElementById('sendBtn').disabled = false;
+  document.getElementById('chatIn').disabled = false;
+  document.getElementById('chatIn').value = '';
+  // Reset subject box
+  var sw = document.getElementById('wlc-subject-wrap');
+  var mainSearch = document.querySelector('.wlc-search-wrap');
+  if (sw) sw.style.display = 'none';
+  if (mainSearch) mainSearch.style.display = 'block';
+  var si = document.getElementById('wlcSubjectIn');
+  if (si) si.value = '';
+  // Reset Find Articles button highlight
+  var btns = document.querySelectorAll('.wlc-btn');
+  btns.forEach(function(b) { b.style.background = ''; b.style.borderColor = ''; });
+}
+window._primoResults = {};
+
+const STORAGE_KEYS = {
+  sessionId: 'libbee_session_id',
+  searchContexts: 'libbee_search_contexts',
+  activeContextId: 'libbee_active_search_context_id'
+};
+
+function makeSessionId() {
+  return (window.crypto && crypto.randomUUID)
+    ? crypto.randomUUID()
+    : 'libbee-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
+}
+
+let libbeeSessionId = (function() {
+  try { return localStorage.getItem(STORAGE_KEYS.sessionId) || makeSessionId(); }
+  catch(_) { return makeSessionId(); }
+})();
+try { localStorage.setItem(STORAGE_KEYS.sessionId, libbeeSessionId); } catch(_) {}
+
+let recentSearchContexts = [];
+try {
+  recentSearchContexts = JSON.parse(localStorage.getItem(STORAGE_KEYS.searchContexts) || '[]');
+  if (!Array.isArray(recentSearchContexts)) recentSearchContexts = [];
+} catch (_) {
+  recentSearchContexts = [];
+}
+let activeSearchContextId = (function() {
+  try { return localStorage.getItem(STORAGE_KEYS.activeContextId) || ''; }
+  catch(_) { return ''; }
+})();
+
+function persistClientState() {
+  try {
+    localStorage.setItem(STORAGE_KEYS.sessionId, libbeeSessionId);
+    localStorage.setItem(STORAGE_KEYS.searchContexts, JSON.stringify(recentSearchContexts.slice(0, 5)));
+    if (activeSearchContextId) localStorage.setItem(STORAGE_KEYS.activeContextId, activeSearchContextId);
+    else localStorage.removeItem(STORAGE_KEYS.activeContextId);
+  } catch(_) {}
+}
+
+function upsertSearchContext(ctx) {
+  if (!ctx || !ctx.context_id) return;
+  recentSearchContexts = [ctx, ...recentSearchContexts.filter(x => x.context_id !== ctx.context_id)].slice(0, 5);
+  activeSearchContextId = ctx.context_id;
+  persistClientState();
+}
+
+function getClientStatePayload(meta = {}) {
+  return {
+    session_id: libbeeSessionId,
+    active_search_context_id: meta.contextId || activeSearchContextId || null,
+    recent_search_contexts: recentSearchContexts.slice(0, 5),
+    follow_up_action: meta.followUpAction || null,
+    follow_up_context_id: meta.contextId || null
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// UTILITIES
+// ═══════════════════════════════════════════════════════════════
+function stripHtml(html) {
+  const t = document.createElement('div'); t.innerHTML = html;
+  return t.textContent || t.innerText || '';
+}
+
+function fmt(t) {
+  return (t||'')
+    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g,'<em>$1</em>')
+    .replace(/(?<!href=["'])(https?:\/\/[^\s<"']+)/g,'<a href="$1" target="_blank">$1</a>')
+    .replace(/\n/g,'<br>');
+}
+
+async function fetchWithTimeout(url, options, ms = FETCH_TIMEOUT) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), ms);
+  try {
+    return await fetch(url, { ...options, signal: ctrl.signal });
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+function trimHistory() {
+  if (chatHistory.length > 20) chatHistory = chatHistory.slice(-20);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// MODEL TOGGLE
+// ═══════════════════════════════════════════════════════════════
+function setModel(m) {
+  currentModel = m;
+  document.getElementById('btnGPT').className = m === 'gpt' ? 'active-gpt' : '';
+  document.getElementById('btnClaude').className = m === 'claude' ? 'active-claude' : '';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// TABS
+// ═══════════════════════════════════════════════════════════════
+function switchTab(tab, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => { p.classList.remove('active'); p.style.display = 'none'; });
+  el.classList.add('active');
+  const panel = document.getElementById('panel-' + tab);
+  panel.classList.add('active');
+  panel.style.display = 'flex';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CHAT — add message (XSS-safe)
+// ═══════════════════════════════════════════════════════════════
+function addMsg(role, content) {
+  const cm = document.getElementById('chatMsgs');
+  const el = document.createElement('div');
+  el.className = 'msg ' + role;
+
+  const av = document.createElement('div');
+  av.className = 'av';
+  if (role === 'bot') { av.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="30" height="30"><ellipse cx="7" cy="14" rx="7" ry="3.5" fill="#a8d4f0" opacity=".85"/><ellipse cx="23" cy="14" rx="7" ry="3.5" fill="#a8d4f0" opacity=".85"/><ellipse cx="15" cy="22" rx="7.5" ry="8" fill="#1a3a6b"/><ellipse cx="15" cy="25" rx="4.5" ry="2" fill="#243f7a"/><circle cx="15" cy="12" r="7.5" fill="#1a3a6b"/><rect x="8" y="9.5" width="14" height="5.5" rx="2.5" fill="#001a40"/><ellipse cx="12" cy="12.3" rx="2.5" ry="1.8" fill="#00ccee"/><ellipse cx="18" cy="12.3" rx="2.5" ry="1.8" fill="#00ccee"/><ellipse cx="12" cy="12.3" rx="1.2" ry="1" fill="#004466"/><ellipse cx="18" cy="12.3" rx="1.2" ry="1" fill="#004466"/><path d="M12 14.5 Q15 16.5 18 14.5" fill="none" stroke="#00ccee" stroke-width="1" stroke-linecap="round"/><line x1="12" y1="5" x2="9" y2="2" stroke="#1a3a6b" stroke-width="1.8" stroke-linecap="round"/><circle cx="9" cy="2" r="1.5" fill="#00ccee"/><line x1="18" y1="5" x2="21" y2="2" stroke="#1a3a6b" stroke-width="1.8" stroke-linecap="round"/><ellipse cx="21" cy="1.5" rx="2" ry="2.2" fill="#e8e8e8" stroke="#aaa" stroke-width=".8"/><ellipse cx="21" cy="2" rx="1" ry="1" fill="#ffe066" opacity=".8"/><text x="15" y="27" font-family="Arial,sans-serif" font-size="4" font-weight="bold" fill="#C8A951" text-anchor="middle">LB</text></svg>'; }
+  else { av.textContent = '👤'; }
+
+  const bub = document.createElement('div');
+  bub.className = 'bub';
+
+  if (role === 'bot') {
+    bub.innerHTML = content; // trusted HTML from backend
+  } else {
+    bub.textContent = content; // user input — never innerHTML (XSS prevention)
+  }
+
+  el.appendChild(av);
+  el.appendChild(bub);
+  cm.appendChild(el);
+  cm.scrollTop = cm.scrollHeight;
+  return el;
+}
+
+function showTyping() {
+  const cm = document.getElementById('chatMsgs');
+  const el = document.createElement('div');
+  el.className = 'msg bot'; el.id = 'typing-indicator';
+  el.innerHTML = '<div class="av">🐝</div><div class="bub"><div class="typing"><span></span><span></span><span></span></div></div>';
+  cm.appendChild(el); cm.scrollTop = cm.scrollHeight;
+}
+
+function hideTyping() {
+  document.getElementById('typing-indicator')?.remove();
+}
+
+function setSending(v) {
+  isSending = v;
+  document.getElementById('sendBtn').disabled = v;
+  document.getElementById('chatIn').disabled = v;
+}
+
+function showFollowUps(promptText, suggestions = []) {
+  if (!promptText && (!suggestions || suggestions.length === 0)) return;
+  const cm = document.getElementById('chatMsgs');
+
+  if (promptText) {
+    const p = document.createElement('div');
+    p.className = 'search-recovery';
+    p.innerHTML = `<span class="search-recovery-text">❓ ${promptText}</span>`;
+    cm.appendChild(p);
+  }
+
+  if (suggestions && suggestions.length > 0) {
+    const d = document.createElement('div');
+    d.className = 'followups';
+    suggestions.forEach(s => {
+      const btn = document.createElement('button');
+      btn.className = 'fq';
+      btn.textContent = s.label || s.question || 'Follow up';
+      btn.addEventListener('click', () => {
+        const meta = {};
+        if (s.action) meta.followUpAction = s.action;
+        if (s.context_id) meta.contextId = s.context_id;
+        sendChat(s.question || s.label || '', meta);
+      });
+      d.appendChild(btn);
+    });
+    cm.appendChild(d);
+  }
+
+  cm.scrollTop = cm.scrollHeight;
+}
+
+function showSearchRecovery(topic) {
+  const cm = document.getElementById('chatMsgs');
+  const el = document.createElement('div');
+  el.className = 'search-recovery';
+  const safe = topic.replace(/"/g, '&quot;');
+  el.innerHTML = `<span class="search-recovery-text">📚 Find <em>articles</em> or <em>books</em> on "<em>${safe}</em>"?</span>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      <button class="search-recovery-btn" onclick="runSearch('articles on ${safe}')">Articles</button>
+      <button class="search-recovery-btn" onclick="runSearch('books on ${safe}')">Books</button>
+      <button class="search-recovery-btn" onclick="runSearch('articles and books on ${safe}')">Both</button>
+    </div>`;
+  cm.appendChild(el);
+  cm.scrollTop = cm.scrollHeight;
+}
+
+function appendFeedback(msgEl, question, answerHtml) {
+  if (!msgEl || !answerHtml || answerHtml.length < 40) return;
+  if (msgEl.querySelector('.feedback-box')) return;
+  const box = document.createElement('div'); box.className = 'feedback-box';
+  box.innerHTML = '<span>Was this helpful?</span>' +
+    '<button style="padding:3px 8px;border:1px solid var(--border);border-radius:14px;background:#fff;cursor:pointer" data-v="up">👍</button>' +
+    '<button style="padding:3px 8px;border:1px solid var(--border);border-radius:14px;background:#fff;cursor:pointer" data-v="down">👎</button>';
+  box.querySelectorAll('button').forEach(btn => btn.addEventListener('click', async () => {
+    try {
+      await fetch(API_URL + '/feedback', {
+        method: 'POST', headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ question, feedback: btn.dataset.v, answer_excerpt: stripHtml(answerHtml).slice(0, 400) })
+      });
+    } catch(e) {}
+    box.innerHTML = btn.dataset.v === 'up' ? 'Thanks! 👍' : 'Thanks! 👎';
+    box.style.color = 'var(--mu)';
+  }));
+  msgEl.querySelector('.bub')?.appendChild(box);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CLEAR CHAT
+// ═══════════════════════════════════════════════════════════════
+function clearChat() {
+  chatHistory = [];
+  recentSearchContexts = [];
+  activeSearchContextId = '';
+  persistClientState();
+  showWelcomeScreen();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// MAIN CHAT — calls /agent on HF Space directly
+// ═══════════════════════════════════════════════════════════════
+async function sendChat(text, meta = {}) {
+  if (isSending) return;
+  const input = document.getElementById('chatIn');
+  const question = (text || input.value.trim());
+  if (!question) return;
+
+  // If welcome screen is still showing, switch to chat UI first
+  const ws = document.getElementById('welcome-screen');
+  if (ws && ws.style.display !== 'none') showChatUI();
+
+  if (!text) input.value = '';
+  addMsg('user', question);
+  showTyping();
+  setSending(true);
+  document.getElementById('chips').style.display = 'none';
+
+  chatHistory.push({ role: 'user', content: question });
+  trimHistory();
+
+  try {
+    // Summary/snapshot requests chain two LLM calls — give them more time
+    const isSummary = /\b(summar|overview|literature review|recent advances|research snapshot|deep dive|deep research)\b/i.test(question);
+    const agentTimeout = isSummary ? 90000 : FETCH_TIMEOUT;
+    const res = await fetchWithTimeout(API_URL + '/agent', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        question,
+        model: currentModel,
+        history: chatHistory.slice(-10),
+        client_state: getClientStatePayload(meta)
+      })
+    }, agentTimeout);
+
+    hideTyping();
+    if (!res.ok) throw new Error('Server error: ' + res.status);
+    const data = await res.json();
+    if (!data.answer) throw new Error('Empty response from server');
+
+    if (data.search_context) upsertSearchContext(data.search_context);
+
+    chatHistory.push({ role: 'assistant', content: stripHtml(data.answer) });
+    trimHistory();
+
+    let html = (data.answer||"").replace(/\n/g,"<br>");
+
+    // OpenAlex/PRIMO results removed — users click platform links in footer
+
+    if (data.sources && data.sources.length > 0) {
+      html += '<div style="margin-top:8px;font-size:.75rem;color:var(--mu)"><strong>Sources:</strong> ';
+      html += data.sources.map(s => s.url
+        ? `<a href="${s.url}" target="_blank" style="color:#0EA5E9">${s.title || s.url}</a>`
+        : s.title).filter(Boolean).join(' · ');
+      html += '</div>';
+    }
+
+    if (['search_academic', 'search_medical'].includes(data.intent)) {
+      // AI tools panel is now embedded in the answer HTML by the backend.
+      // Do not call buildAIToolsPanel here to avoid duplicating it.
+    }
+
+    if (data.contact_html) {
+      html += data.contact_html;
+    }
+
+    const msgEl = addMsg('bot', html);
+    appendFeedback(msgEl, question, html);
+
+    if (data.follow_up_question || (data.follow_up_suggestions && data.follow_up_suggestions.length > 0)) {
+      showFollowUps(data.follow_up_question || '', data.follow_up_suggestions || []);
+    } else if (data.intent === 'general' && (data.corrected_query || question)) {
+      showSearchRecovery(data.corrected_query || question);
+    }
+
+  } catch (e) {
+    hideTyping();
+    if (e.name === 'AbortError') {
+      addMsg('bot', '⏳ The server is waking up from sleep — please try again in a moment. HF Spaces can take up to 30s on first use.');
+    } else {
+      addMsg('bot', '<span style="color:#dc2626">⚠️ ' + e.message + '. Please try again.</span>');
+    }
+  } finally {
+    setSending(false);
+  }
+}
+
+// Run a search directly (used by search recovery buttons)
+async function runSearch(query) {
+  addMsg('user', query);
+  chatHistory.push({ role: 'user', content: query });
+  trimHistory();
+  await executeSearch(query);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SEARCH — Boolean builder (local, no API cost)
+// ═══════════════════════════════════════════════════════════════
+function makeBoolean(text) {
+  // Improved fallback boolean builder — used only when /agent is unavailable.
+  // Keeps runs of content words as quoted phrases; splits only on stop words.
+  const stop = /^(of|on|in|the|a|an|and|or|for|to|with|by|from|at|is|are|was|were|be|been|have|has|had|do|does|did|will|would|could|should|may|its|this|that|these|those|about|impact|role|effect|use|study|analysis|review|what|how|why|when|where|which|between|within|across|among|using|based|related|towards|toward|during|after|before|over|under)$/i;
+  const words = text.trim().split(/\s+/);
+
+  // Build concept phrases: runs of non-stop words grouped together
+  const concepts = [];
+  let phrase = [];
+  for (const w of words) {
+    const c = w.replace(/['".,;:?!]/g, '');
+    if (c.length < 2) continue;
+    if (!stop.test(c)) {
+      phrase.push(c);
+    } else {
+      if (phrase.length) { concepts.push(phrase.join(' ')); phrase = []; }
+    }
+  }
+  if (phrase.length) concepts.push(phrase.join(' '));
+
+  // If only one concept (e.g. "global warming" → one phrase), return it quoted
+  if (concepts.length === 0) return `"${text.trim()}"`;
+  if (concepts.length === 1) return `"${concepts[0]}"`;
+
+  // Quote multi-word phrases, leave single words bare, join with AND
+  const parts = concepts.slice(0, 4).map(c => c.includes(' ') ? `"${c}"` : c);
+  return parts.join(' AND ');
+}
+
+function sanitizeBoolean(b) {
+  if (!b) return b;
+  return b.replace(/'/g,'"')
+    .replace(/\(\s*(?:19|20)\d{2}\s*(?:OR\s*(?:19|20)\d{2}\s*)*\)/g,'')
+    .replace(/^\s*(AND|OR)\s*/i,'').replace(/\s*(AND|OR)\s*$/i,'')
+    .replace(/\s+/g,' ').trim();
+}
+
+function encodeQ(s) { return encodeURIComponent(s).replace(/%20/g,'+'); }
+
+function buildPrimoURL(bool, tab, scope, facets) {
+  const q = sanitizeBoolean(bool);
+  let u = `${PRIMO_BASE}?query=any,contains,${encodeQ(q)}&tab=${tab}&search_scope=${scope}&vid=${VID}&lang=en&mode=advanced&offset=0`;
+  for (const f of facets) u += '&facet=' + f;
+  return u;
+}
+
+async function buildSearchPlan(query, opts = {}) {
+  // Route through /agent so topic extraction, boolean building, and facets
+  // all use the same LLM pipeline as the chat tab — no separate /search/plan needed.
+  try {
+    const res = await fetchWithTimeout(API_URL + '/agent', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        question: query,
+        model: currentModel,
+        history: [],
+        client_state: null
+      })
+    }, 25000);
+    if (!res.ok) throw new Error('Agent error: ' + res.status);
+    const data = await res.json();
+    // Extract search plan fields from the agent response
+    const bool = data.primo_boolean_query || makeBoolean(query);
+    const topic = data.corrected_query || data.natural_query || query;
+    const isMedical = data.intent === 'search_medical';
+    const cleanBool = sanitizeBoolean(bool);
+    return {
+      topic,
+      display_topic: topic,
+      resource_type: opts.resourceType || (/\bbooks?\b/i.test(query) ? 'books' : 'articles'),
+      is_medical: isMedical,
+      ai_tool_query: data.ai_tool_query || data.natural_query || query,
+      primo_boolean_query: cleanBool,
+      primo_all_url: data.primo_search_url || buildPrimoURL(cleanBool, 'Everything', 'MyInst_and_CI', []),
+      primo_articles_url: buildPrimoURL(cleanBool, 'CentralIndex', 'CentralIndex', ['rtype,include,articles']),
+      primo_books_url: buildPrimoURL(cleanBool, 'Everything', 'MyInst_and_CI', ['rtype,include,books']),
+      primo_ai_url: data.primo_ai_url || `${PRIMO_AI_URL}${encodeURIComponent(data.ai_tool_query || query)}`,
+      pubmed_url: data.pubmed_search_url || (isMedical ? `https://pubmed.ncbi.nlm.nih.gov/?term=${encodeURIComponent(topic)}` : ''),
+    };
+  } catch (_) {
+    // Local fallback — no API cost
+    const bool = makeBoolean(query);
+    const cleanQuery = sanitizeBoolean(bool).replace(/[()"]/g,'').replace(/\b(AND|OR)\b/g,' ').replace(/\s+/g,' ').trim();
+    const isMedical = /\b(medicine|medical|health|clinical|nursing|pharmacy|pubmed|embase|cinahl|cochrane|uptodate|systematic review|cancer|diabetes|treatment|diagnosis|surgery|biomedical)\b/i.test(query);
+    return {
+      topic: cleanQuery,
+      display_topic: cleanQuery,
+      resource_type: opts.resourceType || (/\bbooks?\b/i.test(query) ? 'books' : (/\barticles?|papers?|journals?|studies?\b/i.test(query) ? 'articles' : 'both')),
+      is_medical: isMedical,
+      ai_tool_query: query,
+      primo_boolean_query: bool,
+      primo_all_url: buildPrimoURL(bool, 'Everything', 'MyInst_and_CI', []),
+      primo_articles_url: buildPrimoURL(bool, 'CentralIndex', 'CentralIndex', ['rtype,include,articles']),
+      primo_books_url: buildPrimoURL(bool, 'Everything', 'MyInst_and_CI', ['rtype,include,books']),
+      primo_ai_url: `${PRIMO_AI_URL}${encodeURIComponent(query)}`,
+      pubmed_url: isMedical ? `https://pubmed.ncbi.nlm.nih.gov/?term=${encodeURIComponent(cleanQuery)}` : '',
+    };
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SEARCH — execute against HF Space /search endpoint
+// ═══════════════════════════════════════════════════════════════
+async function executeSearch(query, opts = {}) {
+  const pr = opts.pr || false, oa = opts.oa || false;
+  const yf = opts.yf || '', yt = opts.yt || '';
+  const plan = await buildSearchPlan(query, { pr, oa, yf, yt, resourceType: opts.resourceType || null });
+  const bool = plan.primo_boolean_query || makeBoolean(query);
+  const dbQuery = (plan.topic || query).substring(0, 500);
+  const resourceType = plan.resource_type || opts.resourceType || 'both';
+
+  const sid = 'S' + Date.now();
+  window._primoResults[sid] = [];
+
+  const urlAll = plan.primo_all_url || buildPrimoURL(bool, 'Everything', 'MyInst_and_CI', []);
+  const urlArt = plan.primo_articles_url || buildPrimoURL(bool, 'CentralIndex', 'CentralIndex', ['rtype,include,articles']);
+  const urlBk  = plan.primo_books_url || buildPrimoURL(bool, 'Everything', 'MyInst_and_CI', ['rtype,include,books']);
+
+  // Show correction notice if query was spell-corrected
+  const corrected = plan.topic && plan.topic.toLowerCase() !== query.toLowerCase() ? plan.topic : null;
+  const correctionHtml = corrected
+    ? `<div style="font-size:.78rem;color:#d97706;margin-bottom:6px">✏️ Corrected to: <em>${corrected}</em></div>`
+    : '';
+
+  const cm = document.getElementById('chatMsgs');
+  const loadEl = document.createElement('div'); loadEl.className = 'msg bot'; loadEl.style.maxWidth = '96%';
+  loadEl.innerHTML = `<div class="av">🔍</div><div class="scard">
+    <div class="scard-title">🔍 Searching PRIMO Library Discovery…</div>
+    ${correctionHtml}
+    <div class="bool-str">${bool}</div>
+    <div class="slinks">
+      <a class="slink all" href="${urlAll}" target="_blank">📚 Search in PRIMO Library Discovery</a>
+    </div>
+    <div style="margin-top:10px;font-size:.8rem;color:var(--mu);display:flex;align-items:center;gap:6px">
+      <div class="typing"><span></span><span></span><span></span></div>
+      <span>Fetching PRIMO results…</span>
+    </div>
+    <div id="results-area-${sid}"></div>
+  </div>`;
+  cm.appendChild(loadEl); cm.scrollTop = cm.scrollHeight;
+
+  try {
+    const res = await fetchWithTimeout(API_URL + '/search', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        query: dbQuery,
+        boolean_query: bool,
+        source: 'primo',
+        limit: 8,
+        resource_type: resourceType,
+        peer_reviewed: pr,
+        open_access: oa,
+        year_from: yf,
+        year_to: yt
+      })
+    });
+
+    if (!res.ok) throw new Error('Search error: ' + res.status);
+    const data = await res.json();
+    window._primoResults[sid] = data.results || [];
+
+    const area = document.getElementById('results-area-' + sid);
+    if (!area) return;
+
+    loadEl.querySelector('.typing')?.parentElement?.remove();
+
+    let html = '';
+    if (data.results && data.results.length > 0) {
+      html += `<div style="font-size:.82rem;font-weight:700;color:var(--ku-blue);margin:10px 0 6px">📄 ${(data.total||0).toLocaleString()} results — showing top ${data.results.length}:</div>`;
+      html += renderResultsWithSections(data.results, sid);
+      html += `<div style="text-align:center;margin-top:10px"><a href="${urlAll}" target="_blank" style="display:inline-block;padding:8px 18px;background:var(--ku-blue);color:#fff;text-decoration:none;border-radius:8px;font-weight:600;font-size:.82rem">View more in PRIMO Library Discovery →</a></div>`;
+    } else if (data.error) {
+      html = `<div class="error-banner">⚠️ ${data.error}</div>`;
+    } else {
+      html = '<div style="font-size:.82rem;color:var(--mu);margin-top:8px">No results found. Try broadening your search terms.</div>';
+    }
+    area.innerHTML = html;
+    chatHistory.push({ role: 'assistant', content: 'Search: ' + query + '. Boolean: ' + bool });
+    trimHistory();
+  } catch(e) {
+    const area = document.getElementById('results-area-' + sid);
+    if (area) area.innerHTML = `<div class="error-banner">${e.name === 'AbortError' ? '⏳ Search timed out — server may be waking up. Please try again.' : '⚠️ ' + e.message}</div>`;
+  }
+  cm.scrollTop = cm.scrollHeight;
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+// SEARCH TAB — doSearch()
+// ═══════════════════════════════════════════════════════════════
+async function doSearch() {
+  const query = document.getElementById('sIn').value.trim();
+  if (!query) return;
+  const pr = document.getElementById('sPR').checked;
+  const oa = document.getElementById('sOA').checked;
+  const yf = document.getElementById('sYF').value.trim();
+  const yt = document.getElementById('sYT').value.trim();
+  const btn = document.getElementById('searchBtn');
+  const statusDiv = document.getElementById('sStatus');
+  const resultsDiv = document.getElementById('sResults');
+
+  btn.disabled = true;
+  statusDiv.innerHTML = '<span style="color:#d97706">✏️ Planning search…</span>';
+  resultsDiv.innerHTML = '';
+
+  try {
+    const plan = await buildSearchPlan(query, { pr, oa, yf, yt });
+    const bool = plan.primo_boolean_query || makeBoolean(query);
+    const sid = 'ST' + Date.now();
+    window._primoResults[sid] = [];
+    const urlAll = plan.primo_all_url;
+    const urlArt = plan.primo_articles_url;
+    const urlBk = plan.primo_books_url;
+
+    statusDiv.innerHTML = '<span style="color:#16a34a">🔍 Searching PRIMO Library Discovery…</span>';
+
+    // If query was corrected, update the search input so user sees it
+    const corrected = plan.topic && plan.topic.toLowerCase() !== query.toLowerCase() ? plan.topic : null;
+    if (corrected) {
+      document.getElementById('sIn').value = corrected;
+      statusDiv.innerHTML = `<span style="color:#d97706">✏️ Corrected to "<em>${corrected}</em>" — searching…</span>`;
+    }
+
+    const res = await fetchWithTimeout(API_URL + '/search', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        query: (plan.topic || query).substring(0, 500),
+        boolean_query: bool,
+        source: 'primo',
+        limit: 10,
+        resource_type: plan.resource_type || 'both',
+        peer_reviewed: pr,
+        open_access: oa,
+        year_from: yf,
+        year_to: yt
+      })
+    });
+
+    if (!res.ok) throw new Error('Search error: ' + res.status);
+    const data = await res.json();
+    window._primoResults[sid] = data.results || [];
+
+    let html = '';
+    html += `<div class="scard">
+      <div class="scard-title">🔍 Search Strategy</div>
+      ${corrected ? `<div style="font-size:.78rem;color:#d97706;margin-bottom:6px">✏️ Corrected to: <em>${corrected}</em></div>` : ''}
+      <div class="bool-str">${bool}</div>
+      <div class="slinks">
+        <a class="slink all" href="${urlAll}" target="_blank">📚 Search in PRIMO Library Discovery</a>
+      </div>
+    </div>`;
+
+    if (data.results && data.results.length > 0) {
+      html += `<div style="font-size:.84rem;font-weight:700;color:var(--ku-blue);margin:12px 0 6px">📄 ${(data.total||0).toLocaleString()} results — showing top ${data.results.length}:</div>`;
+      html += renderResultsWithSections(data.results, sid);
+      html += `<div style="text-align:center;margin-top:12px"><a href="${urlAll}" target="_blank" style="display:inline-block;padding:10px 20px;background:var(--ku-blue);color:#fff;text-decoration:none;border-radius:8px;font-weight:600">View more in PRIMO Library Discovery →</a></div>`;
+    } else if (data.error) {
+      html += `<div class="error-banner">⚠️ ${data.error}</div>`;
+    } else {
+      html += '<div class="error-banner">No results found. Try broadening your search terms.</div>';
+    }
+
+    // AI tools always at the end
+    html += buildAIToolsPanel(plan.ai_tool_query || query, { primoDiscoveryUrl: urlAll, primoAiUrl: plan.primo_ai_url || '', pubmedUrl: plan.pubmed_url || '', isMedical: !!plan.is_medical });
+
+    statusDiv.innerHTML = '';
+    resultsDiv.innerHTML = html;
+  } catch (e) {
+    statusDiv.innerHTML = '';
+    resultsDiv.innerHTML = `<div class="error-banner">${e.name === 'AbortError' ? '⏳ Search timed out — server may be waking up. Please try again.' : '⚠️ ' + e.message}</div>`;
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+// AI TOOLS PANEL
+// ═══════════════════════════════════════════════════════════════
+function buildAIToolsPanel(naturalQuery, options = {}) {
+  const cleanQuery = (naturalQuery || '').trim();
+  const nq = encodeURIComponent(cleanQuery);
+  const primoDiscoveryUrl = options.primoDiscoveryUrl || `${PRIMO_BASE}?query=any,contains,${encodeURIComponent(cleanQuery)}&lang=en&mode=advanced&offset=0`;
+  const primoAiUrl = options.primoAiUrl || `${PRIMO_AI_URL}${nq}`;
+  const pubmedUrl = options.pubmedUrl || '';
+  const isMedical = !!options.isMedical;
+  return `<div class="ai-panel">
+    <div class="ai-panel-title">✨ For deeper research, try the AI research tools below</div>
+    <div class="ai-row-label">🔐 KU subscribed AI tools</div>
+    <div class="ai-tools-strip">
+      <a class="ai-tool-chip leapspace" href="https://www.sciencedirect.com/leapspace?query=${nq}" target="_blank">🔬 LeapSpace</a>
+      <a class="ai-tool-chip scopus" href="https://www-scopus-com.khalifa.idm.oclc.org/pages/ai?query=${nq}" target="_blank">🔭 Scopus AI</a>
+      <a class="ai-tool-chip ebscoai" href="https://research-ebsco-com.khalifa.idm.oclc.org/c/yst6t2/search/results?q=${nq}&autocorrect=y&expanders=concept&limiters=None&searchMode=enhanced&searchSegment=all-results" target="_blank">📰 EBSCO AI</a>
+      <a class="ai-tool-chip primoai" href="${primoAiUrl}" target="_blank">⭐ PRIMO AI Assistant</a>
+    </div>
+    <div class="ai-row-label">🆓 Freemium AI tools</div>
+    <div style="font-size:.72rem;color:var(--mu);margin:-2px 0 8px">Some freemium tools may require account creation.</div>
+    <div class="ai-tools-strip">
+      <a class="ai-tool-chip consensus" href="https://consensus.app/results/?q=${nq}" target="_blank">🧬 Consensus</a>
+      <a class="ai-tool-chip openalex" href="https://openalex.org/works?page=1&sort=relevance_score:desc&search.semantic=${encodeURIComponent(cleanQuery.replace(/\s+/g, "+"))}" target="_blank">🌐 OpenAlex</a>
+      <a class="ai-tool-chip scispace" href="https://scispace.com/search?q=${nq}" target="_blank">🧪 SciSpace</a>
+      <a class="ai-tool-chip perplexity" href="https://www.perplexity.ai/search?q=${nq}" target="_blank">🔎 Perplexity</a>
+    </div>
+    <div class="ai-row-label">📚 More results</div>
+    <div class="ai-tools-strip">
+      <a class="ai-tool-chip primoai" href="${primoDiscoveryUrl}" target="_blank">📚 PRIMO Library Discovery</a>
+      ${isMedical && pubmedUrl ? `<a class="ai-tool-chip scispace" href="${pubmedUrl}" target="_blank">🏥 PubMed</a>` : ''}
+    </div>
+  </div>`;
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+// RESULT CARD + CITATION GENERATOR
+// ═══════════════════════════════════════════════════════════════
+function renderResultCard(r, idx, sid, num) {
+  const safeTitle = (r.title || 'Untitled').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const link = r.primo_url || r.link || (r.doi ? 'https://doi.org/' + r.doi : '') || (r.pmid ? 'https://pubmed.ncbi.nlm.nih.gov/' + r.pmid + '/' : '#');
+  const isOA = r._source === 'OpenAlex';
+  const srcColors = {
+    'PRIMO': '#fef3c7|#92400e',
+    'PubMed': '#d1fae5|#065f46',
+    'OpenAlex': '#f0f9ff|#0c4a6e',
+    'Semantic Scholar': '#e0e7ff|#3730a3'
+  };
+  const [bg, fg] = (srcColors[r._source] || 'var(--bg)|var(--mu)').split('|');
+  const srcTag = r._source ? `<span class="rcard-tag" style="background:${bg};color:${fg}">${r._source}</span>` : '';
+  const oaTag = (r.openaccess || isOA) ? '<span class="rcard-tag oa">Open Access</span>' : '';
+  const citeId = `cite_${sid}_${idx}`;
+  const numLabel = num != null ? `<span style="font-size:.72rem;font-weight:800;color:var(--mu);margin-right:6px">${num}.</span>` : '';
+
+  // Description: use abstract/description for OpenAlex, skip for PRIMO
+  const desc = (r.description || r.abstract || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const descHtml = desc
+    ? `<div class="rcard-desc">${desc.length > 220 ? desc.slice(0,220) + '…' : desc}</div>`
+    : '';
+
+  // Authors line
+  const authorsLine = r.creator || r.authors || '';
+  const dateLine = r.date || r.year || '';
+  const metaLine = [authorsLine, dateLine, r.type || (isOA ? 'Article' : '')].filter(Boolean).join(' · ');
+
+  // For OpenAlex: primary link = DOI or direct URL; secondary = PRIMO title search
+  // For PRIMO/PubMed: primary link = primo_url or link
+  const directLink = isOA
+    ? (r.doi ? 'https://doi.org/' + r.doi : r.link || '#')
+    : (r.primo_url || r.link || (r.doi ? 'https://doi.org/' + r.doi : '') || (r.pmid ? 'https://pubmed.ncbi.nlm.nih.gov/' + r.pmid + '/' : '#'));
+  const primoSearchLink = isOA ? (r.primo_url || '') : '';
+
+  return `<div class="rcard">
+    <div class="rcard-title">${numLabel}<a href="${directLink}" target="_blank">${safeTitle}</a></div>
+    ${metaLine ? `<div class="rcard-meta">${metaLine.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>` : ''}
+    ${r.source && !isOA ? `<div class="rcard-meta">${r.source}</div>` : ''}
+    ${descHtml}
+    <div class="rcard-tags">${srcTag}${oaTag}</div>
+    <div class="rcard-actions">
+      ${isOA
+        ? `<button class="rcard-btn primary" onclick="window.open('${directLink}','_blank')">Read Article →</button>
+           ${primoSearchLink ? `<button class="rcard-btn" onclick="window.open('${primoSearchLink}','_blank')">Find in PRIMO →</button>` : ''}`
+        : `<button class="rcard-btn primary" onclick="window.open('${directLink}','_blank')">View →</button>
+           <button class="rcard-btn" onclick="showCite('${sid}',${idx},'apa')">APA</button>
+           <button class="rcard-btn" onclick="showCite('${sid}',${idx},'ieee')">IEEE</button>
+           <button class="rcard-btn" onclick="showCite('${sid}',${idx},'harvard')">Harvard</button>`
+      }
+    </div>
+    <div id="${citeId}"></div>
+  </div>`;
+}
+
+function showCite(sid, idx, style) {
+  const r = (window._primoResults[sid] || [])[idx];
+  if (!r) return;
+  const el = document.getElementById(`cite_${sid}_${idx}`);
+  if (!el) return;
+  const auth = r.creator || r.authors || 'Unknown', yr = r.date || r.year || 'n.d.', title = r.title || 'Untitled';
+  const src = r.source || '', doi = r.doi ? 'https://doi.org/' + r.doi : '';
+  let c = '';
+  if (style === 'apa')     c = `${auth} (${yr}). ${title}. <em>${src}</em>.${doi ? ' ' + doi : ''}`;
+  if (style === 'ieee')    c = `${auth}, "${title}," <em>${src}</em>, ${yr}.${doi ? ' doi: ' + r.doi : ''}`;
+  if (style === 'harvard') c = `${auth} (${yr}) '${title}', <em>${src}</em>.${doi ? ' Available at: ' + doi : ''}`;
+  el.innerHTML = `<div class="cite-box">${c}</div>`;
+}
+
+function renderResultsWithSections(results, sid) {
+  const primo = results.filter(r => r._source !== 'OpenAlex');
+  const oa    = results.filter(r => r._source === 'OpenAlex');
+  let html = '';
+  if (primo.length > 0) {
+    html += `<div class="results-section-hdr">📚 KU Library Results (PRIMO)</div>`;
+    html += primo.map((r, i) => renderResultCard(r, i, sid, i + 1)).join('');
+  }
+  if (oa.length > 0) {
+    html += `<div class="results-section-hdr">🌍 Open Access Articles (OpenAlex)</div>`;
+    html += oa.map((r, i) => renderResultCard(r, primo.length + i, sid, i + 1)).join('');
+  }
+  return html;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// DATABASES A–Z
+// ═══════════════════════════════════════════════════════════════
+const DB_SUBJECTS = [
+  {key:'general', label:'General Research', items:[
+    {name:'PRIMO',desc:'Search books, articles, journals in one place.',url:'https://khalifa.primo.exlibrisgroup.com/discovery/search?vid=971KUOSTAR_INST:KU'},
+    {name:'Scopus',desc:'Multidisciplinary abstract and citation database.',url:'https://khalifa.idm.oclc.org/login?url=https://www.scopus.com/home.url'},
+    {name:'Web of Science',desc:'Citation database for multidisciplinary research.',url:'https://khalifa.idm.oclc.org/login?url=https://www.webofscience.com'},
+    {name:'ScienceDirect',desc:'Full-text journals and books across many disciplines.',url:'https://khalifa.idm.oclc.org/login?url=https://www.sciencedirect.com'},
+    {name:'Google Scholar @ KU',desc:'Google Scholar with KU full-text access.',url:'https://library.ku.ac.ae/google'},
+  ]},
+  {key:'computing', label:'Computer Science & AI', items:[
+    {name:'IEEE Xplore',desc:'Electrical, computer engineering, and computing.',url:'https://khalifa.idm.oclc.org/login?url=https://ieeexplore.ieee.org/Xplore/dynhome.jsp'},
+    {name:'ACM Digital Library',desc:'Computer science journals, proceedings, and books.',url:'https://khalifa.idm.oclc.org/login?url=http://dl.acm.org'},
+    {name:'arXiv.org',desc:'Open-access preprints in CS, math, and physics.',url:'https://arxiv.org/'},
+    {name:'ScienceDirect',desc:'Computer science and engineering journals.',url:'https://khalifa.idm.oclc.org/login?url=https://www.sciencedirect.com'},
+  ]},
+  {key:'electrical', label:'Electrical Engineering', items:[
+    {name:'IEEE Xplore',desc:'Core database for electrical engineering and standards.',url:'https://khalifa.idm.oclc.org/login?url=https://ieeexplore.ieee.org/Xplore/dynhome.jsp'},
+    {name:'ScienceDirect',desc:'Electrical engineering and electronics journals.',url:'https://khalifa.idm.oclc.org/login?url=https://www.sciencedirect.com'},
+    {name:'Scopus',desc:'Find electrical engineering literature.',url:'https://khalifa.idm.oclc.org/login?url=https://www.scopus.com/home.url'},
+  ]},
+  {key:'civil', label:'Civil Engineering', items:[
+    {name:'ASCE Library',desc:'Civil and structural engineering journals.',url:'https://khalifa.idm.oclc.org/login?url=https://ascelibrary.org'},
+    {name:'ASTM Compass',desc:'Engineering standards and specifications.',url:'https://khalifa.idm.oclc.org/login?url=https://secure.astm.org/login'},
+    {name:'Knovel',desc:'Civil engineering reference books.',url:'https://khalifa.idm.oclc.org/login?url=https://app.knovel.com/kn'},
+  ]},
+  {key:'aerospace', label:'Aerospace Engineering', items:[
+    {name:'AIAA',desc:'Aerospace science and engineering.',url:'https://khalifa.idm.oclc.org/login?url=https://arc.aiaa.org/'},
+    {name:'ASME Digital Library',desc:'Mechanical and aerospace engineering.',url:'https://khalifa.idm.oclc.org/login?url=https://asmedigitalcollection.asme.org'},
+    {name:'Knovel',desc:'Engineering handbooks and technical reference.',url:'https://khalifa.idm.oclc.org/login?url=https://app.knovel.com/kn'},
+  ]},
+  {key:'chemical', label:'Chemical Engineering & Chemistry', items:[
+    {name:'ACS',desc:'Chemistry and chemical engineering journals.',url:'https://khalifa.idm.oclc.org/login?url=https://pubs.acs.org'},
+    {name:'SciFindern',desc:'Chemistry research and reaction searching.',url:'https://khalifa.idm.oclc.org/login?url=https://scifinder-n.cas.org'},
+    {name:'RSC Journals',desc:'Royal Society of Chemistry journals.',url:'https://khalifa.idm.oclc.org/login?url=https://pubs.rsc.org/'},
+    {name:'Knovel',desc:'Process and thermodynamics handbooks.',url:'https://khalifa.idm.oclc.org/login?url=https://app.knovel.com/kn'},
+  ]},
+  {key:'medical', label:'Medicine & Health Sciences', items:[
+    {name:'PubMed @ KU',desc:'Core biomedical literature database.',url:'https://www.ncbi.nlm.nih.gov/pubmed/?otool=iaekustlib'},
+    {name:'Embase',desc:'Biomedical, drugs, and clinical medicine.',url:'https://khalifa.idm.oclc.org/login?url=https://www.embase.com'},
+    {name:'CINAHL Ultimate',desc:'Nursing and allied health literature.',url:'https://khalifa.idm.oclc.org/login?url=https://search.ebscohost.com/login.aspx?authtype=ip,uid&profile=ehost&defaultdb=cul'},
+    {name:'Cochrane Library',desc:'Systematic reviews and evidence-based medicine.',url:'https://khalifa.idm.oclc.org/login?url=https://www.cochranelibrary.com'},
+    {name:'ClinicalKey Student',desc:'Medical textbooks and clinical learning tools.',url:'https://khalifa.idm.oclc.org/login?url=https://www.clinicalkey.com/student/login'},
+    {name:'UpToDate',desc:'Clinical decision support.',url:'https://khalifa.idm.oclc.org/login?url=https://www.uptodate.com/'},
+  ]},
+  {key:'biomedical', label:'Biomedical Engineering', items:[
+    {name:'PubMed @ KU',desc:'Biomedical and life sciences literature.',url:'https://www.ncbi.nlm.nih.gov/pubmed/?otool=iaekustlib'},
+    {name:'IEEE Xplore',desc:'Biomedical engineering and devices.',url:'https://khalifa.idm.oclc.org/login?url=https://ieeexplore.ieee.org/Xplore/dynhome.jsp'},
+    {name:'ScienceDirect',desc:'Biomedical engineering journals.',url:'https://khalifa.idm.oclc.org/login?url=https://www.sciencedirect.com'},
+  ]},
+  {key:'energy', label:'Energy & Petroleum Engineering', items:[
+    {name:'OnePetro',desc:'Oil, gas, and petroleum engineering literature.',url:'https://khalifa.idm.oclc.org/login?url=https://www.onepetro.org/'},
+    {name:'ScienceDirect',desc:'Energy and petroleum journals.',url:'https://khalifa.idm.oclc.org/login?url=https://www.sciencedirect.com'},
+    {name:'Knovel',desc:'Energy and engineering reference books.',url:'https://khalifa.idm.oclc.org/login?url=https://app.knovel.com/kn'},
+  ]},
+  {key:'physics', label:'Physics & Mathematics', items:[
+    {name:'APS Journals',desc:'American Physical Society journals.',url:'https://khalifa.idm.oclc.org/login?url=https://journals.aps.org'},
+    {name:'AIP',desc:'American Institute of Physics journals.',url:'https://khalifa.idm.oclc.org/login?url=https://aip.scitation.org'},
+    {name:'arXiv.org',desc:'Open-access preprints in physics and math.',url:'https://arxiv.org/'},
+    {name:'MathSciNet',desc:'Mathematics literature and reviews.',url:'https://khalifa.idm.oclc.org/login?url=https://search.ebscohost.com/login.aspx?authtype=ip,uid&profile=ehost&defaultdb=msn'},
+  ]},
+  {key:'business', label:'Business & Management', items:[
+    {name:'Business Source Ultimate',desc:'Core business and management database.',url:'https://khalifa.idm.oclc.org/login?url=https://search.ebscohost.com/login.aspx?authtype=ip,uid&profile=ehost&defaultdb=bsu'},
+    {name:'Emerald Insight',desc:'Management, strategy, and leadership journals.',url:'https://khalifa.idm.oclc.org/login?url=https://www.emerald.com/insight'},
+    {name:'ProQuest',desc:'Business and multidisciplinary sources.',url:'https://khalifa.idm.oclc.org/login?url=https://search.proquest.com/?accountid=174135'},
+  ]},
+  {key:'metrics', label:'Journal Metrics & Research Impact', items:[
+    {name:'Web of Science / JCR',desc:'Journal Citation Reports and impact factors.',url:'https://khalifa.idm.oclc.org/login?url=https://www.webofscience.com'},
+    {name:'Scopus / CiteScore',desc:'CiteScore and source-level metrics.',url:'https://khalifa.idm.oclc.org/login?url=https://www.scopus.com/home.url'},
+    {name:'SciVal',desc:'Research performance analytics.',url:'https://khalifa.idm.oclc.org/login?url=https://scival.com/'},
+  ]},
+  {key:'theses', label:'Dissertations & Theses', items:[
+    {name:'ProQuest Dissertations & Theses',desc:'Global dissertations and theses.',url:'https://khalifa.idm.oclc.org/login?url=https://www.proquest.com/pqdtglobal'},
+    {name:'Khazna',desc:'KU institutional repository.',url:'https://khazna.ku.ac.ae/'},
+  ]},
+];
+
+function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function buildDB(key) {
+  // Alphabet bar
+  document.getElementById('abar').innerHTML =
+    `<button class="abtn ${!key?'active':''}" onclick="buildDB('')">All</button>` +
+    DB_SUBJECTS.map(s => `<button class="abtn ${key===s.key?'active':''}" onclick="buildDB('${s.key}')" title="${escHtml(s.label)}">${s.label.split(' ')[0]}</button>`).join('');
+
+  const subjects = key ? DB_SUBJECTS.filter(s => s.key === key) : DB_SUBJECTS;
+  document.getElementById('dbList').innerHTML = subjects.map(s =>
+    `<details class="dg" ${key?'open':''}>
+      <summary><h2>${escHtml(s.label)}</h2><span class="db-toggle">${key?'Hide':'Show'}</span></summary>
+      <div class="db-group-items">
+        ${s.items.map(d => `<div class="di"><h4>${escHtml(d.name)}</h4><p>${escHtml(d.desc)}</p><a href="${d.url}" target="_blank">Access →</a></div>`).join('')}
+      </div>
+    </details>`
+  ).join('');
+}
+
+// Update toggle text on open/close
+document.addEventListener('toggle', e => {
+  if (e.target?.classList?.contains('dg')) {
+    const t = e.target.querySelector('.db-toggle');
+    if (t) t.textContent = e.target.open ? 'Hide' : 'Show';
+  }
+}, true);
+
+// ═══════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  setModel('gpt');
+  // Initialize all panels hidden except chat
+  document.querySelectorAll('.panel').forEach(p => {
+    if (!p.classList.contains('active')) p.style.display = 'none';
+    else p.style.display = 'flex';
+  });
+  buildDB('');
+  console.log('LibBee loaded — API:', API_URL);
+  // Load runtime config — updates greeting and shows announcement
+  fetch(API_URL + '/admin/public-config')
+    .then(r => r.ok ? r.json() : null)
+    .then(cfg => {
+      if (!cfg) return;
+      // Update initial greeting if welcome_message is set in admin
+      if (cfg.welcome_message && cfg.welcome_message.trim()) {
+        const g = document.getElementById('initial-greeting');
+        if (g) g.innerHTML = cfg.welcome_message;
+      }
+      // Show announcement banner if set in admin
+      if (cfg.announcement && cfg.announcement.trim()) {
+        const banner = document.createElement('div');
+        banner.style.cssText = 'margin:8px 12px;padding:10px 14px;border-radius:10px;'
+          + 'background:#fffbeb;border:1px solid #fde68a;font-size:.82rem;color:#92400e;'
+          + 'font-weight:600;';
+        banner.innerHTML = '📢 ' + cfg.announcement;
+        const msgs = document.getElementById('chatMsgs');
+        if (msgs) msgs.insertBefore(banner, msgs.firstChild);
+      }
+    })
+    .catch(() => {});
+});
+</script>
+</body>
+</html>
