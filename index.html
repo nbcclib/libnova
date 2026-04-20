@@ -891,38 +891,15 @@ async function doSearch() {
   const resultsDiv = document.getElementById('sResults');
 
   btn.disabled = true;
-  statusDiv.innerHTML = '<span style="color:#d97706">✏️ Planning search…</span>';
+  statusDiv.innerHTML = '<span style="color:#d97706">✏️ Building search query…</span>';
   resultsDiv.innerHTML = '';
 
   try {
     const plan = await buildSearchPlan(query);
     const bool = plan.primo_boolean_query || makeBoolean(query);
-    const sid = 'ST' + Date.now();
-    window._primoResults[sid] = [];
-
-    statusDiv.innerHTML = '<span style="color:#16a34a">🔍 Building your search…</span>';
 
     const corrected = plan.topic && plan.topic.toLowerCase() !== query.toLowerCase() ? plan.topic : null;
-    if (corrected) {
-      document.getElementById('sIn').value = corrected;
-      statusDiv.innerHTML = `<span style="color:#d97706">✏️ Corrected to "<em>${corrected}</em>" — searching…</span>`;
-    }
-
-    const res = await fetchWithTimeout(API_URL + '/search', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        query: (plan.topic || query).substring(0, 500),
-        boolean_query: bool,
-        source: 'primo',
-        limit: 10,
-        resource_type: plan.resource_type || 'both',
-      })
-    });
-
-    if (!res.ok) throw new Error('Search error: ' + res.status);
-    const data = await res.json();
-    window._primoResults[sid] = data.results || [];
+    if (corrected) document.getElementById('sIn').value = corrected;
 
     let html = '';
     html += `<div class="scard">
@@ -931,23 +908,13 @@ async function doSearch() {
       <div class="bool-str">${bool}</div>
     </div>`;
 
-    if (data.results && data.results.length > 0) {
-      html += `<div style="font-size:.84rem;font-weight:700;color:var(--nbcc-navy);margin:12px 0 6px">📄 ${(data.total||0).toLocaleString()} results — showing top ${data.results.length}:</div>`;
-      html += renderResultsWithSections(data.results, sid);
-    } else if (data.error) {
-      html += `<div class="error-banner">⚠️ ${data.error}</div>`;
-    } else {
-      html += '<div class="error-banner">No results found. Try broadening your search terms.</div>';
-    }
-
-    // AI tools always at the end
     html += buildAIToolsPanel(plan.ai_tool_query || query);
 
     statusDiv.innerHTML = '';
     resultsDiv.innerHTML = html;
   } catch (e) {
     statusDiv.innerHTML = '';
-    resultsDiv.innerHTML = `<div class="error-banner">${e.name === 'AbortError' ? '⏳ Search timed out — server may be waking up. Please try again.' : '⚠️ ' + e.message}</div>`;
+    resultsDiv.innerHTML = `<div class="error-banner">${e.name === 'AbortError' ? '⏳ Timed out — server may be waking up. Please try again.' : '⚠️ ' + e.message}</div>`;
   } finally {
     btn.disabled = false;
   }
