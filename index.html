@@ -219,7 +219,6 @@ header{background:var(--nbcc-navy);color:#fff;padding:10px 16px;display:flex;ali
         <button class="wlc-btn" onclick="wlcAskSubject()">📚 Find Articles &amp; Books</button>
         <button class="wlc-btn" onclick="wlcSend('What are the library hours?')">⏰ Library Hours</button>
         <button class="wlc-btn" onclick="wlcSend('How do I reserve a study room?')">🚪 Study Rooms</button>
-        <button class="wlc-btn" onclick="wlcSend('I cannot access a library resource or database')">🔒 Can't Access a Resource</button>
         <button class="wlc-btn" onclick="wlcSend('What library events and workshops are coming up?')">📅 Library Events &amp; Workshops</button>
         <button class="wlc-btn" onclick="wlcSend('Can I request an Interlibrary Loan?')">📬 ILL Request</button>
       </div>
@@ -262,7 +261,6 @@ header{background:var(--nbcc-navy);color:#fff;padding:10px 16px;display:flex;ali
       <div class="chip" onclick="sendChat('What are the library hours?')">⏰ Hours</div>
       <div class="chip" onclick="sendChat('How do I get full text for an article?')">📄 Full Text</div>
       <div class="chip" onclick="sendChat('How do I reserve a study room?')">🚪 Study Rooms</div>
-      <div class="chip" onclick="sendChat('I cannot access a library resource or database')">🔒 Can't Access</div>
       <div class="chip" onclick="sendChat('What library events and workshops are coming up?')">📅 Events</div>
       <div class="chip" onclick="sendChat('Can I request an Interlibrary Loan?')">📬 ILL Request</div>
       <a class="chip" href="https://library.nbcc.ca/AskUs" target="_blank">💬 Ask a Librarian</a>
@@ -901,7 +899,6 @@ async function doSearch() {
     const bool = plan.primo_boolean_query || makeBoolean(query);
     const sid = 'ST' + Date.now();
     window._primoResults[sid] = [];
-    const urlAll = plan.primo_all_url;
 
     statusDiv.innerHTML = '<span style="color:#16a34a">🔍 Building your search…</span>';
 
@@ -932,15 +929,11 @@ async function doSearch() {
       <div class="scard-title">🔍 Search Strategy</div>
       ${corrected ? `<div style="font-size:.78rem;color:#d97706;margin-bottom:6px">✏️ Corrected to: <em>${corrected}</em></div>` : ''}
       <div class="bool-str">${bool}</div>
-      <div class="slinks">
-        <a class="slink all" href="${urlAll}" target="_blank">📚 Search NBCC Library Discovery</a>
-      </div>
     </div>`;
 
     if (data.results && data.results.length > 0) {
       html += `<div style="font-size:.84rem;font-weight:700;color:var(--nbcc-navy);margin:12px 0 6px">📄 ${(data.total||0).toLocaleString()} results — showing top ${data.results.length}:</div>`;
       html += renderResultsWithSections(data.results, sid);
-      html += `<div style="text-align:center;margin-top:12px"><a href="${urlAll}" target="_blank" style="display:inline-block;padding:10px 20px;background:var(--nbcc-navy);color:#fff;text-decoration:none;border-radius:8px;font-weight:600">View more results →</a></div>`;
     } else if (data.error) {
       html += `<div class="error-banner">⚠️ ${data.error}</div>`;
     } else {
