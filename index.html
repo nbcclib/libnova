@@ -13,7 +13,6 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 /* ── Header ── */
 header{background:var(--nbcc-navy);color:#fff;padding:10px 16px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 12px rgba(0,51,102,.4);flex-shrink:0}
 .hdr-text{flex:1}.hdr-text h1{font-size:1rem;font-weight:700}.hdr-text p{font-size:.7rem;opacity:.8;margin-top:1px}
-.hdr-acct{padding:5px 12px;background:var(--nbcc-red);border:none;border-radius:20px;color:#1a1a2e;font-size:.72rem;font-weight:700;text-decoration:none;white-space:nowrap;flex-shrink:0}
 .model-toggle{display:flex;gap:4px;background:rgba(255,255,255,.12);padding:3px 4px;border-radius:20px;flex-shrink:0}
 .model-toggle button{padding:4px 10px;border-radius:16px;font-size:.68rem;font-weight:700;cursor:pointer;border:none;transition:all .25s;white-space:nowrap}
 .model-toggle button.active-gpt{background:#10A37F;color:#fff;box-shadow:0 1px 6px rgba(16,163,127,.4)}
@@ -120,10 +119,7 @@ header{background:var(--nbcc-navy);color:#fff;padding:10px 16px;display:flex;ali
 .ai-tools-strip{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
 .ai-tool-chip{display:inline-flex;align-items:center;gap:4px;padding:5px 9px;border-radius:20px;text-decoration:none;font-size:.72rem;font-weight:700;transition:all .2s;border:1.5px solid transparent;white-space:nowrap}
 .ai-tool-chip:hover{transform:translateY(-1px);box-shadow:0 2px 8px rgba(0,0,0,.14)}
-.ai-tool-chip.leapspace{background:#fff7ed;color:#9a3412;border-color:#fed7aa}
-.ai-tool-chip.scopus{background:#eff6ff;color:#1e40af;border-color:#bfdbfe}
 .ai-tool-chip.ebscoai{background:#fce7f3;color:#9d174d;border-color:#f9a8d4}
-.ai-tool-chip.primoai{background:linear-gradient(135deg,#fef9c3,#ede9fe);color:#5b21b6;border-color:#c4b5fd}
 .ai-tool-chip.consensus{background:#fdf4ff;color:#86198f;border-color:#f0abfc}
 .ai-tool-chip.scispace{background:#ecfdf5;color:#065f46;border-color:#6ee7b7}
 .ai-tool-chip.perplexity{background:#f5f3ff;color:#4c1d95;border-color:#ddd6fe}
@@ -146,7 +142,7 @@ header{background:var(--nbcc-navy);color:#fff;padding:10px 16px;display:flex;ali
 .rcard-btn.primary:hover{background:#004488}
 .results-section-hdr{font-size:.82rem;font-weight:800;color:var(--nbcc-navy);margin:14px 0 6px;padding-bottom:4px;border-bottom:2px solid var(--nbcc-red)}
 
-/* ── Guides / Services / Databases ── */
+/* ── Guides ── */
 .barea{padding:12px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:10px}
 .bcard{background:#fff;border-radius:var(--radius);padding:14px;border:1px solid var(--border)}
 .bcard h3{font-size:.88rem;font-weight:700;margin-bottom:10px;color:var(--nbcc-navy)}
@@ -198,14 +194,11 @@ header{background:var(--nbcc-navy);color:#fff;padding:10px 16px;display:flex;ali
     <button id="btnClaude" onclick="setModel('claude')">Claude</button>
     <button id="btnGPT" class="active-gpt" onclick="setModel('gpt')">ChatGPT</button>
   </div>
-  <a class="hdr-acct" href="https://nbcc.primo.exlibrisgroup.com/discovery/account?vid=NBCC_INST:NBCC&section=overview" target="_blank">👤 My Account</a>
 </header>
 
 <div class="tabs">
   <div class="tab active" onclick="switchTab('chat',this)">💬 Ask LibNova</div>
   <div class="tab" onclick="switchTab('search',this)">🔍 AI Search</div>
-  <div class="tab" onclick="switchTab('services',this)">🏛️ Services</div>
-  <div class="tab" onclick="switchTab('eresources',this)">🗄️ Databases</div>
 </div>
 
 <!-- ═══ CHAT PANEL ═══ -->
@@ -243,7 +236,7 @@ header{background:var(--nbcc-navy);color:#fff;padding:10px 16px;display:flex;ali
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
             </button>
           </div>
-          <div style="font-size:.72rem;color:#9ca3af;margin-top:6px">Press Enter or click the arrow to search PRIMO and see AI research tools</div>
+          <div style="font-size:.72rem;color:#9ca3af;margin-top:6px">Press Enter or click the arrow to search and see AI research tools</div>
         </div>
       </div>
 
@@ -286,16 +279,10 @@ header{background:var(--nbcc-navy);color:#fff;padding:10px 16px;display:flex;ali
 <div class="panel" id="panel-search">
   <div class="sarea">
     <div class="nl-box">
-      <div style="font-weight:700;color:var(--nbcc-navy);margin-bottom:10px;font-size:.95rem">🔍 Smart Search — AI builds query, PRIMO returns real results</div>
+      <div style="font-weight:700;color:var(--nbcc-navy);margin-bottom:10px;font-size:.95rem">🔍 Smart Search — AI builds your boolean query</div>
       <div class="nl-row">
-        <input type="text" id="sIn" placeholder='e.g. "AI in education from 2022 peer reviewed"' onkeydown="if(event.key==='Enter')doSearch()">
+        <input type="text" id="sIn" placeholder='e.g. "AI in education" or "nursing home care"' onkeydown="if(event.key==='Enter')doSearch()">
         <button class="go" id="searchBtn" onclick="doSearch()">Search</button>
-      </div>
-      <div class="tog-row">
-        <label class="tog"><input type="checkbox" id="sPR"> 🔬 Peer Reviewed</label>
-        <label class="tog"><input type="checkbox" id="sOA"> 🔓 Open Access</label>
-        <span style="font-size:.76rem;color:var(--mu)">📅</span>
-        <input class="yr" type="text" id="sYF" placeholder="From">–<input class="yr" type="text" id="sYT" placeholder="To">
       </div>
     </div>
     <div class="sstatus" id="sStatus"></div>
@@ -303,40 +290,7 @@ header{background:var(--nbcc-navy);color:#fff;padding:10px 16px;display:flex;ali
   </div>
 </div>
 
-<!-- ═══ SERVICES PANEL ═══ -->
-<div class="panel" id="panel-services">
-  <div class="barea">
-    <div class="banner" style="background:var(--nbcc-navy)">
-      <h3>📋 My Library Account</h3><p>View loans, renewals, requests, fines & fees</p>
-      <a href="https://nbcc.primo.exlibrisgroup.com/discovery/account?vid=NBCC_INST:NBCC&section=overview" target="_blank" style="color:var(--nbcc-navy)">Open My Account →</a>
-    </div>
-    <div class="bcard"><h3>🔗 All Library Services</h3><div class="ll">
-      <a href="https://nbcc.primo.exlibrisgroup.com/discovery/account?vid=NBCC_INST:NBCC&section=overview" target="_blank">📋 My Library Account</a>
-      <a href="https://library.nbcc.ca/ill/" target="_blank">📬 Interlibrary Loan (ILL)</a>
-      <a href="https://library.nbcc.ca/rooms/" target="_blank">🚪 Reserve a Study Room</a>
-      <a href="https://library.nbcc.ca/hours" target="_blank">⏰ Library Hours</a>
-      <a href="https://library.nbcc.ca/oa/" target="_blank">🔓 Open Access Publishing</a>
-      <a href="https://library.nbcc.ca/requesttitle/" target="_blank">📥 Request New Material</a>
-      <a href="https://library.nbcc.ca/AskUs" target="_blank">💬 Ask a Librarian</a>
-      <a href="https://library.nbcc.ca/google" target="_blank">🎓 Google Scholar @ KU</a>
-      <a href="https://library.nbcc.ca/orcid" target="_blank">🆔 ORCiD Guide</a>
-      <a href="https://khazna.nbcc.ca/" target="_blank">🗄️ NBCC Repository Repository</a>
-      <a href="https://library.nbcc.ca/med/" target="_blank">🏥 Medical Library</a>
-      <a href="https://library.nbcc.ca/alumni/" target="_blank">🎓 Alumni Services</a>
-    </div></div>
-  </div>
-</div>
-
 <!-- ═══ DATABASES PANEL ═══ -->
-<div class="panel" id="panel-eresources">
-  <div class="era">
-    <div style="font-size:.78rem;font-weight:700;color:var(--mu);text-transform:uppercase;margin-bottom:8px">
-      Databases A–Z — <a href="https://library.nbcc.ca/eresources" target="_blank" style="color:#0EA5E9">View full list →</a>
-    </div>
-    <div class="abar" id="abar"></div>
-    <div id="dbList"></div>
-  </div>
-</div>
 
 <script>
 // ═══════════════════════════════════════════════════════════════
@@ -344,7 +298,6 @@ header{background:var(--nbcc-navy);color:#fff;padding:10px 16px;display:flex;ali
 // ═══════════════════════════════════════════════════════════════
 const API_URL = 'https://nbcclibrary-libnova.hf.space';
 const PRIMO_BASE = 'https://nbcc.primo.exlibrisgroup.com/discovery/search';
-const PRIMO_AI_URL = 'https://nbcc.primo.exlibrisgroup.com/discovery/researchAssistant?vid=NBCC_INST:NBCC&query=';
 const VID = 'NBCC_INST:NBCC';
 const FETCH_TIMEOUT = 35000;
 
@@ -808,8 +761,6 @@ function buildPrimoURL(bool, tab, scope, facets) {
 }
 
 async function buildSearchPlan(query, opts = {}) {
-  // Route through /agent so topic extraction, boolean building, and facets
-  // all use the same LLM pipeline as the chat tab — no separate /search/plan needed.
   try {
     const res = await fetchWithTimeout(API_URL + '/agent', {
       method: 'POST',
@@ -823,41 +774,31 @@ async function buildSearchPlan(query, opts = {}) {
     }, 25000);
     if (!res.ok) throw new Error('Agent error: ' + res.status);
     const data = await res.json();
-    // Extract search plan fields from the agent response
     const bool = data.primo_boolean_query || makeBoolean(query);
     const topic = data.corrected_query || data.natural_query || query;
-    const isMedical = data.intent === 'search_medical';
     const cleanBool = sanitizeBoolean(bool);
     return {
       topic,
       display_topic: topic,
       resource_type: opts.resourceType || (/\bbooks?\b/i.test(query) ? 'books' : 'articles'),
-      is_medical: isMedical,
       ai_tool_query: data.ai_tool_query || data.natural_query || query,
       primo_boolean_query: cleanBool,
       primo_all_url: data.primo_search_url || buildPrimoURL(cleanBool, 'Everything', 'MyInst_and_CI', []),
       primo_articles_url: buildPrimoURL(cleanBool, 'CentralIndex', 'CentralIndex', ['rtype,include,articles']),
       primo_books_url: buildPrimoURL(cleanBool, 'Everything', 'MyInst_and_CI', ['rtype,include,books']),
-      primo_ai_url: data.primo_ai_url || `${PRIMO_AI_URL}${encodeURIComponent(data.ai_tool_query || query)}`,
-      pubmed_url: data.pubmed_search_url || (isMedical ? `https://pubmed.ncbi.nlm.nih.gov/?term=${encodeURIComponent(topic)}` : ''),
     };
   } catch (_) {
-    // Local fallback — no API cost
     const bool = makeBoolean(query);
     const cleanQuery = sanitizeBoolean(bool).replace(/[()"]/g,'').replace(/\b(AND|OR)\b/g,' ').replace(/\s+/g,' ').trim();
-    const isMedical = /\b(medicine|medical|health|clinical|nursing|pharmacy|pubmed|embase|cinahl|cochrane|uptodate|systematic review|cancer|diabetes|treatment|diagnosis|surgery|biomedical)\b/i.test(query);
     return {
       topic: cleanQuery,
       display_topic: cleanQuery,
       resource_type: opts.resourceType || (/\bbooks?\b/i.test(query) ? 'books' : (/\barticles?|papers?|journals?|studies?\b/i.test(query) ? 'articles' : 'both')),
-      is_medical: isMedical,
       ai_tool_query: query,
       primo_boolean_query: bool,
       primo_all_url: buildPrimoURL(bool, 'Everything', 'MyInst_and_CI', []),
       primo_articles_url: buildPrimoURL(bool, 'CentralIndex', 'CentralIndex', ['rtype,include,articles']),
       primo_books_url: buildPrimoURL(bool, 'Everything', 'MyInst_and_CI', ['rtype,include,books']),
-      primo_ai_url: `${PRIMO_AI_URL}${encodeURIComponent(query)}`,
-      pubmed_url: isMedical ? `https://pubmed.ncbi.nlm.nih.gov/?term=${encodeURIComponent(cleanQuery)}` : '',
     };
   }
 }
@@ -866,9 +807,7 @@ async function buildSearchPlan(query, opts = {}) {
 // SEARCH — execute against HF Space /search endpoint
 // ═══════════════════════════════════════════════════════════════
 async function executeSearch(query, opts = {}) {
-  const pr = opts.pr || false, oa = opts.oa || false;
-  const yf = opts.yf || '', yt = opts.yt || '';
-  const plan = await buildSearchPlan(query, { pr, oa, yf, yt, resourceType: opts.resourceType || null });
+  const plan = await buildSearchPlan(query, { resourceType: opts.resourceType || null });
   const bool = plan.primo_boolean_query || makeBoolean(query);
   const dbQuery = (plan.topic || query).substring(0, 500);
   const resourceType = plan.resource_type || opts.resourceType || 'both';
@@ -877,10 +816,7 @@ async function executeSearch(query, opts = {}) {
   window._primoResults[sid] = [];
 
   const urlAll = plan.primo_all_url || buildPrimoURL(bool, 'Everything', 'MyInst_and_CI', []);
-  const urlArt = plan.primo_articles_url || buildPrimoURL(bool, 'CentralIndex', 'CentralIndex', ['rtype,include,articles']);
-  const urlBk  = plan.primo_books_url || buildPrimoURL(bool, 'Everything', 'MyInst_and_CI', ['rtype,include,books']);
 
-  // Show correction notice if query was spell-corrected
   const corrected = plan.topic && plan.topic.toLowerCase() !== query.toLowerCase() ? plan.topic : null;
   const correctionHtml = corrected
     ? `<div style="font-size:.78rem;color:#d97706;margin-bottom:6px">✏️ Corrected to: <em>${corrected}</em></div>`
@@ -889,15 +825,15 @@ async function executeSearch(query, opts = {}) {
   const cm = document.getElementById('chatMsgs');
   const loadEl = document.createElement('div'); loadEl.className = 'msg bot'; loadEl.style.maxWidth = '96%';
   loadEl.innerHTML = `<div class="av">🔍</div><div class="scard">
-    <div class="scard-title">🔍 Searching PRIMO Library Discovery…</div>
+    <div class="scard-title">🔍 Building your search…</div>
     ${correctionHtml}
     <div class="bool-str">${bool}</div>
     <div class="slinks">
-      <a class="slink all" href="${urlAll}" target="_blank">📚 Search in PRIMO Library Discovery</a>
+      <a class="slink all" href="${urlAll}" target="_blank">📚 Search NBCC Library Discovery</a>
     </div>
     <div style="margin-top:10px;font-size:.8rem;color:var(--mu);display:flex;align-items:center;gap:6px">
       <div class="typing"><span></span><span></span><span></span></div>
-      <span>Fetching PRIMO results…</span>
+      <span>Fetching results…</span>
     </div>
     <div id="results-area-${sid}"></div>
   </div>`;
@@ -913,10 +849,6 @@ async function executeSearch(query, opts = {}) {
         source: 'primo',
         limit: 8,
         resource_type: resourceType,
-        peer_reviewed: pr,
-        open_access: oa,
-        year_from: yf,
-        year_to: yt
       })
     });
 
@@ -933,7 +865,7 @@ async function executeSearch(query, opts = {}) {
     if (data.results && data.results.length > 0) {
       html += `<div style="font-size:.82rem;font-weight:700;color:var(--nbcc-navy);margin:10px 0 6px">📄 ${(data.total||0).toLocaleString()} results — showing top ${data.results.length}:</div>`;
       html += renderResultsWithSections(data.results, sid);
-      html += `<div style="text-align:center;margin-top:10px"><a href="${urlAll}" target="_blank" style="display:inline-block;padding:8px 18px;background:var(--nbcc-navy);color:#fff;text-decoration:none;border-radius:8px;font-weight:600;font-size:.82rem">View more in PRIMO Library Discovery →</a></div>`;
+      html += `<div style="text-align:center;margin-top:10px"><a href="${urlAll}" target="_blank" style="display:inline-block;padding:8px 18px;background:var(--nbcc-navy);color:#fff;text-decoration:none;border-radius:8px;font-weight:600;font-size:.82rem">View more results →</a></div>`;
     } else if (data.error) {
       html = `<div class="error-banner">⚠️ ${data.error}</div>`;
     } else {
@@ -956,10 +888,6 @@ async function executeSearch(query, opts = {}) {
 async function doSearch() {
   const query = document.getElementById('sIn').value.trim();
   if (!query) return;
-  const pr = document.getElementById('sPR').checked;
-  const oa = document.getElementById('sOA').checked;
-  const yf = document.getElementById('sYF').value.trim();
-  const yt = document.getElementById('sYT').value.trim();
   const btn = document.getElementById('searchBtn');
   const statusDiv = document.getElementById('sStatus');
   const resultsDiv = document.getElementById('sResults');
@@ -969,17 +897,14 @@ async function doSearch() {
   resultsDiv.innerHTML = '';
 
   try {
-    const plan = await buildSearchPlan(query, { pr, oa, yf, yt });
+    const plan = await buildSearchPlan(query);
     const bool = plan.primo_boolean_query || makeBoolean(query);
     const sid = 'ST' + Date.now();
     window._primoResults[sid] = [];
     const urlAll = plan.primo_all_url;
-    const urlArt = plan.primo_articles_url;
-    const urlBk = plan.primo_books_url;
 
-    statusDiv.innerHTML = '<span style="color:#16a34a">🔍 Searching PRIMO Library Discovery…</span>';
+    statusDiv.innerHTML = '<span style="color:#16a34a">🔍 Building your search…</span>';
 
-    // If query was corrected, update the search input so user sees it
     const corrected = plan.topic && plan.topic.toLowerCase() !== query.toLowerCase() ? plan.topic : null;
     if (corrected) {
       document.getElementById('sIn').value = corrected;
@@ -995,10 +920,6 @@ async function doSearch() {
         source: 'primo',
         limit: 10,
         resource_type: plan.resource_type || 'both',
-        peer_reviewed: pr,
-        open_access: oa,
-        year_from: yf,
-        year_to: yt
       })
     });
 
@@ -1012,14 +933,14 @@ async function doSearch() {
       ${corrected ? `<div style="font-size:.78rem;color:#d97706;margin-bottom:6px">✏️ Corrected to: <em>${corrected}</em></div>` : ''}
       <div class="bool-str">${bool}</div>
       <div class="slinks">
-        <a class="slink all" href="${urlAll}" target="_blank">📚 Search in PRIMO Library Discovery</a>
+        <a class="slink all" href="${urlAll}" target="_blank">📚 Search NBCC Library Discovery</a>
       </div>
     </div>`;
 
     if (data.results && data.results.length > 0) {
       html += `<div style="font-size:.84rem;font-weight:700;color:var(--nbcc-navy);margin:12px 0 6px">📄 ${(data.total||0).toLocaleString()} results — showing top ${data.results.length}:</div>`;
       html += renderResultsWithSections(data.results, sid);
-      html += `<div style="text-align:center;margin-top:12px"><a href="${urlAll}" target="_blank" style="display:inline-block;padding:10px 20px;background:var(--nbcc-navy);color:#fff;text-decoration:none;border-radius:8px;font-weight:600">View more in PRIMO Library Discovery →</a></div>`;
+      html += `<div style="text-align:center;margin-top:12px"><a href="${urlAll}" target="_blank" style="display:inline-block;padding:10px 20px;background:var(--nbcc-navy);color:#fff;text-decoration:none;border-radius:8px;font-weight:600">View more results →</a></div>`;
     } else if (data.error) {
       html += `<div class="error-banner">⚠️ ${data.error}</div>`;
     } else {
@@ -1027,7 +948,7 @@ async function doSearch() {
     }
 
     // AI tools always at the end
-    html += buildAIToolsPanel(plan.ai_tool_query || query, { primoDiscoveryUrl: urlAll, primoAiUrl: plan.primo_ai_url || '', pubmedUrl: plan.pubmed_url || '', isMedical: !!plan.is_medical });
+    html += buildAIToolsPanel(plan.ai_tool_query || query);
 
     statusDiv.innerHTML = '';
     resultsDiv.innerHTML = html;
@@ -1046,18 +967,12 @@ async function doSearch() {
 function buildAIToolsPanel(naturalQuery, options = {}) {
   const cleanQuery = (naturalQuery || '').trim();
   const nq = encodeURIComponent(cleanQuery);
-  const primoDiscoveryUrl = options.primoDiscoveryUrl || `${PRIMO_BASE}?query=any,contains,${encodeURIComponent(cleanQuery)}&lang=en&mode=advanced&offset=0`;
-  const primoAiUrl = options.primoAiUrl || `${PRIMO_AI_URL}${nq}`;
-  const pubmedUrl = options.pubmedUrl || '';
-  const isMedical = !!options.isMedical;
+  const ebscoUrl = 'https://libproxy.nbcc.ca/login?url=http://search.ebscohost.com/login.aspx?authtype=ip,uid&custid=s5214815&profile=ehost&defaultdb=aph&groupid=main';
   return `<div class="ai-panel">
     <div class="ai-panel-title">✨ For deeper research, try the AI research tools below</div>
-    <div class="ai-row-label">🔐 NBCC subscribed AI tools</div>
+    <div class="ai-row-label">🔐 NBCC subscribed databases</div>
     <div class="ai-tools-strip">
-      <a class="ai-tool-chip leapspace" href="https://www.sciencedirect.com/leapspace?query=${nq}" target="_blank">🔬 LeapSpace</a>
-      <a class="ai-tool-chip scopus" href="https://www-scopus-com.nbcc.idm.oclc.org/pages/ai?query=${nq}" target="_blank">🔭 Scopus AI</a>
-      <a class="ai-tool-chip ebscoai" href="https://research-ebsco-com.nbcc.idm.oclc.org/c/yst6t2/search/results?q=${nq}&autocorrect=y&expanders=concept&limiters=None&searchMode=enhanced&searchSegment=all-results" target="_blank">📰 EBSCO AI</a>
-      <a class="ai-tool-chip primoai" href="${primoAiUrl}" target="_blank">⭐ PRIMO AI Assistant</a>
+      <a class="ai-tool-chip ebscoai" href="${ebscoUrl}" target="_blank">📰 Academic Search Premier</a>
     </div>
     <div class="ai-row-label">🆓 Freemium AI tools</div>
     <div style="font-size:.72rem;color:var(--mu);margin:-2px 0 8px">Some freemium tools may require account creation.</div>
@@ -1066,11 +981,6 @@ function buildAIToolsPanel(naturalQuery, options = {}) {
       <a class="ai-tool-chip openalex" href="https://openalex.org/works?page=1&sort=relevance_score:desc&search.semantic=${encodeURIComponent(cleanQuery.replace(/\s+/g, "+"))}" target="_blank">🌐 OpenAlex</a>
       <a class="ai-tool-chip scispace" href="https://scispace.com/search?q=${nq}" target="_blank">🧪 SciSpace</a>
       <a class="ai-tool-chip perplexity" href="https://www.perplexity.ai/search?q=${nq}" target="_blank">🔎 Perplexity</a>
-    </div>
-    <div class="ai-row-label">📚 More results</div>
-    <div class="ai-tools-strip">
-      <a class="ai-tool-chip primoai" href="${primoDiscoveryUrl}" target="_blank">📚 PRIMO Library Discovery</a>
-      ${isMedical && pubmedUrl ? `<a class="ai-tool-chip scispace" href="${pubmedUrl}" target="_blank">🏥 PubMed</a>` : ''}
     </div>
   </div>`;
 }
@@ -1081,11 +991,10 @@ function buildAIToolsPanel(naturalQuery, options = {}) {
 // ═══════════════════════════════════════════════════════════════
 function renderResultCard(r, idx, sid, num) {
   const safeTitle = (r.title || 'Untitled').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  const link = r.primo_url || r.link || (r.doi ? 'https://doi.org/' + r.doi : '') || (r.pmid ? 'https://pubmed.ncbi.nlm.nih.gov/' + r.pmid + '/' : '#');
+  const link = r.primo_url || r.link || (r.doi ? 'https://doi.org/' + r.doi : '#');
   const isOA = r._source === 'OpenAlex';
   const srcColors = {
     'PRIMO': '#fef3c7|#92400e',
-    'PubMed': '#d1fae5|#065f46',
     'OpenAlex': '#f0f9ff|#0c4a6e',
     'Semantic Scholar': '#e0e7ff|#3730a3'
   };
@@ -1095,23 +1004,16 @@ function renderResultCard(r, idx, sid, num) {
   const citeId = `cite_${sid}_${idx}`;
   const numLabel = num != null ? `<span style="font-size:.72rem;font-weight:800;color:var(--mu);margin-right:6px">${num}.</span>` : '';
 
-  // Description: use abstract/description for OpenAlex, skip for PRIMO
   const desc = (r.description || r.abstract || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   const descHtml = desc
     ? `<div class="rcard-desc">${desc.length > 220 ? desc.slice(0,220) + '…' : desc}</div>`
     : '';
 
-  // Authors line
   const authorsLine = r.creator || r.authors || '';
   const dateLine = r.date || r.year || '';
   const metaLine = [authorsLine, dateLine, r.type || (isOA ? 'Article' : '')].filter(Boolean).join(' · ');
 
-  // For OpenAlex: primary link = DOI or direct URL; secondary = PRIMO title search
-  // For PRIMO/PubMed: primary link = primo_url or link
-  const directLink = isOA
-    ? (r.doi ? 'https://doi.org/' + r.doi : r.link || '#')
-    : (r.primo_url || r.link || (r.doi ? 'https://doi.org/' + r.doi : '') || (r.pmid ? 'https://pubmed.ncbi.nlm.nih.gov/' + r.pmid + '/' : '#'));
-  const primoSearchLink = isOA ? (r.primo_url || '') : '';
+  const directLink = r.primo_url || r.link || (r.doi ? 'https://doi.org/' + r.doi : '#');
 
   return `<div class="rcard">
     <div class="rcard-title">${numLabel}<a href="${directLink}" target="_blank">${safeTitle}</a></div>
@@ -1120,14 +1022,10 @@ function renderResultCard(r, idx, sid, num) {
     ${descHtml}
     <div class="rcard-tags">${srcTag}${oaTag}</div>
     <div class="rcard-actions">
-      ${isOA
-        ? `<button class="rcard-btn primary" onclick="window.open('${directLink}','_blank')">Read Article →</button>
-           ${primoSearchLink ? `<button class="rcard-btn" onclick="window.open('${primoSearchLink}','_blank')">Find in PRIMO →</button>` : ''}`
-        : `<button class="rcard-btn primary" onclick="window.open('${directLink}','_blank')">View →</button>
-           <button class="rcard-btn" onclick="showCite('${sid}',${idx},'apa')">APA</button>
-           <button class="rcard-btn" onclick="showCite('${sid}',${idx},'ieee')">IEEE</button>
-           <button class="rcard-btn" onclick="showCite('${sid}',${idx},'harvard')">Harvard</button>`
-      }
+      <button class="rcard-btn primary" onclick="window.open('${directLink}','_blank')">View →</button>
+      <button class="rcard-btn" onclick="showCite('${sid}',${idx},'apa')">APA</button>
+      <button class="rcard-btn" onclick="showCite('${sid}',${idx},'ieee')">IEEE</button>
+      <button class="rcard-btn" onclick="showCite('${sid}',${idx},'harvard')">Harvard</button>
     </div>
     <div id="${citeId}"></div>
   </div>`;
@@ -1148,124 +1046,9 @@ function showCite(sid, idx, style) {
 }
 
 function renderResultsWithSections(results, sid) {
-  const primo = results.filter(r => r._source !== 'OpenAlex');
-  const oa    = results.filter(r => r._source === 'OpenAlex');
-  let html = '';
-  if (primo.length > 0) {
-    html += `<div class="results-section-hdr">📚 NBCC Library Results (PRIMO)</div>`;
-    html += primo.map((r, i) => renderResultCard(r, i, sid, i + 1)).join('');
-  }
-  if (oa.length > 0) {
-    html += `<div class="results-section-hdr">🌍 Open Access Articles (OpenAlex)</div>`;
-    html += oa.map((r, i) => renderResultCard(r, primo.length + i, sid, i + 1)).join('');
-  }
-  return html;
+  if (!results || results.length === 0) return '';
+  return results.map((r, i) => renderResultCard(r, i, sid, i + 1)).join('');
 }
-
-// ═══════════════════════════════════════════════════════════════
-// DATABASES A–Z
-// ═══════════════════════════════════════════════════════════════
-const DB_SUBJECTS = [
-  {key:'general', label:'General Research', items:[
-    {name:'PRIMO',desc:'Search books, articles, journals in one place.',url:'https://nbcc.primo.exlibrisgroup.com/discovery/search?vid=NBCC_INST:NBCC'},
-    {name:'Scopus',desc:'Multidisciplinary abstract and citation database.',url:'https://nbcc.idm.oclc.org/login?url=https://www.scopus.com/home.url'},
-    {name:'Web of Science',desc:'Citation database for multidisciplinary research.',url:'https://nbcc.idm.oclc.org/login?url=https://www.webofscience.com'},
-    {name:'ScienceDirect',desc:'Full-text journals and books across many disciplines.',url:'https://nbcc.idm.oclc.org/login?url=https://www.sciencedirect.com'},
-    {name:'Google Scholar @ KU',desc:'Google Scholar with NBCC full-text access.',url:'https://library.nbcc.ca/google'},
-  ]},
-  {key:'computing', label:'Computer Science & AI', items:[
-    {name:'IEEE Xplore',desc:'Electrical, computer engineering, and computing.',url:'https://nbcc.idm.oclc.org/login?url=https://ieeexplore.ieee.org/Xplore/dynhome.jsp'},
-    {name:'ACM Digital Library',desc:'Computer science journals, proceedings, and books.',url:'https://nbcc.idm.oclc.org/login?url=http://dl.acm.org'},
-    {name:'arXiv.org',desc:'Open-access preprints in CS, math, and physics.',url:'https://arxiv.org/'},
-    {name:'ScienceDirect',desc:'Computer science and engineering journals.',url:'https://nbcc.idm.oclc.org/login?url=https://www.sciencedirect.com'},
-  ]},
-  {key:'electrical', label:'Electrical Engineering', items:[
-    {name:'IEEE Xplore',desc:'Core database for electrical engineering and standards.',url:'https://nbcc.idm.oclc.org/login?url=https://ieeexplore.ieee.org/Xplore/dynhome.jsp'},
-    {name:'ScienceDirect',desc:'Electrical engineering and electronics journals.',url:'https://nbcc.idm.oclc.org/login?url=https://www.sciencedirect.com'},
-    {name:'Scopus',desc:'Find electrical engineering literature.',url:'https://nbcc.idm.oclc.org/login?url=https://www.scopus.com/home.url'},
-  ]},
-  {key:'civil', label:'Civil Engineering', items:[
-    {name:'ASCE Library',desc:'Civil and structural engineering journals.',url:'https://nbcc.idm.oclc.org/login?url=https://ascelibrary.org'},
-    {name:'ASTM Compass',desc:'Engineering standards and specifications.',url:'https://nbcc.idm.oclc.org/login?url=https://secure.astm.org/login'},
-    {name:'Knovel',desc:'Civil engineering reference books.',url:'https://nbcc.idm.oclc.org/login?url=https://app.knovel.com/kn'},
-  ]},
-  {key:'aerospace', label:'Aerospace Engineering', items:[
-    {name:'AIAA',desc:'Aerospace science and engineering.',url:'https://nbcc.idm.oclc.org/login?url=https://arc.aiaa.org/'},
-    {name:'ASME Digital Library',desc:'Mechanical and aerospace engineering.',url:'https://nbcc.idm.oclc.org/login?url=https://asmedigitalcollection.asme.org'},
-    {name:'Knovel',desc:'Engineering handbooks and technical reference.',url:'https://nbcc.idm.oclc.org/login?url=https://app.knovel.com/kn'},
-  ]},
-  {key:'chemical', label:'Chemical Engineering & Chemistry', items:[
-    {name:'ACS',desc:'Chemistry and chemical engineering journals.',url:'https://nbcc.idm.oclc.org/login?url=https://pubs.acs.org'},
-    {name:'SciFindern',desc:'Chemistry research and reaction searching.',url:'https://nbcc.idm.oclc.org/login?url=https://scifinder-n.cas.org'},
-    {name:'RSC Journals',desc:'Royal Society of Chemistry journals.',url:'https://nbcc.idm.oclc.org/login?url=https://pubs.rsc.org/'},
-    {name:'Knovel',desc:'Process and thermodynamics handbooks.',url:'https://nbcc.idm.oclc.org/login?url=https://app.knovel.com/kn'},
-  ]},
-  {key:'medical', label:'Medicine & Health Sciences', items:[
-    {name:'PubMed @ NBCC',desc:'Core biomedical literature database.',url:'https://www.ncbi.nlm.nih.gov/pubmed/?otool=nbcclib'},
-    {name:'Embase',desc:'Biomedical, drugs, and clinical medicine.',url:'https://nbcc.idm.oclc.org/login?url=https://www.embase.com'},
-    {name:'CINAHL Ultimate',desc:'Nursing and allied health literature.',url:'https://nbcc.idm.oclc.org/login?url=https://search.ebscohost.com/login.aspx?authtype=ip,uid&profile=ehost&defaultdb=cul'},
-    {name:'Cochrane Library',desc:'Systematic reviews and evidence-based medicine.',url:'https://nbcc.idm.oclc.org/login?url=https://www.cochranelibrary.com'},
-    {name:'ClinicalKey Student',desc:'Medical textbooks and clinical learning tools.',url:'https://nbcc.idm.oclc.org/login?url=https://www.clinicalkey.com/student/login'},
-    {name:'UpToDate',desc:'Clinical decision support.',url:'https://nbcc.idm.oclc.org/login?url=https://www.uptodate.com/'},
-  ]},
-  {key:'biomedical', label:'Biomedical Engineering', items:[
-    {name:'PubMed @ NBCC',desc:'Biomedical and life sciences literature.',url:'https://www.ncbi.nlm.nih.gov/pubmed/?otool=nbcclib'},
-    {name:'IEEE Xplore',desc:'Biomedical engineering and devices.',url:'https://nbcc.idm.oclc.org/login?url=https://ieeexplore.ieee.org/Xplore/dynhome.jsp'},
-    {name:'ScienceDirect',desc:'Biomedical engineering journals.',url:'https://nbcc.idm.oclc.org/login?url=https://www.sciencedirect.com'},
-  ]},
-  {key:'energy', label:'Energy & Petroleum Engineering', items:[
-    {name:'OnePetro',desc:'Oil, gas, and petroleum engineering literature.',url:'https://nbcc.idm.oclc.org/login?url=https://www.onepetro.org/'},
-    {name:'ScienceDirect',desc:'Energy and petroleum journals.',url:'https://nbcc.idm.oclc.org/login?url=https://www.sciencedirect.com'},
-    {name:'Knovel',desc:'Energy and engineering reference books.',url:'https://nbcc.idm.oclc.org/login?url=https://app.knovel.com/kn'},
-  ]},
-  {key:'physics', label:'Physics & Mathematics', items:[
-    {name:'APS Journals',desc:'American Physical Society journals.',url:'https://nbcc.idm.oclc.org/login?url=https://journals.aps.org'},
-    {name:'AIP',desc:'American Institute of Physics journals.',url:'https://nbcc.idm.oclc.org/login?url=https://aip.scitation.org'},
-    {name:'arXiv.org',desc:'Open-access preprints in physics and math.',url:'https://arxiv.org/'},
-    {name:'MathSciNet',desc:'Mathematics literature and reviews.',url:'https://nbcc.idm.oclc.org/login?url=https://search.ebscohost.com/login.aspx?authtype=ip,uid&profile=ehost&defaultdb=msn'},
-  ]},
-  {key:'business', label:'Business & Management', items:[
-    {name:'Business Source Ultimate',desc:'Core business and management database.',url:'https://nbcc.idm.oclc.org/login?url=https://search.ebscohost.com/login.aspx?authtype=ip,uid&profile=ehost&defaultdb=bsu'},
-    {name:'Emerald Insight',desc:'Management, strategy, and leadership journals.',url:'https://nbcc.idm.oclc.org/login?url=https://www.emerald.com/insight'},
-    {name:'ProQuest',desc:'Business and multidisciplinary sources.',url:'https://nbcc.idm.oclc.org/login?url=https://search.proquest.com/?accountid=174135'},
-  ]},
-  {key:'metrics', label:'Journal Metrics & Research Impact', items:[
-    {name:'Web of Science / JCR',desc:'Journal Citation Reports and impact factors.',url:'https://nbcc.idm.oclc.org/login?url=https://www.webofscience.com'},
-    {name:'Scopus / CiteScore',desc:'CiteScore and source-level metrics.',url:'https://nbcc.idm.oclc.org/login?url=https://www.scopus.com/home.url'},
-    {name:'SciVal',desc:'Research performance analytics.',url:'https://nbcc.idm.oclc.org/login?url=https://scival.com/'},
-  ]},
-  {key:'theses', label:'Dissertations & Theses', items:[
-    {name:'ProQuest Dissertations & Theses',desc:'Global dissertations and theses.',url:'https://nbcc.idm.oclc.org/login?url=https://www.proquest.com/pqdtglobal'},
-    {name:'NBCC Repository',desc:'KU institutional repository.',url:'https://khazna.nbcc.ca/'},
-  ]},
-];
-
-function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-
-function buildDB(key) {
-  // Alphabet bar
-  document.getElementById('abar').innerHTML =
-    `<button class="abtn ${!key?'active':''}" onclick="buildDB('')">All</button>` +
-    DB_SUBJECTS.map(s => `<button class="abtn ${key===s.key?'active':''}" onclick="buildDB('${s.key}')" title="${escHtml(s.label)}">${s.label.split(' ')[0]}</button>`).join('');
-
-  const subjects = key ? DB_SUBJECTS.filter(s => s.key === key) : DB_SUBJECTS;
-  document.getElementById('dbList').innerHTML = subjects.map(s =>
-    `<details class="dg" ${key?'open':''}>
-      <summary><h2>${escHtml(s.label)}</h2><span class="db-toggle">${key?'Hide':'Show'}</span></summary>
-      <div class="db-group-items">
-        ${s.items.map(d => `<div class="di"><h4>${escHtml(d.name)}</h4><p>${escHtml(d.desc)}</p><a href="${d.url}" target="_blank">Access →</a></div>`).join('')}
-      </div>
-    </details>`
-  ).join('');
-}
-
-// Update toggle text on open/close
-document.addEventListener('toggle', e => {
-  if (e.target?.classList?.contains('dg')) {
-    const t = e.target.querySelector('.db-toggle');
-    if (t) t.textContent = e.target.open ? 'Hide' : 'Show';
-  }
-}, true);
 
 // ═══════════════════════════════════════════════════════════════
 // INIT
@@ -1277,7 +1060,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!p.classList.contains('active')) p.style.display = 'none';
     else p.style.display = 'flex';
   });
-  buildDB('');
   console.log('LibNova loaded — API:', API_URL);
   // Load runtime config — updates greeting and shows announcement
   fetch(API_URL + '/admin/public-config')
