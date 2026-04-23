@@ -124,6 +124,7 @@ header{background:var(--nbcc-navy);color:#fff;padding:10px 16px;display:flex;ali
 .ai-tool-chip.scispace{background:#ecfdf5;color:#065f46;border-color:#6ee7b7}
 .ai-tool-chip.perplexity{background:#f5f3ff;color:#4c1d95;border-color:#ddd6fe}
 .ai-tool-chip.openalex{background:#f0f9ff;color:#0c4a6e;border-color:#bae6fd}
+.ai-tool-chip.semanticscholar{background:#eff6ff;color:#1e40af;border-color:#bfdbfe}
 
 /* ── Result cards ── */
 .rcard{background:#fff;border-radius:10px;padding:12px;border:1px solid var(--border);margin-bottom:8px;transition:box-shadow .2s}
@@ -220,7 +221,7 @@ header{background:var(--nbcc-navy);color:#fff;padding:10px 16px;display:flex;ali
         <button class="wlc-btn" onclick="wlcSend('What are the library hours?')">⏰ Library Hours</button>
         <button class="wlc-btn" onclick="wlcSend('How do I reserve a study room?')">🚪 Study Rooms</button>
         <button class="wlc-btn" onclick="wlcSend('What library events and workshops are coming up?')">📅 Library Events &amp; Workshops</button>
-        
+        <button class="wlc-btn" onclick="wlcSend('Can I request an Interlibrary Loan?')">📬 ILL Request</button>
       </div>
 
       <!-- Subject prompt (shown when Find Articles clicked) -->
@@ -927,7 +928,7 @@ async function doSearch() {
 function buildAIToolsPanel(naturalQuery, options = {}) {
   const cleanQuery = (naturalQuery || '').trim();
   const nq = encodeURIComponent(cleanQuery);
-  const ebscoUrl = 'https://libproxy.nbcc.ca/login?url=http://search.ebscohost.com/login.aspx?authtype=ip,uid&custid=s5214815&profile=ehost&defaultdb=aph&groupid=main';
+  const ebscoUrl = `https://libproxy.nbcc.ca/login?url=https://research.ebsco.com/c/o4jg5i/search/results?q=${nq}&autocorrect=y&db=aph&expanders=concept&limiters=None&searchMode=enhanced&searchSegment=all-results&skipResultsFetch=true`;
   return `<div class="ai-panel">
     <div class="ai-panel-title">✨ For deeper research, try the AI research tools below</div>
     <div class="ai-row-label">🔐 NBCC subscribed databases</div>
@@ -941,6 +942,7 @@ function buildAIToolsPanel(naturalQuery, options = {}) {
       <a class="ai-tool-chip openalex" href="https://openalex.org/works?page=1&sort=relevance_score:desc&search.semantic=${encodeURIComponent(cleanQuery.replace(/\s+/g, "+"))}" target="_blank">🌐 OpenAlex</a>
       <a class="ai-tool-chip scispace" href="https://scispace.com/search?q=${nq}" target="_blank">🧪 SciSpace</a>
       <a class="ai-tool-chip perplexity" href="https://www.perplexity.ai/search?q=${nq}" target="_blank">🔎 Perplexity</a>
+      <a class="ai-tool-chip semanticscholar" href="https://www.semanticscholar.org/search?q=${nq}&sort=Relevance" target="_blank">🎓 Semantic Scholar</a>
     </div>
   </div>`;
 }
