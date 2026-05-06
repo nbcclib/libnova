@@ -818,8 +818,6 @@ async function buildSearchPlan(query, opts = {}) {
 // SEARCH — execute against HF Space /search endpoint
 // ═══════════════════════════════════════════════════════════════
 async function executeSearch(query, opts = {}) {
-  const pr = opts.pr || false, oa = opts.oa || false;
-  const yf = opts.yf || '', yt = opts.yt || '';
   const plan = await buildSearchPlan(query, { resourceType: opts.resourceType || null });
   const bool = plan.primo_boolean_query || makeBoolean(query);
   const dbQuery = (plan.topic || query).substring(0, 500);
@@ -1088,124 +1086,9 @@ function showCite(sid, idx, style) {
 }
 
 function renderResultsWithSections(results, sid) {
-  const primo = results.filter(r => r._source !== 'OpenAlex');
-  const oa    = results.filter(r => r._source === 'OpenAlex');
-  let html = '';
-  if (primo.length > 0) {
-    html += `<div class="results-section-hdr">📚 NBCC Library Results (PRIMO)</div>`;
-    html += primo.map((r, i) => renderResultCard(r, i, sid, i + 1)).join('');
-  }
-  if (oa.length > 0) {
-    html += `<div class="results-section-hdr">🌍 Open Access Articles (OpenAlex)</div>`;
-    html += oa.map((r, i) => renderResultCard(r, primo.length + i, sid, i + 1)).join('');
-  }
-  return html;
+  if (!results || results.length === 0) return '';
+  return results.map((r, i) => renderResultCard(r, i, sid, i + 1)).join('');
 }
-
-// ═══════════════════════════════════════════════════════════════
-// DATABASES A–Z
-// ═══════════════════════════════════════════════════════════════
-const DB_SUBJECTS = [
-  {key:'general', label:'General Research', items:[
-    {name:'PRIMO',desc:'Search books, articles, journals in one place.',url:'https://nbcc.primo.exlibrisgroup.com/discovery/search?vid=NBCC_INST:NBCC'},
-    {name:'Scopus',desc:'Multidisciplinary abstract and citation database.',url:'https://nbcc.idm.oclc.org/login?url=https://www.scopus.com/home.url'},
-    {name:'Web of Science',desc:'Citation database for multidisciplinary research.',url:'https://nbcc.idm.oclc.org/login?url=https://www.webofscience.com'},
-    {name:'ScienceDirect',desc:'Full-text journals and books across many disciplines.',url:'https://nbcc.idm.oclc.org/login?url=https://www.sciencedirect.com'},
-    {name:'Google Scholar @ KU',desc:'Google Scholar with NBCC full-text access.',url:'https://library.nbcc.ca/google'},
-  ]},
-  {key:'computing', label:'Computer Science & AI', items:[
-    {name:'IEEE Xplore',desc:'Electrical, computer engineering, and computing.',url:'https://nbcc.idm.oclc.org/login?url=https://ieeexplore.ieee.org/Xplore/dynhome.jsp'},
-    {name:'ACM Digital Library',desc:'Computer science journals, proceedings, and books.',url:'https://nbcc.idm.oclc.org/login?url=http://dl.acm.org'},
-    {name:'arXiv.org',desc:'Open-access preprints in CS, math, and physics.',url:'https://arxiv.org/'},
-    {name:'ScienceDirect',desc:'Computer science and engineering journals.',url:'https://nbcc.idm.oclc.org/login?url=https://www.sciencedirect.com'},
-  ]},
-  {key:'electrical', label:'Electrical Engineering', items:[
-    {name:'IEEE Xplore',desc:'Core database for electrical engineering and standards.',url:'https://nbcc.idm.oclc.org/login?url=https://ieeexplore.ieee.org/Xplore/dynhome.jsp'},
-    {name:'ScienceDirect',desc:'Electrical engineering and electronics journals.',url:'https://nbcc.idm.oclc.org/login?url=https://www.sciencedirect.com'},
-    {name:'Scopus',desc:'Find electrical engineering literature.',url:'https://nbcc.idm.oclc.org/login?url=https://www.scopus.com/home.url'},
-  ]},
-  {key:'civil', label:'Civil Engineering', items:[
-    {name:'ASCE Library',desc:'Civil and structural engineering journals.',url:'https://nbcc.idm.oclc.org/login?url=https://ascelibrary.org'},
-    {name:'ASTM Compass',desc:'Engineering standards and specifications.',url:'https://nbcc.idm.oclc.org/login?url=https://secure.astm.org/login'},
-    {name:'Knovel',desc:'Civil engineering reference books.',url:'https://nbcc.idm.oclc.org/login?url=https://app.knovel.com/kn'},
-  ]},
-  {key:'aerospace', label:'Aerospace Engineering', items:[
-    {name:'AIAA',desc:'Aerospace science and engineering.',url:'https://nbcc.idm.oclc.org/login?url=https://arc.aiaa.org/'},
-    {name:'ASME Digital Library',desc:'Mechanical and aerospace engineering.',url:'https://nbcc.idm.oclc.org/login?url=https://asmedigitalcollection.asme.org'},
-    {name:'Knovel',desc:'Engineering handbooks and technical reference.',url:'https://nbcc.idm.oclc.org/login?url=https://app.knovel.com/kn'},
-  ]},
-  {key:'chemical', label:'Chemical Engineering & Chemistry', items:[
-    {name:'ACS',desc:'Chemistry and chemical engineering journals.',url:'https://nbcc.idm.oclc.org/login?url=https://pubs.acs.org'},
-    {name:'SciFindern',desc:'Chemistry research and reaction searching.',url:'https://nbcc.idm.oclc.org/login?url=https://scifinder-n.cas.org'},
-    {name:'RSC Journals',desc:'Royal Society of Chemistry journals.',url:'https://nbcc.idm.oclc.org/login?url=https://pubs.rsc.org/'},
-    {name:'Knovel',desc:'Process and thermodynamics handbooks.',url:'https://nbcc.idm.oclc.org/login?url=https://app.knovel.com/kn'},
-  ]},
-  {key:'medical', label:'Medicine & Health Sciences', items:[
-    {name:'PubMed @ NBCC',desc:'Core biomedical literature database.',url:'https://www.ncbi.nlm.nih.gov/pubmed/?otool=nbcclib'},
-    {name:'Embase',desc:'Biomedical, drugs, and clinical medicine.',url:'https://nbcc.idm.oclc.org/login?url=https://www.embase.com'},
-    {name:'CINAHL Ultimate',desc:'Nursing and allied health literature.',url:'https://nbcc.idm.oclc.org/login?url=https://search.ebscohost.com/login.aspx?authtype=ip,uid&profile=ehost&defaultdb=cul'},
-    {name:'Cochrane Library',desc:'Systematic reviews and evidence-based medicine.',url:'https://nbcc.idm.oclc.org/login?url=https://www.cochranelibrary.com'},
-    {name:'ClinicalKey Student',desc:'Medical textbooks and clinical learning tools.',url:'https://nbcc.idm.oclc.org/login?url=https://www.clinicalkey.com/student/login'},
-    {name:'UpToDate',desc:'Clinical decision support.',url:'https://nbcc.idm.oclc.org/login?url=https://www.uptodate.com/'},
-  ]},
-  {key:'biomedical', label:'Biomedical Engineering', items:[
-    {name:'PubMed @ NBCC',desc:'Biomedical and life sciences literature.',url:'https://www.ncbi.nlm.nih.gov/pubmed/?otool=nbcclib'},
-    {name:'IEEE Xplore',desc:'Biomedical engineering and devices.',url:'https://nbcc.idm.oclc.org/login?url=https://ieeexplore.ieee.org/Xplore/dynhome.jsp'},
-    {name:'ScienceDirect',desc:'Biomedical engineering journals.',url:'https://nbcc.idm.oclc.org/login?url=https://www.sciencedirect.com'},
-  ]},
-  {key:'energy', label:'Energy & Petroleum Engineering', items:[
-    {name:'OnePetro',desc:'Oil, gas, and petroleum engineering literature.',url:'https://nbcc.idm.oclc.org/login?url=https://www.onepetro.org/'},
-    {name:'ScienceDirect',desc:'Energy and petroleum journals.',url:'https://nbcc.idm.oclc.org/login?url=https://www.sciencedirect.com'},
-    {name:'Knovel',desc:'Energy and engineering reference books.',url:'https://nbcc.idm.oclc.org/login?url=https://app.knovel.com/kn'},
-  ]},
-  {key:'physics', label:'Physics & Mathematics', items:[
-    {name:'APS Journals',desc:'American Physical Society journals.',url:'https://nbcc.idm.oclc.org/login?url=https://journals.aps.org'},
-    {name:'AIP',desc:'American Institute of Physics journals.',url:'https://nbcc.idm.oclc.org/login?url=https://aip.scitation.org'},
-    {name:'arXiv.org',desc:'Open-access preprints in physics and math.',url:'https://arxiv.org/'},
-    {name:'MathSciNet',desc:'Mathematics literature and reviews.',url:'https://nbcc.idm.oclc.org/login?url=https://search.ebscohost.com/login.aspx?authtype=ip,uid&profile=ehost&defaultdb=msn'},
-  ]},
-  {key:'business', label:'Business & Management', items:[
-    {name:'Business Source Ultimate',desc:'Core business and management database.',url:'https://nbcc.idm.oclc.org/login?url=https://search.ebscohost.com/login.aspx?authtype=ip,uid&profile=ehost&defaultdb=bsu'},
-    {name:'Emerald Insight',desc:'Management, strategy, and leadership journals.',url:'https://nbcc.idm.oclc.org/login?url=https://www.emerald.com/insight'},
-    {name:'ProQuest',desc:'Business and multidisciplinary sources.',url:'https://nbcc.idm.oclc.org/login?url=https://search.proquest.com/?accountid=174135'},
-  ]},
-  {key:'metrics', label:'Journal Metrics & Research Impact', items:[
-    {name:'Web of Science / JCR',desc:'Journal Citation Reports and impact factors.',url:'https://nbcc.idm.oclc.org/login?url=https://www.webofscience.com'},
-    {name:'Scopus / CiteScore',desc:'CiteScore and source-level metrics.',url:'https://nbcc.idm.oclc.org/login?url=https://www.scopus.com/home.url'},
-    {name:'SciVal',desc:'Research performance analytics.',url:'https://nbcc.idm.oclc.org/login?url=https://scival.com/'},
-  ]},
-  {key:'theses', label:'Dissertations & Theses', items:[
-    {name:'ProQuest Dissertations & Theses',desc:'Global dissertations and theses.',url:'https://nbcc.idm.oclc.org/login?url=https://www.proquest.com/pqdtglobal'},
-    {name:'NBCC Repository',desc:'KU institutional repository.',url:'https://khazna.nbcc.ca/'},
-  ]},
-];
-
-function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-
-function buildDB(key) {
-  // Alphabet bar
-  document.getElementById('abar').innerHTML =
-    `<button class="abtn ${!key?'active':''}" onclick="buildDB('')">All</button>` +
-    DB_SUBJECTS.map(s => `<button class="abtn ${key===s.key?'active':''}" onclick="buildDB('${s.key}')" title="${escHtml(s.label)}">${s.label.split(' ')[0]}</button>`).join('');
-
-  const subjects = key ? DB_SUBJECTS.filter(s => s.key === key) : DB_SUBJECTS;
-  document.getElementById('dbList').innerHTML = subjects.map(s =>
-    `<details class="dg" ${key?'open':''}>
-      <summary><h2>${escHtml(s.label)}</h2><span class="db-toggle">${key?'Hide':'Show'}</span></summary>
-      <div class="db-group-items">
-        ${s.items.map(d => `<div class="di"><h4>${escHtml(d.name)}</h4><p>${escHtml(d.desc)}</p><a href="${d.url}" target="_blank">Access →</a></div>`).join('')}
-      </div>
-    </details>`
-  ).join('');
-}
-
-// Update toggle text on open/close
-document.addEventListener('toggle', e => {
-  if (e.target?.classList?.contains('dg')) {
-    const t = e.target.querySelector('.db-toggle');
-    if (t) t.textContent = e.target.open ? 'Hide' : 'Show';
-  }
-}, true);
 
 // ═══════════════════════════════════════════════════════════════
 // INIT
