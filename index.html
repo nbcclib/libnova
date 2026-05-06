@@ -911,7 +911,7 @@ async function doSearch() {
   resultsDiv.innerHTML = '';
 
   try {
-    const plan = await buildSearchPlan(query, { pr, oa, yf, yt });
+    const plan = await buildSearchPlan(query);
     const bool = plan.primo_boolean_query || makeBoolean(query);
     const sid = 'ST' + Date.now();
     window._primoResults[sid] = [];
