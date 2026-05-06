@@ -839,12 +839,9 @@ async function executeSearch(query, opts = {}) {
   const cm = document.getElementById('chatMsgs');
   const loadEl = document.createElement('div'); loadEl.className = 'msg bot'; loadEl.style.maxWidth = '96%';
   loadEl.innerHTML = `<div class="av">🔍</div><div class="scard">
-    <div class="scard-title">🔍 Searching PRIMO Library Discovery…</div>
+    <div class="scard-title">🔍 Building your search…</div>
     ${correctionHtml}
     <div class="bool-str">${bool}</div>
-    <div class="slinks">
-      <a class="slink all" href="${urlAll}" target="_blank">📚 Search in PRIMO Library Discovery</a>
-    </div>
     <div style="margin-top:10px;font-size:.8rem;color:var(--mu);display:flex;align-items:center;gap:6px">
       <div class="typing"><span></span><span></span><span></span></div>
       <span>Fetching PRIMO results…</span>
@@ -879,7 +876,6 @@ async function executeSearch(query, opts = {}) {
     if (data.results && data.results.length > 0) {
       html += `<div style="font-size:.82rem;font-weight:700;color:var(--nbcc-navy);margin:10px 0 6px">📄 ${(data.total||0).toLocaleString()} results — showing top ${data.results.length}:</div>`;
       html += renderResultsWithSections(data.results, sid);
-      html += `<div style="text-align:center;margin-top:10px"><a href="${urlAll}" target="_blank" style="display:inline-block;padding:8px 18px;background:var(--nbcc-navy);color:#fff;text-decoration:none;border-radius:8px;font-weight:600;font-size:.82rem">View more in PRIMO Library Discovery →</a></div>`;
     } else if (data.error) {
       html = `<div class="error-banner">⚠️ ${data.error}</div>`;
     } else {
@@ -907,75 +903,33 @@ async function doSearch() {
   const resultsDiv = document.getElementById('sResults');
 
   btn.disabled = true;
-  statusDiv.innerHTML = '<span style="color:#d97706">✏️ Planning search…</span>';
+  statusDiv.innerHTML = '<span style="color:#d97706">✏️ Building search query…</span>';
   resultsDiv.innerHTML = '';
 
   try {
     const plan = await buildSearchPlan(query);
     const bool = plan.primo_boolean_query || makeBoolean(query);
-    const sid = 'ST' + Date.now();
-    window._primoResults[sid] = [];
-    const urlAll = plan.primo_all_url;
-    const urlArt = plan.primo_articles_url;
-    const urlBk = plan.primo_books_url;
-
-    statusDiv.innerHTML = '<span style="color:#16a34a">🔍 Searching PRIMO Library Discovery…</span>';
-
-    // If query was corrected, update the search input so user sees it
     const corrected = plan.topic && plan.topic.toLowerCase() !== query.toLowerCase() ? plan.topic : null;
-    if (corrected) {
-      document.getElementById('sIn').value = corrected;
-      statusDiv.innerHTML = `<span style="color:#d97706">✏️ Corrected to "<em>${corrected}</em>" — searching…</span>`;
-    }
-
-    const res = await fetchWithTimeout(API_URL + '/search', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        query: (plan.topic || query).substring(0, 500),
-        boolean_query: bool,
-        source: 'primo',
-        limit: 10,
-        resource_type: plan.resource_type || 'both',
-      })
-    });
-
-    if (!res.ok) throw new Error('Search error: ' + res.status);
-    const data = await res.json();
-    window._primoResults[sid] = data.results || [];
+    if (corrected) document.getElementById('sIn').value = corrected;
 
     let html = '';
     html += `<div class="scard">
       <div class="scard-title">🔍 Search Strategy</div>
       ${corrected ? `<div style="font-size:.78rem;color:#d97706;margin-bottom:6px">✏️ Corrected to: <em>${corrected}</em></div>` : ''}
       <div class="bool-str">${bool}</div>
-      <div class="slinks">
-        <a class="slink all" href="${urlAll}" target="_blank">📚 Search in PRIMO Library Discovery</a>
-      </div>
     </div>`;
-
-    if (data.results && data.results.length > 0) {
-      html += `<div style="font-size:.84rem;font-weight:700;color:var(--nbcc-navy);margin:12px 0 6px">📄 ${(data.total||0).toLocaleString()} results — showing top ${data.results.length}:</div>`;
-      html += renderResultsWithSections(data.results, sid);
-      html += `<div style="text-align:center;margin-top:12px"><a href="${urlAll}" target="_blank" style="display:inline-block;padding:10px 20px;background:var(--nbcc-navy);color:#fff;text-decoration:none;border-radius:8px;font-weight:600">View more in PRIMO Library Discovery →</a></div>`;
-    } else if (data.error) {
-      html += `<div class="error-banner">⚠️ ${data.error}</div>`;
-    } else {
-      html += '<div class="error-banner">No results found. Try broadening your search terms.</div>';
-    }
-
-    // AI tools always at the end
-    html += buildAIToolsPanel(plan.ai_tool_query || query, { primoDiscoveryUrl: urlAll, primoAiUrl: plan.primo_ai_url || '', pubmedUrl: plan.pubmed_url || '', isMedical: !!plan.is_medical });
+    html += buildAIToolsPanel(plan.ai_tool_query || query);
 
     statusDiv.innerHTML = '';
     resultsDiv.innerHTML = html;
   } catch (e) {
     statusDiv.innerHTML = '';
-    resultsDiv.innerHTML = `<div class="error-banner">${e.name === 'AbortError' ? '⏳ Search timed out — server may be waking up. Please try again.' : '⚠️ ' + e.message}</div>`;
+    resultsDiv.innerHTML = `<div class="error-banner">${e.name === 'AbortError' ? '⏳ Timed out — server may be waking up. Please try again.' : '⚠️ ' + e.message}</div>`;
   } finally {
     btn.disabled = false;
   }
 }
+
 
 
 // ═══════════════════════════════════════════════════════════════
@@ -984,31 +938,21 @@ async function doSearch() {
 function buildAIToolsPanel(naturalQuery, options = {}) {
   const cleanQuery = (naturalQuery || '').trim();
   const nq = encodeURIComponent(cleanQuery);
-  const primoDiscoveryUrl = options.primoDiscoveryUrl || `${PRIMO_BASE}?query=any,contains,${encodeURIComponent(cleanQuery)}&lang=en&mode=advanced&offset=0`;
-  const primoAiUrl = options.primoAiUrl || `${PRIMO_AI_URL}${nq}`;
-  const pubmedUrl = options.pubmedUrl || '';
-  const isMedical = !!options.isMedical;
+  const ebscoUrl = `https://libproxy.nbcc.ca/login?url=https://research.ebsco.com/c/o4jg5i/search/results?q=${nq}&autocorrect=y&db=aph&expanders=concept&limiters=None&searchMode=enhanced&searchSegment=all-results&skipResultsFetch=true`;
   return `<div class="ai-panel">
     <div class="ai-panel-title">✨ For deeper research, try the AI research tools below</div>
-    <div class="ai-row-label">🔐 NBCC subscribed AI tools</div>
+    <div class="ai-row-label">🔐 NBCC subscribed databases</div>
     <div class="ai-tools-strip">
-      <a class="ai-tool-chip leapspace" href="https://www.sciencedirect.com/leapspace?query=${nq}" target="_blank">🔬 LeapSpace</a>
-      <a class="ai-tool-chip scopus" href="https://www-scopus-com.nbcc.idm.oclc.org/pages/ai?query=${nq}" target="_blank">🔭 Scopus AI</a>
-      <a class="ai-tool-chip ebscoai" href="https://research-ebsco-com.nbcc.idm.oclc.org/c/yst6t2/search/results?q=${nq}&autocorrect=y&expanders=concept&limiters=None&searchMode=enhanced&searchSegment=all-results" target="_blank">📰 EBSCO AI</a>
-      <a class="ai-tool-chip primoai" href="${primoAiUrl}" target="_blank">⭐ PRIMO AI Assistant</a>
+      <a class="ai-tool-chip ebscoai" href="${ebscoUrl}" target="_blank">📰 Academic Search Premier</a>
     </div>
     <div class="ai-row-label">🆓 Freemium AI tools</div>
     <div style="font-size:.72rem;color:var(--mu);margin:-2px 0 8px">Some freemium tools may require account creation.</div>
     <div class="ai-tools-strip">
       <a class="ai-tool-chip consensus" href="https://consensus.app/results/?q=${nq}" target="_blank">🧬 Consensus</a>
-      <a class="ai-tool-chip openalex" href="https://openalex.org/works?page=1&sort=relevance_score:desc&search.semantic=${encodeURIComponent(cleanQuery.replace(/\s+/g, "+"))}" target="_blank">🌐 OpenAlex</a>
+      <a class="ai-tool-chip openalex" href="https://openalex.org/works?page=1&sort=relevance_score:desc&search.semantic=${encodeURIComponent(cleanQuery.replace(/\s+/g, '+'))}" target="_blank">🌐 OpenAlex</a>
       <a class="ai-tool-chip scispace" href="https://scispace.com/search?q=${nq}" target="_blank">🧪 SciSpace</a>
       <a class="ai-tool-chip perplexity" href="https://www.perplexity.ai/search?q=${nq}" target="_blank">🔎 Perplexity</a>
-    </div>
-    <div class="ai-row-label">📚 More results</div>
-    <div class="ai-tools-strip">
-      <a class="ai-tool-chip primoai" href="${primoDiscoveryUrl}" target="_blank">📚 PRIMO Library Discovery</a>
-      ${isMedical && pubmedUrl ? `<a class="ai-tool-chip scispace" href="${pubmedUrl}" target="_blank">🏥 PubMed</a>` : ''}
+      <a class="ai-tool-chip semanticscholar" href="https://www.semanticscholar.org/search?q=${nq}&sort=Relevance" target="_blank">🎓 Semantic Scholar</a>
     </div>
   </div>`;
 }
