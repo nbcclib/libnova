@@ -820,7 +820,7 @@ async function buildSearchPlan(query, opts = {}) {
 async function executeSearch(query, opts = {}) {
   const pr = opts.pr || false, oa = opts.oa || false;
   const yf = opts.yf || '', yt = opts.yt || '';
-  const plan = await buildSearchPlan(query, { pr, oa, yf, yt, resourceType: opts.resourceType || null });
+  const plan = await buildSearchPlan(query, { resourceType: opts.resourceType || null });
   const bool = plan.primo_boolean_query || makeBoolean(query);
   const dbQuery = (plan.topic || query).substring(0, 500);
   const resourceType = plan.resource_type || opts.resourceType || 'both';
@@ -865,10 +865,6 @@ async function executeSearch(query, opts = {}) {
         source: 'primo',
         limit: 8,
         resource_type: resourceType,
-        peer_reviewed: pr,
-        open_access: oa,
-        year_from: yf,
-        year_to: yt
       })
     });
 
@@ -908,10 +904,6 @@ async function executeSearch(query, opts = {}) {
 async function doSearch() {
   const query = document.getElementById('sIn').value.trim();
   if (!query) return;
-  const pr = document.getElementById('sPR').checked;
-  const oa = document.getElementById('sOA').checked;
-  const yf = document.getElementById('sYF').value.trim();
-  const yt = document.getElementById('sYT').value.trim();
   const btn = document.getElementById('searchBtn');
   const statusDiv = document.getElementById('sStatus');
   const resultsDiv = document.getElementById('sResults');
@@ -947,10 +939,6 @@ async function doSearch() {
         source: 'primo',
         limit: 10,
         resource_type: plan.resource_type || 'both',
-        peer_reviewed: pr,
-        open_access: oa,
-        year_from: yf,
-        year_to: yt
       })
     });
 
