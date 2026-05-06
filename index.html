@@ -1100,7 +1100,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!p.classList.contains('active')) p.style.display = 'none';
     else p.style.display = 'flex';
   });
-  buildDB('');
   console.log('LibNova loaded — API:', API_URL);
   // Load runtime config — updates greeting and shows announcement
   fetch(API_URL + '/admin/public-config')
