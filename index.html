@@ -964,11 +964,11 @@ function buildAIToolsPanel(naturalQuery, options = {}) {
   const cleanQuery = (naturalQuery || '').trim();
   const nq = encodeURIComponent(cleanQuery);
 
-  // ── Subscribed database URLs ─────────────────────────────────
-  const aspUrl      = `https://libproxy.nbcc.ca/login?url=https://research.ebsco.com/c/o4jg5i/search/results?q=${nq}&autocorrect=y&db=aph&expanders=concept&limiters=None&searchMode=enhanced&searchSegment=all-results&skipResultsFetch=true`;
-  const galeUrl     = `https://libproxy.nbcc.ca/login?url=https://infotrac.gale.com/itweb/st13180?db=GPS&q=${nq}`;
-  const ebookUrl    = `https://libproxy.nbcc.ca/login?url=https://ebookcentral.proquest.com/lib/nbcc/search.action?query=${nq}`;
-  const ebscoEbUrl  = `https://libproxy.nbcc.ca/login?url=http://search.ebscohost.com/login.aspx?authtype=ip,uid&custid=s5214815&profile=ehost&defaultdb=nlebk,e900xww&groupid=main`;
+  // ── Correct proxy URLs verified by direct database testing ───────────────
+  const aspUrl      = `https://research-ebsco-com.libproxy.nbcc.ca/c/o4jg5i/search/results?q=${nq}&autocorrect=y&db=aph&expanders=concept&limiters=None&searchMode=enhanced&searchSegment=all-results&skipResultsFetch=true`;
+  const galeUrl     = `https://go-gale-com.libproxy.nbcc.ca/ps/basicSearch.do?inputFieldValues%5B0%5D=${nq}&inputFieldNames%5B0%5D=OQE&searchType=BasicSearchForm&userGroupName=st13180&prodId=GPS&spellCheck=true&method=doSearch`;
+  const ebookPqUrl  = `https://libproxy.nbcc.ca/login?url=https://ebookcentral.proquest.com/lib/nbcc/search.action?query=${nq}`;
+  const ebookEbUrl  = `https://research-ebsco-com.libproxy.nbcc.ca/c/o4jg5i/search/results?q=${nq}&autocorrect=y&db=nlebk%2Ce900xww&expanders=concept&limiters=None&searchMode=enhanced&searchSegment=all-results&skipResultsFetch=true`;
   const pubmedAiUrl = `https://www.pubmed.ai/results?q=${nq}`;
   const openAlexUrl = `https://openalex.org/works?page=1&sort=relevance_score:desc&search=${nq}`;
 
@@ -997,16 +997,16 @@ function buildAIToolsPanel(naturalQuery, options = {}) {
 
     <div class="ai-row-label" style="margin-top:6px">📚 eBooks — NBCC subscribed collections</div>
     <div class="ai-tools-strip">
-      <a class="ai-tool-chip ebook-pq" href="${ebookUrl}" target="_blank">
+      <a class="ai-tool-chip ebook-pq" href="${ebookPqUrl}" target="_blank">
         <svg width="14" height="14" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="4" fill="#5b21b6"/><text x="5" y="22" font-family="Arial" font-size="11" font-weight="bold" fill="#fff">PQ</text></svg>
         eBooks Central
       </a>
-      <a class="ai-tool-chip ebook-ebsco" href="${ebscoEbUrl}" target="_blank">
+      <a class="ai-tool-chip ebook-ebsco" href="${ebookEbUrl}" target="_blank">
         <svg width="14" height="14" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="4" fill="#003366"/><text x="3" y="22" font-family="Arial" font-size="9" font-weight="bold" fill="#fff">EBS</text></svg>
         EBSCO eBooks
       </a>
     </div>
-    <div style="font-size:.7rem;color:var(--mu);margin-top:4px">🔐 Subscribed resources require NBCC login via the library proxy.</div>
+    <div style="font-size:.7rem;color:var(--mu);margin-top:4px">🔐 Subscribed resources require NBCC login.</div>
   </div>`;
 }
 
