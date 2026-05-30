@@ -14,12 +14,6 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 header{background:#00739c;color:#fff;padding:10px 16px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 12px rgba(0,51,102,.4);flex-shrink:0}
 .hdr-text{flex:1}.hdr-text h1{font-size:1rem;font-weight:700}.hdr-text p{font-size:.7rem;opacity:.8;margin-top:1px}
 
-.model-toggle{display:flex;gap:4px;background:rgba(255,255,255,.12);padding:3px 4px;border-radius:20px;flex-shrink:0}
-.model-toggle button{padding:4px 10px;border-radius:16px;font-size:.68rem;font-weight:700;cursor:pointer;border:none;transition:all .25s;white-space:nowrap}
-.model-toggle button.active-gpt{background:#10A37F;color:#fff;box-shadow:0 1px 6px rgba(16,163,127,.4)}
-.model-toggle button.active-claude{background:#D97706;color:#fff;box-shadow:0 1px 6px rgba(217,119,6,.4)}
-.model-toggle button:not(.active-gpt):not(.active-claude){background:transparent;color:rgba(255,255,255,.6)}
-
 /* ── Tabs ── */
 .tabs{display:flex;background:#fff;border-bottom:2px solid var(--border);flex-shrink:0;overflow-x:auto}.tabs::-webkit-scrollbar{display:none}
 .tab{padding:9px 14px;font-size:.76rem;font-weight:600;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;color:var(--mu);transition:all .2s;flex-shrink:0}
@@ -207,7 +201,7 @@ header{background:#00739c;color:#fff;padding:10px 16px;display:flex;align-items:
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:#c4b5fd;border-radius:10px}
 
 /* ── Responsive ── */
-@media(max-width:480px){.guides-grid{grid-template-columns:1fr}.msg.user{max-width:96%}.msg.bot .bub{width:calc(100vw - 64px);max-width:calc(100vw - 64px)}.msg.user .bub{max-width:calc(100vw - 64px)}.model-toggle button{padding:3px 7px;font-size:.62rem}}
+@media(max-width:480px){.guides-grid{grid-template-columns:1fr}.msg.user{max-width:96%}.msg.bot .bub{width:calc(100vw - 64px);max-width:calc(100vw - 64px)}.msg.user .bub{max-width:calc(100vw - 64px)}}
 </style>
 </head>
 <body>
@@ -216,10 +210,6 @@ header{background:#00739c;color:#fff;padding:10px 16px;display:flex;align-items:
   <div class="hdr-text">
     <h1><img src="https://nbcclib.github.io/libnova/static/libnova-mascot.png" width="32" height="32" style="vertical-align:middle;margin-right:6px;border-radius:50%;object-fit:cover" alt="LibNova"> LibNova</h1>
     <p>NBCC Library AI Assistant</p>
-  </div>
-  <div class="model-toggle">
-    <button id="btnClaude" onclick="setModel('claude')">Claude</button>
-    <button id="btnGPT" class="active-gpt" onclick="setModel('gpt')">ChatGPT</button>
   </div>
 </header>
 
@@ -321,7 +311,7 @@ header{background:#00739c;color:#fff;padding:10px 16px;display:flex;align-items:
 const API_URL = 'https://nbcclibrary-libnova.hf.space';
 const FETCH_TIMEOUT = 35000;
 
-var currentModel = 'gpt';
+var currentModel = 'gpt';  // fixed — ChatGPT only
 var chatHistory = [];
 var isSending = false;
 
@@ -485,15 +475,6 @@ async function fetchWithTimeout(url, options, ms = FETCH_TIMEOUT) {
 
 function trimHistory() {
   if (chatHistory.length > 20) chatHistory = chatHistory.slice(-20);
-}
-
-// ═══════════════════════════════════════════════════════════════
-// MODEL TOGGLE
-// ═══════════════════════════════════════════════════════════════
-function setModel(m) {
-  currentModel = m;
-  document.getElementById('btnGPT').className = m === 'gpt' ? 'active-gpt' : '';
-  document.getElementById('btnClaude').className = m === 'claude' ? 'active-claude' : '';
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -954,7 +935,6 @@ function buildAIToolsPanel(naturalQuery, options = {}) {
 // INIT
 // ═══════════════════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
-  setModel('gpt');
   // Initialize all panels hidden except chat
   document.querySelectorAll('.panel').forEach(p => {
     if (!p.classList.contains('active')) p.style.display = 'none';
